@@ -1,7 +1,7 @@
 {
-  "name": "template-panel",
+  "name": "GeoMap-panel",
   "version": "1.0.0",
-  "description": "template",
+  "description": "GeoMap panel plugin for Grafana",
   "main": "module.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -9,7 +9,7 @@
   "keywords": [
     "test"
   ],
-  "author": "me",
+  "author": "Qvantel Team",
   "license": "ISC",
   "devDependencies": {
     "babel": "^6.5.2",
