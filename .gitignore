@@ -1,6 +1,9 @@
 *.class
 *.log
 
+# nodejs
+node_modules/*
+
 # sbt specific
 .cache
 .history
