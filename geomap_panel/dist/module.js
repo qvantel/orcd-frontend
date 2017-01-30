@@ -3,7 +3,7 @@
 System.register(['app/features/panel/panel_ctrl'], function (_export, _context) {
   "use strict";
 
-  var PanelCtrl, TestPanelCtrl;
+  var PanelCtrl, GeoMapPanelCtrl;
 
   function _classCallCheck(instance, Constructor) {
     if (!(instance instanceof Constructor)) {
@@ -40,21 +40,21 @@ System.register(['app/features/panel/panel_ctrl'], function (_export, _context) 
       PanelCtrl = _appFeaturesPanelPanel_ctrl.PanelCtrl;
     }],
     execute: function () {
-      _export('PanelCtrl', TestPanelCtrl = function (_PanelCtrl) {
-        _inherits(TestPanelCtrl, _PanelCtrl);
+      _export('PanelCtrl', GeoMapPanelCtrl = function (_PanelCtrl) {
+        _inherits(GeoMapPanelCtrl, _PanelCtrl);
 
-        function TestPanelCtrl($scope, $injector) {
-          _classCallCheck(this, TestPanelCtrl);
+        function GeoMapPanelCtrl($scope, $injector) {
+          _classCallCheck(this, GeoMapPanelCtrl);
 
-          return _possibleConstructorReturn(this, (TestPanelCtrl.__proto__ || Object.getPrototypeOf(TestPanelCtrl)).call(this, $scope, $injector));
+          return _possibleConstructorReturn(this, (GeoMapPanelCtrl.__proto__ || Object.getPrototypeOf(GeoMapPanelCtrl)).call(this, $scope, $injector));
         }
 
-        return TestPanelCtrl;
+        return GeoMapPanelCtrl;
       }(PanelCtrl));
 
-      TestPanelCtrl.templateUrl = 'module.html';
+      GeoMapPanelCtrl.templateUrl = 'module.html';
 
-      _export('PanelCtrl', TestPanelCtrl);
+      _export('PanelCtrl', GeoMapPanelCtrl);
     }
   };
 });
