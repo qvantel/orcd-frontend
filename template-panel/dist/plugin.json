@@ -1,0 +1,20 @@
+{
+  "type": "panel",
+  "name": "test",
+  "id": "my-test-panel",
+
+  "info": {
+    "description": "A first test panel",
+    "author": {
+      "name": "Me"
+    },
+    "keywords": ["test", "panel"],
+    "version": "1.0.0",
+    "updated": "2017-01-30"
+  },
+
+  "dependencies": {
+    "grafanaVersion": "3.x.x",
+    "plugins": [ ]
+  }
+}

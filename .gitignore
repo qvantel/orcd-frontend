@@ -2,7 +2,7 @@
 *.log
 
 # nodejs
-node_modules/*
+node_modules/
 
 # sbt specific
 .cache
