@@ -1,16 +1,16 @@
 {
   "type": "panel",
-  "name": "template-panel",
-  "id": "my-template-panel",
+  "name": "Heatmap-panel",
+  "id": "Heatmap-panel",
 
   "info": {
-    "description": "template-panel",
+    "description": "Heatmap-panel for grafana",
     "author": {
       "name": "Me"
     },
-    "keywords": ["template", "panel"],
+    "keywords": ["heatmap", "panel"],
     "version": "1.0.0",
-    "updated": "2017-01-30"
+    "updated": "2017-01-31"
   },
 
   "dependencies": {
