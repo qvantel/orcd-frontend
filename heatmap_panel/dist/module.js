@@ -1,9 +1,9 @@
 'use strict';
 
-System.register(['app/features/panel/panel_ctrl', 'moment'], function (_export, _context) {
+System.register(['app/features/panel/panel_ctrl'], function (_export, _context) {
   "use strict";
 
-  var PanelCtrl, moment, object, pane, TestPanelCtrl;
+  var PanelCtrl, object, TestPanelCtrl;
 
   function _classCallCheck(instance, Constructor) {
     if (!(instance instanceof Constructor)) {
@@ -38,12 +38,9 @@ System.register(['app/features/panel/panel_ctrl', 'moment'], function (_export, 
   return {
     setters: [function (_appFeaturesPanelPanel_ctrl) {
       PanelCtrl = _appFeaturesPanelPanel_ctrl.PanelCtrl;
-    }, function (_moment) {
-      moment = _moment.default;
     }],
     execute: function () {
       object = {};
-      pane = [];
 
       _export('PanelCtrl', TestPanelCtrl = function (_PanelCtrl) {
         _inherits(TestPanelCtrl, _PanelCtrl);
@@ -54,11 +51,8 @@ System.register(['app/features/panel/panel_ctrl', 'moment'], function (_export, 
           var _this = _possibleConstructorReturn(this, (TestPanelCtrl.__proto__ || Object.getPrototypeOf(TestPanelCtrl)).call(this, $scope, $injector));
 
           _this.object = {
-            msg: "Default Message"
+            msg: "Hello, this is a heatmap panel"
           };
-          _this.time = moment().seconds(0).milliseconds(0).add(1, 'day').toDate();
-
-          _this.pane = ["comp", "tel"];
           return _this;
         }
 
