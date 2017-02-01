@@ -1,8 +1,10 @@
 *.class
 *.log
+.DS_Store
 
 # nodejs
 node_modules/
+npm-debug.log
 
 # sbt specific
 .cache
