@@ -1,8 +1,8 @@
-import _ from "lodash";
+import _ from 'lodash';
 
 export class GenericDatasource {
 
-  constructor(instanceSettings, $q, backendSrv, templateSrv) {
+  constructor (instanceSettings, $q, backendSrv, templateSrv) {
     this.type = instanceSettings.type;
     this.url = instanceSettings.url;
     this.name = instanceSettings.name;
@@ -11,7 +11,7 @@ export class GenericDatasource {
     this.templateSrv = templateSrv;
   }
 
-  query(options) {
+  query (options) {
     var query = this.buildQueryParameters(options);
     query.targets = query.targets.filter(t => !t.hide);
 
@@ -27,18 +27,18 @@ export class GenericDatasource {
     });
 }
 
-  testDatasource() {
+  testDatasource () {
     return this.backendSrv.datasourceRequest({
       url: this.url + '/',
       method: 'GET'
     }).then(response => {
       if (response.status === 200) {
-        return { status: "success", message: "Data source is working", title: "Success" };
+        return { status: 'success', message: 'Data source is working', title: 'Success' };
       }
     });
 }
 
-  annotationQuery(options) {
+  annotationQuery (options) {
     var query = this.templateSrv.replace(options.annotation.query, {}, 'glob');
     var annotationQuery = {
       range: options.range,
@@ -61,8 +61,8 @@ export class GenericDatasource {
     });
   }
 
-  metricFindQuery(options) {
-    var target = typeof (options) === "string" ? options : options.target;
+  metricFindQuery (options) {
+    var target = typeof (options) === 'string' ? options : options.target;
     var interpolated = {
         target: this.templateSrv.replace(target, null, 'regex')
     };
@@ -72,23 +72,22 @@ export class GenericDatasource {
       data: interpolated,
       method: 'POST',
       headers: { 'Content-Type': 'application/json' }
-  }).then(this.mapToTextValue );
+  }).then(this.mapToTextValue);
   }
 
-  mapToTextValue(result) {
-
+  mapToTextValue (result) {
     return _.map(result.data, (d, i) => {
       if (d && d.text && d.value) {
         return { text: d.text, value: d.value };
       } else if (_.isObject(d)) {
-        return { text: d, value: i};
+        return {text: d, value: i};
       }
       return { text: d, value: d };
     });
   }
 
-  buildQueryParameters(options) {
-    //remove placeholder targets
+  buildQueryParameters (options) {
+    //  remove placeholder targets
     options.targets = _.filter(options.targets, target => {
       return target.target !== 'select metric';
     });
