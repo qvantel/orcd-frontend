@@ -1,6 +1,6 @@
 {
   "scripts": {
-    "test": "eslint --quiet **/**/src/*.js"
+    "test": "eslint  templates/**/src/*.js"
   },
   "devDependencies": {
     "babel-eslint": "^7.1.1",
