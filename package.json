@@ -1,7 +1,7 @@
 {
   "scripts": {
     "lint": "eslint **/src/*.js",
-    "test": "npm run lint",
+    "test": "npm run lint"
   },
   "devDependencies": {
     "babel-eslint": "^7.1.1",
