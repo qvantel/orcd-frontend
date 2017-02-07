@@ -1,4 +1,4 @@
-import {PanelCtrl} from 'app/features/panel/panel_ctrl';
+import { PanelCtrl } from 'app/features/panel/panel_ctrl';
 
 class TestPanelCtrl extends PanelCtrl {
   constructor ($scope, $injector) {
