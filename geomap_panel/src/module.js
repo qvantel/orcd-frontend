@@ -1,13 +1,5 @@
-import {PanelCtrl} from 'app/features/panel/panel_ctrl';
-
-class GeoMapPanelCtrl extends PanelCtrl {
-  constructor($scope, $injector) {
-    super($scope, $injector);
-  }
-}
-
-GeoMapPanelCtrl.templateUrl ='module.html';
+import GeoMapPanelCtrl from './geomap_ctrl'
 
 export {
-  GeoMapPanelCtrl as PanelCtrl
+    GeoMapPanelCtrl as PanelCtrl
 };
