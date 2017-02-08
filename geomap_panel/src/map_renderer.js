@@ -1,3 +1,4 @@
+import './css/map.css!';
 import Map from './map';
 
 export default function link (scope, elem, attrs, ctrl) {
