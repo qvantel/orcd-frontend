@@ -41,13 +41,24 @@ export default class Map {
               }
           }
         };
+        this.wantedData = [];
+        this.currentData = [];
+        this.lastData = [];
 
         this.loadGoogle();
+        this.initialize();
+    }
+
+    initialize () {
+        for (var i = 0; i < this.countries.length; i++) {
+            this.wantedData[this.countries[i]] = 0;
+            this.currentData[this.countries[i]] = 0;
+            this.lastData[this.countries[i]] = 0;
+        }
     }
 
     loadGoogle () {
         var self = this;
-
         if (typeof google === 'undefined') {
             setTimeout(function () {
                 self.loadGoogle();
@@ -72,12 +83,35 @@ export default class Map {
 
     draw () {
         var data = [['Country', 'Popularity']];
-        for (var i = 0; i < this.countries.length; i++) {
-            data.push([this.countries[i], Math.floor(Math.random() * 100)]);
+
+        for (var key in this.currentData) {
+            data.push([key, this.currentData[key]]);
         }
 
         data = google.visualization.arrayToDataTable(data);
 
         this.map.draw(data, this.options);
+    }
+
+    setData () {
+        for (var key in this.wantedData) {
+            this.lastData[key] = this.wantedData[key];
+        }
+
+        for (var i = 0; i < this.countries.length; i++) {
+            this.wantedData[this.countries[i]] = Math.floor(Math.random() * 100);
+        }
+    }
+
+    lerpDataValues (ratio) {
+        for (var key in this.currentData) {
+            this.currentData[key] = this.lerp(this.lastData[key], this.wantedData[key], ratio);
+        }
+
+        // this.ctrl.log([this.wantedData, this.currentData, this.lastData]);
+    }
+
+    lerp (x, y, t) {
+        return x + t * (y - x);
     }
 }
