@@ -1,6 +1,6 @@
 {
   "scripts": {
-    "test": "eslint  templates/**/src/*.js; csslint templates/**/src/css/*.css"
+    "test": "eslint  templates/**/src/*.js geomap_panel/src/*.js; csslint templates/**/src/css/*.css geomap_panel/src/css/*.css"
   },
   "devDependencies": {
     "babel-eslint": "^7.1.1",
