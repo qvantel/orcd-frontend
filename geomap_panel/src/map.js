@@ -1,8 +1,9 @@
 export default class Map {
-    constructor (ctrl, container) {
+    constructor (ctrl, container, onReadyCallback) {
         this.ctrl = ctrl;
         this.container = container;
         this.ready = false;
+        this.onReadyCallback = onReadyCallback;
 
         this.loadGoogle();
     }
@@ -26,6 +27,7 @@ export default class Map {
         this.map = new google.visualization.GeoChart(this.container);
         google.visualization.events.addListener(this.map, 'ready', function () {
             self.ready = true;
+            self.onReadyCallback();
         });
         this.draw();
     }
