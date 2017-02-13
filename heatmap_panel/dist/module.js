@@ -1,6 +1,6 @@
 'use strict';
 
-System.register(['app/features/panel/panel_ctrl'], function (_export, _context) {
+System.register(['app/features/panel/panel_ctrl', './directive.js'], function (_export, _context) {
   "use strict";
 
   var PanelCtrl, object, TestPanelCtrl;
@@ -38,7 +38,7 @@ System.register(['app/features/panel/panel_ctrl'], function (_export, _context) 
   return {
     setters: [function (_appFeaturesPanelPanel_ctrl) {
       PanelCtrl = _appFeaturesPanelPanel_ctrl.PanelCtrl;
-    }],
+    }, function (_directiveJs) {}],
     execute: function () {
       object = {};
 

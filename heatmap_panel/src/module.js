@@ -1,4 +1,5 @@
 import {PanelCtrl} from 'app/features/panel/panel_ctrl';
+import './directive.js';
 
 var object = {};
 class TestPanelCtrl extends PanelCtrl {
