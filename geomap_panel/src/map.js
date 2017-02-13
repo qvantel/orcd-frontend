@@ -61,6 +61,7 @@ export default class Map {
     }
 
     createMap () {
+        var self = this;
         this.map = new google.visualization.GeoChart(this.container);
         google.visualization.events.addListener(this.map, 'ready', function () {
             self.ready = true;
