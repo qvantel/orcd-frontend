@@ -6,7 +6,12 @@ export default function link (scope, elem, attrs, ctrl) {
 
     function render () {
         if (!ctrl.map) {
-            ctrl.map = new Map(ctrl, elem.find('#map')[0]);
+            var self = this;
+            ctrl.map = new Map(ctrl, elem.find('#map')[0], function () {
+                setTimeout(function () {
+                    self.render();
+                }, 5000);
+            });
         }
     }
 }
