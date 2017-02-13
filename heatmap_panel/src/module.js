@@ -5,7 +5,7 @@ class TestPanelCtrl extends PanelCtrl {
   constructor($scope, $injector) {
     super($scope, $injector);
     this.object = {
-      msg: "Hello, this is a heatmap panel"
+      msg: "Hello, this is a heatmap panelsssssd"
     };
   }
 }

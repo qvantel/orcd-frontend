@@ -51,7 +51,7 @@ System.register(['app/features/panel/panel_ctrl'], function (_export, _context) 
           var _this = _possibleConstructorReturn(this, (TestPanelCtrl.__proto__ || Object.getPrototypeOf(TestPanelCtrl)).call(this, $scope, $injector));
 
           _this.object = {
-            msg: "Hello, this is a heatmap panel"
+            msg: "Hello, this is a heatmap panelsssssd"
           };
           return _this;
         }
