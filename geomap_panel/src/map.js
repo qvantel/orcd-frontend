@@ -29,17 +29,24 @@ export default class Map {
             'AS', 'CK', 'NU', 'PF', 'PN', 'TK', 'TO', 'TV', 'WF', 'WS'
         ];
         this.options = {
-          region: 'world',
-          colorAxis: {colors: ['#151515', '#ff3030']},
-          backgroundColor: {
-            'fill': '#1f1d1d'
-          },
-          datalessRegionColor: '#151515',
-          legend: {
-              textStyle: {
-                  'color': 'white'
-              }
-          }
+            region: 'world',
+            colorAxis: {
+                minValue: 0,
+                maxValue: 100,
+                colors: ['#151515', '#6699cc']
+            },
+            backgroundColor: {
+                'fill': '#1f1d1d'
+            },
+            datalessRegionColor: '#151515',
+            legend: {
+                textStyle: {
+                    'color': 'white'
+                }
+            },
+            tooltip: {
+                focus: 'focus'
+            }
         };
         this.wantedData = [];
         this.currentData = [];
@@ -83,11 +90,9 @@ export default class Map {
 
     draw () {
         var data = [['Country', 'Popularity']];
-
         for (var key in this.currentData) {
             data.push([key, this.currentData[key]]);
         }
-
         data = google.visualization.arrayToDataTable(data);
 
         this.map.draw(data, this.options);

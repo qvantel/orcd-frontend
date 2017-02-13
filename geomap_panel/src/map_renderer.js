@@ -6,18 +6,17 @@ export default function link (scope, elem, attrs, ctrl) {
     const dataUpdateInterval = 5000;
     const animationUpdateInterval = 10;
     const animationUpdateLength = 1000;
-    var animationTimer = 0;
-
-    setInterval(function () {
-        setData();
-    }, dataUpdateInterval);
+    var animationTimer = -1;
 
     ctrl.events.on('render', function () {
         render();
         ctrl.renderingCompleted();
     });
 
-    ctrl.render();
+    setData();
+    setInterval(function () {
+        setData();
+    }, dataUpdateInterval);
 
     function render () {
         if (!ctrl.map) {
@@ -30,20 +29,31 @@ export default function link (scope, elem, attrs, ctrl) {
     function onMapReady () {
         if (isAnimating()) {
             setTimeout(function () {
-                ctrl.log(getAnimationRatio());
                 ctrl.map.lerpDataValues(getAnimationRatio());
                 ctrl.render();
             }, animationUpdateInterval);
+        } else if (animationTimer > 0) {
+            stopAnimationSequence();
         }
     }
 
     function setData () {
-        ctrl.map.setData();
+        ctrl.render();
+
+        if (ctrl.map) {
+            ctrl.map.setData();
+        }
+
         startAnimationSequence();
     }
 
     function startAnimationSequence () {
         animationTimer = getMS();
+    }
+
+    function stopAnimationSequence () {
+        animationTimer = -1;
+        ctrl.map.lerpDataValues(1);
         ctrl.render();
     }
 
