@@ -2,6 +2,7 @@ export default class Map {
     constructor (ctrl, container) {
         this.ctrl = ctrl;
         this.container = container;
+        this.ready = false;
 
         this.loadGoogle();
     }
@@ -23,10 +24,14 @@ export default class Map {
 
     createMap () {
         this.map = new google.visualization.GeoChart(this.container);
+        google.visualization.events.addListener(this.map, 'ready', function () {
+            self.ready = true;
+        });
         this.draw();
     }
 
     draw () {
+        this.ready = false;
         var data = new google.visualization.DataTable();
 
         data.addColumn('number', 'Lat');
