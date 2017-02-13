@@ -22,6 +22,11 @@ export default class Map {
     }
 
     createMap () {
+        this.map = new google.visualization.GeoChart(this.container);
+        this.draw();
+    }
+
+    draw () {
         var data = new google.visualization.DataTable();
 
         data.addColumn('number', 'Lat');
@@ -56,7 +61,6 @@ export default class Map {
           colorAxis: {minValue: 0, maxValue: 0, colors: ['#ff0000']}
         };
 
-        this.map = new google.visualization.GeoChart(this.container);
         this.map.draw(data, options);
     }
 }
