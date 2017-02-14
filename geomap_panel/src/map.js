@@ -69,7 +69,7 @@ export default class Map {
             setTimeout(function () {
                 self.loadGoogle();
             }, 30);
-        } else  {
+        } else {
             google.charts.load('visualization', '1', {'packages': ['geochart']});
             google.charts.setOnLoadCallback(function () {
                 self.createMap();
@@ -88,7 +88,7 @@ export default class Map {
 
     draw () {
         var data = [['Country', 'Popularity']];
-        for(var key in this.data) {
+        for (var key in this.data) {
             data.push([key, this.data[key].current]);
         }
         data = google.visualization.arrayToDataTable(data);
@@ -104,12 +104,12 @@ export default class Map {
     }
 
     lerpDataValues (ratio) {
-        for(var key in this.data) {
+        for (var key in this.data) {
             this.data[key].current = this.lerp(this.data[key].last, this.data[key].wanted, ratio);
         }
     }
 
-    lerp(x, y, t) {
+    lerp (x, y, t) {
         return x + t * (y - x);
     }
 }

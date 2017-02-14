@@ -8,9 +8,9 @@ export default function link (scope, elem, attrs, ctrl) {
     const animationUpdateLength = 1000;
     var animationTimer = -1;
 
-    (function DEBUG_UpdateData() {
+    (function DebugUpdateData () {
         setData();
-        setTimeout(DEBUG_UpdateData, dataUpdateInterval);
+        setTimeout(DebugUpdateData, dataUpdateInterval);
     })();
 
     ctrl.events.on('render', function () {
