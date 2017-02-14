@@ -2,8 +2,8 @@ import Map from '../src/map';
 
 describe('Map', () => {
     let map1;
-     let ctrl;
-     var finish = false;
+    let ctrl;
+    var finish = false;
 
   beforeEach((done) => {
     setupWorldmapFixture();
@@ -12,11 +12,11 @@ describe('Map', () => {
             clearInterval(interv);
             done();
         }
-    },20)
+    },20);
   });
 
   describe('when a map is created', () => {
-    it('should add Leaflet to the map div', () => {
+    it('should add Google geochart to the map div', () => {
       expect(document.getElementById('map')).to.not.be(null);
     });
   });
