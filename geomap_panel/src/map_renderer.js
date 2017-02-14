@@ -1,5 +1,6 @@
 import './css/map.css!';
 import Map from './map';
+import DataGenerator from './dataGenerator';
 
 export default function link (scope, elem, attrs, ctrl) {
     const mapContainer = elem.find('#map')[0];
@@ -7,9 +8,10 @@ export default function link (scope, elem, attrs, ctrl) {
     const animationUpdateInterval = 10;
     const animationUpdateLength = 1000;
     var animationTimer = -1;
+    var dataGenerator = new DataGenerator();
 
     (function DebugUpdateData () {
-        setData();
+        setData(dataGenerator.generate());
         setTimeout(DebugUpdateData, dataUpdateInterval);
     })();
 
@@ -25,7 +27,7 @@ export default function link (scope, elem, attrs, ctrl) {
     function render () {
         if (!ctrl.map) {
             initializeMap();
-        } else {
+        } else if (ctrl.map.ready) {
             ctrl.map.draw();
         }
     }
@@ -41,12 +43,12 @@ export default function link (scope, elem, attrs, ctrl) {
         }
     }
 
-    function setData () {
+    function setData (data) {
         if (!ctrl.map) {
             initializeMap();
         }
 
-        ctrl.map.setData();
+        ctrl.map.setData(data);
         startAnimationSequence();
     }
 
