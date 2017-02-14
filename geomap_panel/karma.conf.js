@@ -6,9 +6,9 @@ module.exports = (config) => {
     frameworks: ['systemjs', 'mocha', 'expect'],
 
     files: [
+      'node_modules/es6-shim/es6-shim.js',
       'https://www.gstatic.com/charts/loader.js',
       'src/map.js',
-      'src/dataGenerator.js',
       'test/*.js'
     ],
 
@@ -16,7 +16,7 @@ module.exports = (config) => {
     ],
 
     plugins: ['karma-systemjs', 'karma-babel-preprocessor', 'karma-mocha',
-      'karma-expect', 'karma-firefox-launcher'],
+      'karma-expect', 'karma-phantomjs-launcher', 'karma-chrome-launcher'],
 
     preprocessors: {
       'src/**/*.js': ['babel'],
