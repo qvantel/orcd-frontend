@@ -3,19 +3,12 @@ import Map from './map';
 
 export default function link (scope, elem, attrs, ctrl) {
     const mapContainer = elem.find('#map')[0];
-    const dataUpdateInterval = 5000;
     const animationUpdateInterval = 10;
     const animationUpdateLength = 1000;
     var animationTimer = -1;
 
-    (function DebugUpdateData () {
-        setData();
-        setTimeout(DebugUpdateData, dataUpdateInterval);
-    })();
-
     ctrl.events.on('render', function () {
-        render();
-        ctrl.renderingCompleted();
+        startAnimationSequence();
     });
 
     function initializeMap () {
@@ -23,9 +16,7 @@ export default function link (scope, elem, attrs, ctrl) {
     }
 
     function render () {
-        if (!ctrl.map) {
-            initializeMap();
-        } else {
+        if (ctrl.map.ready) {
             ctrl.map.draw();
         }
     }
@@ -34,31 +25,27 @@ export default function link (scope, elem, attrs, ctrl) {
         if (isAnimating()) {
             setTimeout(function () {
                 ctrl.map.lerpDataValues(getAnimationRatio());
-                ctrl.render();
+                render();
             }, animationUpdateInterval);
         } else if (animationTimer > 0) {
             stopAnimationSequence();
         }
     }
 
-    function setData () {
+    function startAnimationSequence () {
         if (!ctrl.map) {
             initializeMap();
         }
 
-        ctrl.map.setData();
-        startAnimationSequence();
-    }
-
-    function startAnimationSequence () {
+        ctrl.map.setData(ctrl.data);
         animationTimer = getTime();
-        ctrl.render();
+        render();
     }
 
     function stopAnimationSequence () {
         animationTimer = -1;
         ctrl.map.lerpDataValues(1);
-        ctrl.render();
+        render();
     }
 
     function getTime () {
