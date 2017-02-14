@@ -32,15 +32,15 @@ export default class Map {
             colorAxis: {
                 minValue: 0,
                 maxValue: 100,
-                colors: ['#151515', '#6699cc']
+                colors: [this.ctrl.lightTheme ? '#f5f5f3' : '#151515', '#6699cc']
             },
             backgroundColor: {
-                'fill': '#1f1d1d'
+                'fill': this.ctrl.lightTheme ? '#fbfbfb' : '#1f1d1d'
             },
-            datalessRegionColor: '#151515',
+            datalessRegionColor: this.ctrl.lightTheme ? '#f5f5f3' : '#151515',
             legend: {
                 textStyle: {
-                    'color': 'white'
+                    'color': this.ctrl.lightTheme ? '#000' : '#fff'
                 }
             },
             tooltip: {
