@@ -1,5 +1,6 @@
 import {MetricsPanelCtrl} from 'app/plugins/sdk';
 import mapRenderer from './map_renderer';
+import DataGenerator from './dataGenerator';
 
 export default class GeoMapPanelCtrl extends MetricsPanelCtrl {
     constructor ($scope, $injector, $log, contextSrv) {
@@ -10,12 +11,14 @@ export default class GeoMapPanelCtrl extends MetricsPanelCtrl {
         };
 
         this.lightTheme = contextSrv.user.lightTheme
+        this.dataGenerator = new DataGenerator();
 
         this.events.on('data-received', this.onDataReceived.bind(this));
     }
 
-    onDataReceived(dataList) {
-        this.log(dataList);
+    onDataReceived (dataList) {
+        this.data = this.dataGenerator.generate();
+        this.render();
     }
 
     link (scope, elem, attrs, ctrl) {
