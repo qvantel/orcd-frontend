@@ -1,1 +1,0 @@
-{"version":3,"sources":["../src/module.js"],"names":["GeoMapPanelCtrl"],"mappings":";;;;;;;;AAAOA,2B;;;iCAGHA,e","file":"module.js","sourcesContent":["import GeoMapPanelCtrl from './geomap_ctrl'\n\nexport {\n    GeoMapPanelCtrl as PanelCtrl\n};\n"]}
