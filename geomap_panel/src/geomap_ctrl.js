@@ -1,7 +1,7 @@
-import {PanelCtrl} from 'app/features/panel/panel_ctrl';
+import {MetricsPanelCtrl} from 'app/plugins/sdk';
 import mapRenderer from './map_renderer';
 
-export default class GeoMapPanelCtrl extends PanelCtrl {
+export default class GeoMapPanelCtrl extends MetricsPanelCtrl {
     constructor ($scope, $injector, $log, contextSrv) {
         super($scope, $injector, $log);
 
@@ -10,6 +10,12 @@ export default class GeoMapPanelCtrl extends PanelCtrl {
         };
 
         this.lightTheme = contextSrv.user.lightTheme
+
+        this.events.on('data-received', this.onDataReceived.bind(this));
+    }
+
+    onDataReceived(dataList) {
+        this.log(dataList);
     }
 
     link (scope, elem, attrs, ctrl) {
