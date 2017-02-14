@@ -8,20 +8,24 @@ export default function link (scope, elem, attrs, ctrl) {
     const animationUpdateLength = 1000;
     var animationTimer = -1;
 
+    (function DEBUG_UpdateData() {
+        setData();
+        setTimeout(DEBUG_UpdateData, dataUpdateInterval);
+    })();
+
     ctrl.events.on('render', function () {
         render();
         ctrl.renderingCompleted();
     });
 
-    setData();
-    setInterval(function () {
-        setData();
-    }, dataUpdateInterval);
+    function initializeMap () {
+        ctrl.map = new Map(ctrl, mapContainer, onMapReady);
+    }
 
     function render () {
         if (!ctrl.map) {
-            ctrl.map = new Map(ctrl, mapContainer, onMapReady);
-        } else if (ctrl.map.ready) {
+            initializeMap();
+        } else {
             ctrl.map.draw();
         }
     }
@@ -38,17 +42,17 @@ export default function link (scope, elem, attrs, ctrl) {
     }
 
     function setData () {
-        ctrl.render();
-
-        if (ctrl.map) {
-            ctrl.map.setData();
+        if (!ctrl.map) {
+            initializeMap();
         }
 
+        ctrl.map.setData();
         startAnimationSequence();
     }
 
     function startAnimationSequence () {
-        animationTimer = getMS();
+        animationTimer = getTime();
+        ctrl.render();
     }
 
     function stopAnimationSequence () {
@@ -57,25 +61,21 @@ export default function link (scope, elem, attrs, ctrl) {
         ctrl.render();
     }
 
-    function getMS () {
+    function getTime () {
         return (new Date().getTime());
     }
 
     function isAnimating () {
-        return (getMS() - animationTimer) < animationUpdateLength;
+        return (getTime() - animationTimer) < animationUpdateLength;
     }
 
     function getAnimationRatio () {
-        return clamp((getMS() - animationTimer) / animationUpdateLength);
+        return clamp01((getTime() - animationTimer) / animationUpdateLength);
     }
 
-    function clamp (val) {
-        if (val < 0) {
-            return 0;
-        }
-        if (val > 1) {
-            return (1);
-        }
+    function clamp01 (val) {
+        if (val < 0) return 0;
+        if (val > 1) return 1;
         return val;
     }
 }

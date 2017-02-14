@@ -2,7 +2,6 @@ export default class Map {
     constructor (ctrl, container, onReadyCallback) {
         this.ctrl = ctrl;
         this.container = container;
-        this.ready = false;
         this.onReadyCallback = onReadyCallback;
         this.countries = [
             'DZ', 'EG', 'EH', 'LY', 'MA', 'SD', 'SS', 'TN',
@@ -48,9 +47,7 @@ export default class Map {
                 focus: 'focus'
             }
         };
-        this.wantedData = [];
-        this.currentData = [];
-        this.lastData = [];
+        this.data = [];
 
         this.loadGoogle();
         this.initialize();
@@ -58,9 +55,11 @@ export default class Map {
 
     initialize () {
         for (var i = 0; i < this.countries.length; i++) {
-            this.wantedData[this.countries[i]] = 0;
-            this.currentData[this.countries[i]] = 0;
-            this.lastData[this.countries[i]] = 0;
+            this.data[this.countries[i]] = {
+                current: 0,
+                wanted: 0,
+                last: 0
+            };
         }
     }
 
@@ -70,7 +69,7 @@ export default class Map {
             setTimeout(function () {
                 self.loadGoogle();
             }, 30);
-        } else {
+        } else  {
             google.charts.load('visualization', '1', {'packages': ['geochart']});
             google.charts.setOnLoadCallback(function () {
                 self.createMap();
@@ -82,7 +81,6 @@ export default class Map {
         var self = this;
         this.map = new google.visualization.GeoChart(this.container);
         google.visualization.events.addListener(this.map, 'ready', function () {
-            self.ready = true;
             self.onReadyCallback();
         });
         this.draw();
@@ -90,8 +88,8 @@ export default class Map {
 
     draw () {
         var data = [['Country', 'Popularity']];
-        for (var key in this.currentData) {
-            data.push([key, this.currentData[key]]);
+        for(var key in this.data) {
+            data.push([key, this.data[key].current]);
         }
         data = google.visualization.arrayToDataTable(data);
 
@@ -99,24 +97,19 @@ export default class Map {
     }
 
     setData () {
-        for (var key in this.wantedData) {
-            this.lastData[key] = this.wantedData[key];
-        }
-
-        for (var i = 0; i < this.countries.length; i++) {
-            this.wantedData[this.countries[i]] = Math.floor(Math.random() * 100);
+        for (var key in this.data) {
+            this.data[key].last = this.data[key].wanted;
+            this.data[key].wanted = Math.floor(Math.random() * 100);
         }
     }
 
     lerpDataValues (ratio) {
-        for (var key in this.currentData) {
-            this.currentData[key] = this.lerp(this.lastData[key], this.wantedData[key], ratio);
+        for(var key in this.data) {
+            this.data[key].current = this.lerp(this.data[key].last, this.data[key].wanted, ratio);
         }
-
-        // this.ctrl.log([this.wantedData, this.currentData, this.lastData]);
     }
 
-    lerp (x, y, t) {
+    lerp(x, y, t) {
         return x + t * (y - x);
     }
 }
