@@ -16,7 +16,7 @@ module.exports = (config) => {
     ],
 
     plugins: ['karma-systemjs', 'karma-babel-preprocessor', 'karma-mocha',
-      'karma-expect', 'karma-phantomjs-launcher', 'karma-chrome-launcher'],
+      'karma-expect', 'karma-phantomjs-launcher', 'karma-chrome-launcher', 'karma-firefox-launcher'],
 
     preprocessors: {
       'src/**/*.js': ['babel'],
