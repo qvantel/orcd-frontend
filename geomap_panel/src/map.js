@@ -2,7 +2,6 @@ export default class Map {
     constructor (ctrl, container, onReadyCallback) {
         this.ctrl = ctrl;
         this.container = container;
-        this.ready = false;
         this.onReadyCallback = onReadyCallback;
         this.countries = [
             'DZ', 'EG', 'EH', 'LY', 'MA', 'SD', 'SS', 'TN',
@@ -29,25 +28,43 @@ export default class Map {
             'AS', 'CK', 'NU', 'PF', 'PN', 'TK', 'TO', 'TV', 'WF', 'WS'
         ];
         this.options = {
-          region: 'world',
-          colorAxis: {colors: ['#151515', '#ff3030']},
-          backgroundColor: {
-            'fill': '#1f1d1d'
-          },
-          datalessRegionColor: '#151515',
-          legend: {
-              textStyle: {
-                  'color': 'white'
-              }
-          }
+            region: 'world',
+            colorAxis: {
+                minValue: 0,
+                maxValue: 100,
+                colors: ['#151515', '#6699cc']
+            },
+            backgroundColor: {
+                'fill': '#1f1d1d'
+            },
+            datalessRegionColor: '#151515',
+            legend: {
+                textStyle: {
+                    'color': 'white'
+                }
+            },
+            tooltip: {
+                focus: 'focus'
+            }
         };
+        this.data = [];
 
         this.loadGoogle();
+        this.initialize();
+    }
+
+    initialize () {
+        for (var i = 0; i < this.countries.length; i++) {
+            this.data[this.countries[i]] = {
+                current: 0,
+                wanted: 0,
+                last: 0
+            };
+        }
     }
 
     loadGoogle () {
         var self = this;
-
         if (typeof google === 'undefined') {
             setTimeout(function () {
                 self.loadGoogle();
@@ -64,7 +81,6 @@ export default class Map {
         var self = this;
         this.map = new google.visualization.GeoChart(this.container);
         google.visualization.events.addListener(this.map, 'ready', function () {
-            self.ready = true;
             self.onReadyCallback();
         });
         this.draw();
@@ -72,12 +88,28 @@ export default class Map {
 
     draw () {
         var data = [['Country', 'Popularity']];
-        for (var i = 0; i < this.countries.length; i++) {
-            data.push([this.countries[i], Math.floor(Math.random() * 100)]);
+        for (var key in this.data) {
+            data.push([key, this.data[key].current]);
         }
-
         data = google.visualization.arrayToDataTable(data);
 
         this.map.draw(data, this.options);
+    }
+
+    setData () {
+        for (var key in this.data) {
+            this.data[key].last = this.data[key].wanted;
+            this.data[key].wanted = Math.floor(Math.random() * 100);
+        }
+    }
+
+    lerpDataValues (ratio) {
+        for (var key in this.data) {
+            this.data[key].current = this.lerp(this.data[key].last, this.data[key].wanted, ratio);
+        }
+    }
+
+    lerp (x, y, t) {
+        return x + t * (y - x);
     }
 }

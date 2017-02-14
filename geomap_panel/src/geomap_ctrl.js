@@ -5,7 +5,7 @@ export default class GeoMapPanelCtrl extends PanelCtrl {
     constructor ($scope, $injector, $log) {
         super($scope, $injector, $log);
 
-        $scope.log = function (msg) {
+        this.log = function (msg) {
             $log.log(msg);
         };
     }
