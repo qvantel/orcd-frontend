@@ -6,9 +6,9 @@ module.exports = (config) => {
     frameworks: ['systemjs', 'mocha', 'expect'],
 
     files: [
-      'node_modules/es6-shim/es6-shim.js',
       'https://www.gstatic.com/charts/loader.js',
       'src/map.js',
+      'src/dataGenerator.js',
       'test/*.js'
     ],
 
