@@ -6,6 +6,7 @@
 node_modules/
 npm-debug.log
 dist/
+coverage/
 
 # sbt specific
 .cache
