@@ -34,13 +34,16 @@ describe('Map', () => {
     });
   });
 
-  afterEach(() => {
+  afterEach (() => {
     document.body.removeChild(document.getElementById('map'));
 });
 
-  function setupWorldmapFixture() {
+  function setupWorldmapFixture () {
     const map = '<div style="width:500px;" id="map" class="map"></div>';
     document.body.insertAdjacentHTML('afterbegin', map);
-    map1 = new Map(ctrl, document.getElementById('map'), function(){finish = true;});
+    ctrl = {
+        lightTheme: true
+    }
+    map1 = new Map(ctrl, document.getElementById('map'), function () { finish = true; });
   }
 });
