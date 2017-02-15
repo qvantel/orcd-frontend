@@ -60,3 +60,4 @@ export class HeatMapPanelCtrl extends MetricsPanelCtrl {
 }
 //HeatMapPanelCtrl.bindToController = true;
 //HeatMapPanelCtrl.controllerAs = 'vm';
+HeatMapPanelCtrl.templateUrl = 'module.html';
