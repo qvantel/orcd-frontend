@@ -7,6 +7,7 @@ describe('Map', () => {
 
   beforeEach((done) => {
     setupWorldmapFixture();
+
     var interv = setInterval(function (){
         if (finish){
             clearInterval(interv);
@@ -73,7 +74,7 @@ describe('Map', () => {
         expect(map1.data["SE"].current).to.not.be(7);
     });
   });
-
+  
   afterEach (() => {
     document.body.removeChild(document.getElementById('map'));
 });
