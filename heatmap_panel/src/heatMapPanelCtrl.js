@@ -6,8 +6,6 @@ export class HeatMapPanelCtrl extends MetricsPanelCtrl {
     constructor ($scope, $injector, $log, $rootScope) {
         super($scope, $injector, $log);
         this.$rootScope = $rootScope;
-        //var vm = this;
-        $scope.d = 'hejdå';
 
         var panelDefaults = {
             legend: {

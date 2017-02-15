@@ -24,5 +24,8 @@
     "grunt-execute": "^0.2.2",
     "grunt-systemjs-builder": "^0.2.7",
     "load-grunt-tasks": "^3.5.2"
+  },
+  "dependencies": {
+    "vis": "^4.18.1"
   }
 }
