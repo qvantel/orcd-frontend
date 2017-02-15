@@ -1,4 +1,5 @@
 import {PanelCtrl} from 'app/features/panel/panel_ctrl';
+<<<<<<< HEAD
 import _ from 'lodash';
 import {MetricsPanelCtrl} from 'app/plugins/sdk';
 
@@ -60,4 +61,17 @@ export class HeatMapPanelCtrl extends MetricsPanelCtrl {
 }
 //HeatMapPanelCtrl.bindToController = true;
 //HeatMapPanelCtrl.controllerAs = 'vm';
+=======
+
+export default class HeatMapPanelCtrl extends PanelCtrl {
+    constructor ($scope, $injector, $log) {
+        super($scope, $injector, $log);
+
+        $scope.log = function (msg) {
+            $log.log(msg);
+        };
+    }
+}
+
+>>>>>>> master
 HeatMapPanelCtrl.templateUrl = 'module.html';

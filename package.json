@@ -1,6 +1,9 @@
 {
   "scripts": {
-    "test": "eslint  templates/**/src/*.js; csslint templates/**/src/css/*.css"
+    "testGeomap": "cd geomap_panel; npm install; npm test;",
+    "testEslint": "eslint  templates/**/src/*.js geomap_panel/src/*.js",
+    "testCsslint": "csslint templates/**/src/css/*.css geomap_panel/src/css/*.css",
+    "test": "npm run testEslint; npm run testCsslint; npm run testGeomap"
   },
   "devDependencies": {
     "babel-eslint": "^7.1.1",

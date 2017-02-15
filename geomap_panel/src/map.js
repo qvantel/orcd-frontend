@@ -1,20 +1,42 @@
 export default class Map {
-    constructor (ctrl, container) {
+    constructor (ctrl, container, onReadyCallback) {
         this.ctrl = ctrl;
         this.container = container;
+        this.onReadyCallback = onReadyCallback;
+        this.options = {
+            region: 'world',
+            colorAxis: {
+                minValue: 0,
+                maxValue: 100,
+                colors: [this.ctrl.lightTheme ? '#f5f5f3' : '#151515', '#6699cc']
+            },
+            backgroundColor: {
+                'fill': this.ctrl.lightTheme ? '#fbfbfb' : '#1f1d1d'
+            },
+            datalessRegionColor: this.ctrl.lightTheme ? '#f5f5f3' : '#151515',
+            legend: {
+                textStyle: {
+                    'color': this.ctrl.lightTheme ? '#000' : '#fff'
+                }
+            },
+            tooltip: {
+                focus: 'focus'
+            }
+        };
+        this.data = [];
+        this.ready = false;
 
         this.loadGoogle();
     }
 
     loadGoogle () {
         var self = this;
-
         if (typeof google === 'undefined') {
             setTimeout(function () {
                 self.loadGoogle();
             }, 30);
         } else {
-            google.charts.load('visualization', '1', {'packages': ['geochart']});
+            google.charts.load('upcoming', {'packages': ['geochart']});
             google.charts.setOnLoadCallback(function () {
                 self.createMap();
             });
@@ -22,41 +44,43 @@ export default class Map {
     }
 
     createMap () {
-        var data = new google.visualization.DataTable();
-
-        data.addColumn('number', 'Lat');
-        data.addColumn('number', 'Long');
-        data.addColumn('number', 'Value');
-
-        var minLat = 55.0;
-        var maxLat = 69.0;
-        var minLong = -15.0;
-        var maxLong = 45.0;
-
-        for (var i = 0; i < 1; i++) {
-            var lat = (Math.random() * (maxLat - minLat) + minLat);
-            var long = (Math.random() * (maxLong - minLong) + minLong);
-
-            lat = Math.round(lat * 100) / 100;
-            long = Math.round(long * 100) / 100;
-
-            data.addRows([[lat, long, 0]]);
-        }
-
-        var options = {
-          region: 'SE',
-          // displayMode: 'markers',
-          // colorAxis: {colors: ['green', 'blue']},
-          backgroundColor: {
-            'fill': '#3a3a3a'
-          },
-          datalessRegionColor: '#151515',
-          legend: 'none',
-          sizeAxis: {minValue: 1, maxValue: 1, minSize: 3, maxSize: 3},
-          colorAxis: {minValue: 0, maxValue: 0, colors: ['#ff0000']}
-        };
-
+        var self = this;
         this.map = new google.visualization.GeoChart(this.container);
-        this.map.draw(data, options);
+        google.visualization.events.addListener(this.map, 'ready', function () {
+            self.ready = true;
+            self.onReadyCallback();
+        });
+        this.draw();
+    }
+
+    draw () {
+        var data = [['Country', 'Popularity']];
+        for (var key in this.data) {
+            data.push([key, this.data[key].current]);
+        }
+        data = google.visualization.arrayToDataTable(data);
+
+        this.map.draw(data, this.options);
+    }
+
+    setData (data) {
+        for (var key in data) {
+            var last = (this.data[key] ? this.data[key].wanted : 0);
+            this.data[key] = {
+                wanted: data[key],
+                last: last,
+                current: last
+            };
+        }
+    }
+
+    lerpDataValues (ratio) {
+        for (var key in this.data) {
+            this.data[key].current = this.lerp(this.data[key].last, this.data[key].wanted, ratio);
+        }
+    }
+
+    lerp (x, y, t) {
+        return x + t * (y - x);
     }
 }
