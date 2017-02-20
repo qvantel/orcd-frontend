@@ -4,6 +4,7 @@ module.exports = function(grunt) {
 
   grunt.loadNpmTasks('grunt-execute');
   grunt.loadNpmTasks('grunt-contrib-clean');
+  grunt.loadNpmTasks('grunt-auto-install');
 
   grunt.initConfig({
 
@@ -13,7 +14,7 @@ module.exports = function(grunt) {
       src_to_dist: {
         cwd: 'src',
         expand: true,
-        src: ['**/*', '!**/*.js', '!**/*.scss'],
+        src: ['**/*', '**/*.js', '!**/*.scss'],
         dest: 'dist'
       },
       pluginDef: {
@@ -48,7 +49,19 @@ module.exports = function(grunt) {
       },
     },
 
+    auto_install: {
+      local: {},
+      src: {
+        options: {
+          cwd: 'src',
+          stdout: true,
+          stderr: true,
+          failOnError: true,
+          npm: '--production'
+        }
+      }
+    },
   });
 
-  grunt.registerTask('default', ['clean', 'copy:src_to_dist', 'copy:pluginDef', 'babel']);
+  grunt.registerTask('default', ['clean', 'auto_install', 'copy:src_to_dist', 'copy:pluginDef', 'babel']);
 };
