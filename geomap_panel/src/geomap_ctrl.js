@@ -3,7 +3,8 @@ import mapRenderer from './map_renderer';
 import DataGenerator from './dataGenerator';
 
 const panelDefaults = {
-    mapRegion: 'World'
+    mapRegion: 'World',
+    showLegend: true
 };
 
 const regionMapping = {
@@ -56,6 +57,11 @@ export default class GeoMapPanelCtrl extends MetricsPanelCtrl {
 
     getRegion () {
         return regionMapping[this.panel.mapRegion];
+    }
+
+    toggleLegend () {
+        this.map.toggleLegend();
+        this.render();
     }
 }
 

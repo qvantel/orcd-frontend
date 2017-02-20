@@ -14,11 +14,7 @@ export default class Map {
                 'fill': this.ctrl.lightTheme ? '#fbfbfb' : '#1f1d1d'
             },
             datalessRegionColor: this.ctrl.lightTheme ? '#f5f5f3' : '#151515',
-            legend: {
-                textStyle: {
-                    'color': this.ctrl.lightTheme ? '#000' : '#fff'
-                }
-            },
+            legend: this.getLegend(),
             tooltip: {
                 focus: 'focus'
             }
@@ -88,5 +84,21 @@ export default class Map {
         if (this.options.region !== region) {
             this.options.region = region;
         }
+    }
+
+    toggleLegend () {
+        this.options.legend = this.getLegend();
+    }
+
+    getLegend () {
+        if (!this.ctrl.panel.showLegend) {
+            return 'none';
+        }
+
+        return {
+            textStyle: {
+                'color': this.ctrl.lightTheme ? '#000' : '#fff'
+            }
+        };
     }
 }
