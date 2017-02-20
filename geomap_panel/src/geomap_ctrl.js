@@ -2,7 +2,18 @@ import {MetricsPanelCtrl} from 'app/plugins/sdk';
 import mapRenderer from './map_renderer';
 import DataGenerator from './dataGenerator';
 
-const panelDefaults = {};
+const panelDefaults = {
+    mapRegion: 'World'
+};
+
+const regionMapping = {
+    World: 'world',
+    Africa: '002',
+    Europe: '150',
+    America: '019',
+    Asia: '142',
+    Oceania: '009'
+};
 
 export default class GeoMapPanelCtrl extends MetricsPanelCtrl {
     constructor ($scope, $injector, $log, contextSrv) {
@@ -36,6 +47,15 @@ export default class GeoMapPanelCtrl extends MetricsPanelCtrl {
 
     link (scope, elem, attrs, ctrl) {
         mapRenderer(scope, elem, attrs, ctrl);
+    }
+
+    setMapRegion () {
+        this.map.setRegion(this.getRegion());
+        this.render();
+    }
+
+    getRegion () {
+        return regionMapping[this.panel.mapRegion];
     }
 }
 

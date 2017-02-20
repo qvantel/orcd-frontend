@@ -1,4 +1,11 @@
 <div class="editor-row">
 	<div class="section gf-form-group">
+        <h5 class="section-heading">Map Visual Options</h5>
+		<div class="gf-form">
+			<label class="gf-form-label width-10">Region</label>
+			<div class="gf-form-select-wrapper max-width-10">
+				<select class="input-small gf-form-input" ng-model="ctrl.panel.mapRegion" ng-options="t for t in ['World', 'Africa', 'Europe', 'America', 'Asia', 'Oceania']" ng-change="ctrl.setMapRegion()"></select>
+			</div>
+		</div>
 	</div>
 </div>

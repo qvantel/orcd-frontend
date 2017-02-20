@@ -4,7 +4,7 @@ export default class Map {
         this.container = container;
         this.onReadyCallback = onReadyCallback;
         this.options = {
-            region: 'world',
+            region: this.ctrl.getRegion(),
             colorAxis: {
                 minValue: 0,
                 maxValue: 100,
@@ -82,5 +82,11 @@ export default class Map {
 
     lerp (x, y, t) {
         return x + t * (y - x);
+    }
+
+    setRegion (region) {
+        if (this.options.region !== region) {
+            this.options.region = region;
+        }
     }
 }
