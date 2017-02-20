@@ -4,6 +4,6 @@
 }
 
 .map path {
-  stroke-width: 1;
-  stroke: #6699cc;
+    stroke-width: 1;
+    transition: fill 1s ease;
 }
