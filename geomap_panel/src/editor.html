@@ -1,0 +1,44 @@
+<div class="editor-row">
+	<div class="section gf-form-group">
+		<h5 class="section-heading">Map Visual Options</h5>
+		<div class="gf-form">
+			<label class="gf-form-label width-10">Region</label>
+			<div class="gf-form-select-wrapper max-width-10">
+				<select class="input-small gf-form-input" ng-model="ctrl.panel.mapRegion" ng-options="t for t in ['World', 'Africa', 'Europe', 'America', 'Asia', 'Oceania', 'custom']" ng-change="ctrl.setMapRegion()"></select>
+			</div>
+			<div class="gf-form" ng-show="ctrl.panel.mapCenter === 'custom'">
+				<input type="text" class="input-small gf-form-input width-10" ng-model="ctrl.panel.mapCenterLatitude" ng-change="ctrl.setNewMapCenter()" ng-model-onblur />
+				<input type="text" class="input-small gf-form-input width-10" ng-model="ctrl.panel.mapCenterLongitude" ng-change="ctrl.setNewMapCenter()" ng-model-onblur />
+			</div>
+		</div>
+		<div class="gf-form">
+			<gf-form-switch class="gf-form" label="Show Legend" label-class="width-10" checked="ctrl.panel.showLegend" on-change="ctrl.toggleLegend()"></gf-form-switch>
+		</div>
+	</div>
+	<div class="section gf-form-group">
+		<h5 class="section-heading">Map Animation Options</h5>
+		<div class="gf-form">
+			<gf-form-switch class="gf-form" label="Animate" label-class="width-10" checked="ctrl.panel.animate"></gf-form-switch>
+		</div>
+		<div class="gf-form" ng-show="ctrl.panel.animate">
+			<label class="gf-form-label width-10">Duration (MS)</label>
+			<input type="text" class="input-small gf-form-input width-10" ng-model="ctrl.panel.animationDuration" />
+		</div>
+		<div class="gf-form" ng-show="ctrl.panel.animate">
+			<label class="gf-form-label width-10">Target Frame Rate</label>
+			<input type="text" class="input-small gf-form-input width-10" ng-model="ctrl.panel.animationFrameRate" />
+		</div>
+	</div>
+
+	<div class="section gf-form-group">
+		<h5 class="section-heading">Threshold Options</h5>
+		<div class="gf-form">
+			<label class="gf-form-label width-10">Color Amount</label>
+			<input type="text" class="input-small gf-form-input width-10" ng-model="ctrl.panel.colorAmount" ng-blur="ctrl.colorAmountUpdated()" placeholder="1" />
+		</div>
+		<div class="gf-form">
+			<label class="gf-form-label width-10">Color</label>
+			<spectrum-picker class="gf-form-input width-3" ng-repeat="color in ctrl.panel.colors track by $index" ng-model="ctrl.panel.colors[$index]" ng-change="ctrl.changeColors()" ></spectrum-picker>
+		</div>
+	</div>
+</div>

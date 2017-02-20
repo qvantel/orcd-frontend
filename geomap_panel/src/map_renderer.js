@@ -3,8 +3,6 @@ import Map from './map';
 
 export default function link (scope, elem, attrs, ctrl) {
     const mapContainer = elem.find('#map')[0];
-    const animationUpdateInterval = 10;
-    const animationUpdateLength = 1000;
     var animationTimer = -1;
 
     ctrl.events.on('render', function () {
@@ -22,11 +20,11 @@ export default function link (scope, elem, attrs, ctrl) {
     }
 
     function onMapReady () {
-        if (isAnimating()) {
+        if (isAnimating() && ctrl.panel.animate) {
             setTimeout(function () {
                 ctrl.map.lerpDataValues(getAnimationRatio());
                 render();
-            }, animationUpdateInterval);
+            }, getAnimationInterval());
         } else if (animationTimer > 0) {
             stopAnimationSequence();
         }
@@ -53,11 +51,15 @@ export default function link (scope, elem, attrs, ctrl) {
     }
 
     function isAnimating () {
-        return (getTime() - animationTimer) < animationUpdateLength;
+        return (getTime() - animationTimer) < ctrl.panel.animationDuration;
     }
 
     function getAnimationRatio () {
-        return clamp01((getTime() - animationTimer) / animationUpdateLength);
+        return clamp01((getTime() - animationTimer) / ctrl.panel.animationDuration);
+    }
+
+    function getAnimationInterval () {
+        return 1000 / ctrl.panel.animationFrameRate;
     }
 
     function clamp01 (val) {
