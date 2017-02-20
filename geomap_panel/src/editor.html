@@ -8,4 +8,18 @@
 			</div>
 		</div>
 	</div>
+    <div class="section gf-form-group">
+		<h5 class="section-heading">Map Animation Options</h5>
+		<div class="gf-form">
+			<gf-form-switch class="gf-form" label="Animate" label-class="width-10" checked="ctrl.panel.animate"></gf-form-switch>
+		</div>
+		<div class="gf-form" ng-show="ctrl.panel.animate">
+			<label class="gf-form-label width-10">Duration (MS)</label>
+			<input type="text" class="input-small gf-form-input width-10" ng-model="ctrl.panel.animationDuration" />
+		</div>
+		<div class="gf-form" ng-show="ctrl.panel.animate">
+			<label class="gf-form-label width-10">Target Frame Rate</label>
+			<input type="text" class="input-small gf-form-input width-10" ng-model="ctrl.panel.animationFrameRate" />
+		</div>
+	</div>
 </div>

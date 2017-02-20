@@ -4,7 +4,10 @@ import DataGenerator from './dataGenerator';
 
 const panelDefaults = {
     mapRegion: 'World',
-    showLegend: true
+    showLegend: true,
+    animate: true,
+    animationDuration: 1000,
+    animationFrameRate: 30
 };
 
 const regionMapping = {
