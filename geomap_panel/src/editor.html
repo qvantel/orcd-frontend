@@ -4,11 +4,7 @@
 		<div class="gf-form">
 			<label class="gf-form-label width-10">Region</label>
 			<div class="gf-form-select-wrapper max-width-10">
-				<select class="input-small gf-form-input" ng-model="ctrl.panel.mapRegion" ng-options="t for t in ['World', 'Africa', 'Europe', 'America', 'Asia', 'Oceania', 'custom']" ng-change="ctrl.setMapRegion()"></select>
-			</div>
-			<div class="gf-form" ng-show="ctrl.panel.mapCenter === 'custom'">
-				<input type="text" class="input-small gf-form-input width-10" ng-model="ctrl.panel.mapCenterLatitude" ng-change="ctrl.setNewMapCenter()" ng-model-onblur />
-				<input type="text" class="input-small gf-form-input width-10" ng-model="ctrl.panel.mapCenterLongitude" ng-change="ctrl.setNewMapCenter()" ng-model-onblur />
+				<select class="input-small gf-form-input" ng-model="ctrl.panel.mapRegion" ng-options="t for t in ['World', 'Africa', 'Europe', 'America', 'Asia', 'Oceania']" ng-change="ctrl.setMapRegion()"></select>
 			</div>
 		</div>
 		<div class="gf-form">
@@ -18,15 +14,11 @@
 	<div class="section gf-form-group">
 		<h5 class="section-heading">Map Animation Options</h5>
 		<div class="gf-form">
-			<gf-form-switch class="gf-form" label="Animate" label-class="width-10" checked="ctrl.panel.animate"></gf-form-switch>
+			<gf-form-switch class="gf-form" label="Animate" label-class="width-10" checked="ctrl.panel.animate" on-change="ctrl.updateAnimation()"></gf-form-switch>
 		</div>
 		<div class="gf-form" ng-show="ctrl.panel.animate">
-			<label class="gf-form-label width-10">Duration (MS)</label>
-			<input type="text" class="input-small gf-form-input width-10" ng-model="ctrl.panel.animationDuration" />
-		</div>
-		<div class="gf-form" ng-show="ctrl.panel.animate">
-			<label class="gf-form-label width-10">Target Frame Rate</label>
-			<input type="text" class="input-small gf-form-input width-10" ng-model="ctrl.panel.animationFrameRate" />
+			<label class="gf-form-label width-10">Duration (S)</label>
+			<input type="text" class="input-small gf-form-input width-10" ng-model="ctrl.panel.animationDuration" ng-change="ctrl.updateAnimation()"/>
 		</div>
 	</div>
 
