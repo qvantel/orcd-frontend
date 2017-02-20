@@ -4,28 +4,28 @@ export default class Map {
         this.container = container;
         this.onReadyCallback = onReadyCallback;
         this.options = {
-            region: 'world',
+            region: this.ctrl.getRegion(),
             colorAxis: {
                 minValue: 0,
                 maxValue: 100,
-                colors: [this.ctrl.lightTheme ? '#f5f5f3' : '#151515', '#6699cc']
+                colors: [this.ctrl.lightTheme ? '#f5f5f3' : '#151515']
             },
             backgroundColor: {
                 'fill': this.ctrl.lightTheme ? '#fbfbfb' : '#1f1d1d'
             },
             datalessRegionColor: this.ctrl.lightTheme ? '#f5f5f3' : '#151515',
-            legend: {
-                textStyle: {
-                    'color': this.ctrl.lightTheme ? '#000' : '#fff'
-                }
-            },
+            legend: this.getLegend(),
             tooltip: {
                 focus: 'focus'
+            },
+            animation:{
+                duration: 1000,
+                easing: 'out',
             }
         };
         this.data = [];
         this.ready = false;
-
+        this.setColors(this.ctrl.panel.colors);
         this.loadGoogle();
     }
 
@@ -50,6 +50,10 @@ export default class Map {
             self.ready = true;
             self.onReadyCallback();
         });
+        google.visualization.events.addListener(this.map, 'regionClick', function (e) {
+            self.ctrl.log(e);
+            self.options.region = e.region;
+        });
         this.draw();
     }
 
@@ -59,6 +63,8 @@ export default class Map {
             data.push([key, this.data[key].current]);
         }
         data = google.visualization.arrayToDataTable(data);
+
+
 
         this.map.draw(data, this.options);
     }
@@ -82,5 +88,35 @@ export default class Map {
 
     lerp (x, y, t) {
         return x + t * (y - x);
+    }
+
+    setRegion (region) {
+        if (this.options.region !== region) {
+            this.options.region = region;
+        }
+    }
+
+    toggleLegend () {
+        this.options.legend = this.getLegend();
+    }
+
+    getLegend () {
+        if (!this.ctrl.panel.showLegend) {
+            return 'none';
+        }
+
+        return {
+            textStyle: {
+                'color': this.ctrl.lightTheme ? '#000' : '#fff'
+            }
+        };
+    }
+
+    setColors (colors) {
+        this.options.colorAxis.colors = [this.options.colorAxis.colors[0]];
+
+        for (var i = 0; i < colors.length; i++) {
+            this.options.colorAxis.colors[i + 1] = colors[i];
+        }
     }
 }
