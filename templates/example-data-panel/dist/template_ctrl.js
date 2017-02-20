@@ -1,9 +1,9 @@
 'use strict';
 
-System.register(['app/plugins/sdk', 'lodash', './css/template-panel.css!'], function (_export, _context) {
+System.register(['app/plugins/sdk', './node_modules/d3/build/d3', 'lodash', './css/template-panel.css!', './css/d3.css!'], function (_export, _context) {
   "use strict";
 
-  var MetricsPanelCtrl, _, _createClass, TemplateCtrl;
+  var MetricsPanelCtrl, d3, _, _createClass, TemplateCtrl;
 
   function _classCallCheck(instance, Constructor) {
     if (!(instance instanceof Constructor)) {
@@ -38,9 +38,11 @@ System.register(['app/plugins/sdk', 'lodash', './css/template-panel.css!'], func
   return {
     setters: [function (_appPluginsSdk) {
       MetricsPanelCtrl = _appPluginsSdk.MetricsPanelCtrl;
+    }, function (_node_modulesD3BuildD) {
+      d3 = _node_modulesD3BuildD;
     }, function (_lodash) {
       _ = _lodash.default;
-    }, function (_cssTemplatePanelCss) {}],
+    }, function (_cssTemplatePanelCss) {}, function (_cssD3Css) {}],
     execute: function () {
       _createClass = function () {
         function defineProperties(target, props) {
@@ -101,7 +103,7 @@ System.register(['app/plugins/sdk', 'lodash', './css/template-panel.css!'], func
           _this.events.on('data-received', _this.onDataReceived.bind(_this));
           _this.events.on('data-error', _this.onDataError.bind(_this));
           _this.events.on('data-snapshot-load', _this.onDataReceived.bind(_this));
-          //this.events.on('init-edit-mode', this.onInitEditMode.bind(this));
+          // this.events.on('init-edit-mode', this.onInitEditMode.bind(this));
           return _this;
         }
 
@@ -114,14 +116,31 @@ System.register(['app/plugins/sdk', 'lodash', './css/template-panel.css!'], func
         }, {
           key: 'onDataReceived',
           value: function onDataReceived(dataList) {
-            //Might contain multiple targets in array.
+            // Might contain multiple targets in array.
             this.header = dataList[0].target;
             this.datapoints = dataList[0].datapoints;
+
+            d3.selectAll('svg').remove();
+
+            var svg = d3.select('.dots').selectAll('svg').data(dataList[0].datapoints).enter().append('svg').attr('width', function (d) {
+              return d[0] / 10;
+            }).attr('height', function (d) {
+              return d[0] / 10;
+            });
+
+            svg.append('circle').attr('cy', function (d) {
+              return d[0] / 20;
+            }).attr('cx', function (d) {
+              return d[0] / 20;
+            }).attr('r', function (d) {
+              return d[0] / 20;
+            });
           }
         }, {
           key: 'onRender',
           value: function onRender() {
-            this.data = "Render";
+            // When is this used?
+            console.log('onRender()');
           }
         }]);
 
