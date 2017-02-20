@@ -42,7 +42,14 @@ describe('Map', () => {
     const map = '<div style="width:500px;" id="map" class="map"></div>';
     document.body.insertAdjacentHTML('afterbegin', map);
     ctrl = {
-        lightTheme: true
+        panel: {
+            showLegend: true,
+            colors: ['#fff', '#000']
+        },
+        lightTheme: true,
+        getRegion: function () {
+            return 'world';
+        }
     }
     map1 = new Map(ctrl, document.getElementById('map'), function () { finish = true; });
   }

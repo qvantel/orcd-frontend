@@ -44,11 +44,11 @@ export default class GeoMapPanelCtrl extends MetricsPanelCtrl {
         this.updateColors();
     }
 
-    onInitEditMode() {
+    onInitEditMode () {
         this.addEditorTab('Options', 'public/plugins/qvantel-geomap-panel/editor.html', 2);
     }
 
-    onDataReceived(dataList) {
+    onDataReceived (dataList) {
         this.data = this.dataGenerator.generate();
         this.render();
     }
@@ -102,7 +102,7 @@ export default class GeoMapPanelCtrl extends MetricsPanelCtrl {
         if (this.map) {
             this.map.setColors(this.panel.colors);
         }
-        
+
         this.updatePathColor(this.panel.colors[this.panel.colors.length - 1]);
     }
 
@@ -120,7 +120,7 @@ export default class GeoMapPanelCtrl extends MetricsPanelCtrl {
     }
 
     abs (val) {
-        if(val > 0) {
+        if (val > 0) {
             return val;
         } else {
             return val * -1;

@@ -17,10 +17,6 @@ export default class Map {
             legend: this.getLegend(),
             tooltip: {
                 focus: 'focus'
-            },
-            animation:{
-                duration: 1000,
-                easing: 'out',
             }
         };
         this.data = [];
@@ -63,8 +59,6 @@ export default class Map {
             data.push([key, this.data[key].current]);
         }
         data = google.visualization.arrayToDataTable(data);
-
-
 
         this.map.draw(data, this.options);
     }
