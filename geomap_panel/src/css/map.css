@@ -5,4 +5,5 @@
 
 .map path {
     stroke-width: 1;
+    transition: fill 1s ease;
 }
