@@ -8,6 +8,7 @@ angular.module('grafana.controllers').controller('heatMapCtrl', function($log, $
     vm.message = "My D3 Directive";
     vm.dataSet = [];
 
+
     // watching for new incoming data
     $scope.$watch('vm.data', function(newValue, oldValue) {
         if(angular.isDefined(vm.data)){
