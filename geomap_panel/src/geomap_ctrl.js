@@ -95,7 +95,7 @@ export default class GeoMapPanelCtrl extends MetricsPanelCtrl {
     }
 
     updateAnimation () {
-        this.updateDynamicSheet ();
+        this.updateDynamicSheet();
         this.render();
     }
 
