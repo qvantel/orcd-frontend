@@ -1,3 +1,6 @@
+/* Stylesheet which will be used for the dark Grafana theme */
+
+/* Styling for GeoChart legend */
 .map text {
     stroke: #000;
 }

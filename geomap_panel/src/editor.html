@@ -1,36 +1,52 @@
+<!-- This HTML page holds all the settings for the GeoMap plugin -->
 <div class="editor-row">
 	<div class="section gf-form-group">
+		<!-- Visual options -->
 		<h5 class="section-heading">Map Visual Options</h5>
+
+		<!-- List of predefiened regions to be zoomed into -->
 		<div class="gf-form">
 			<label class="gf-form-label width-10">Region</label>
 			<div class="gf-form-select-wrapper max-width-10">
-				<select class="input-small gf-form-input" ng-model="ctrl.panel.mapRegion" ng-options="t for t in ['World', 'Africa', 'Europe', 'America', 'Asia', 'Oceania']" ng-change="ctrl.setMapRegion()"></select>
+				<select class="input-small gf-form-input" ng-model="ctrl.panel.mapRegion" ng-options="t for t in ['World', 'Africa', 'Europe', 'America', 'Asia', 'Oceania']" ng-change="ctrl.optionRegionUpdated()"></select>
 			</div>
 		</div>
+
+		<!-- Checkbox to toggle wether or not the legend should be showing -->
 		<div class="gf-form">
-			<gf-form-switch class="gf-form" label="Show Legend" label-class="width-10" checked="ctrl.panel.showLegend" on-change="ctrl.toggleLegend()"></gf-form-switch>
+			<gf-form-switch class="gf-form" label="Show Legend" label-class="width-10" checked="ctrl.panel.showLegend" on-change="ctrl.optionShowLegendUpdated()"></gf-form-switch>
 		</div>
 	</div>
 	<div class="section gf-form-group">
+		<!-- Animation settings -->
 		<h5 class="section-heading">Map Animation Options</h5>
+
+		<!-- Checkbox to toggle wether or not the map should animate -->
 		<div class="gf-form">
-			<gf-form-switch class="gf-form" label="Animate" label-class="width-10" checked="ctrl.panel.animate" on-change="ctrl.updateAnimation()"></gf-form-switch>
+			<gf-form-switch class="gf-form" label="Animate" label-class="width-10" checked="ctrl.panel.animate" on-change="ctrl.optionAnimationUpdated()"></gf-form-switch>
 		</div>
+
+		<!-- Input to determine the duration of the animation -->
 		<div class="gf-form" ng-show="ctrl.panel.animate">
 			<label class="gf-form-label width-10">Duration (S)</label>
-			<input type="text" class="input-small gf-form-input width-10" ng-model="ctrl.panel.animationDuration" ng-change="ctrl.updateAnimation()"/>
+			<input type="text" class="input-small gf-form-input width-10" ng-model="ctrl.panel.animationDuration" ng-change="ctrl.optionAnimationUpdated()"/>
 		</div>
 	</div>
 
 	<div class="section gf-form-group">
+		<!-- Treshold options -->
 		<h5 class="section-heading">Threshold Options</h5>
+
+		<!-- Input to determine the amount of colors -->
 		<div class="gf-form">
 			<label class="gf-form-label width-10">Color Amount</label>
-			<input type="text" class="input-small gf-form-input width-10" ng-model="ctrl.panel.colorAmount" ng-blur="ctrl.colorAmountUpdated()" placeholder="1" />
+			<input type="text" class="input-small gf-form-input width-10" ng-model="ctrl.panel.colorAmount" ng-blur="ctrl.optionColorAmountUpdated()" placeholder="1" />
 		</div>
+
+		<!-- List of color-pickers to select which colors to be used within the map -->
 		<div class="gf-form">
 			<label class="gf-form-label width-10">Color</label>
-			<spectrum-picker class="gf-form-input width-3" ng-repeat="color in ctrl.panel.colors track by $index" ng-model="ctrl.panel.colors[$index]" ng-change="ctrl.changeColors()" ></spectrum-picker>
+			<spectrum-picker class="gf-form-input width-3" ng-repeat="color in ctrl.panel.colors track by $index" ng-model="ctrl.panel.colors[$index]" ng-change="ctrl.optionColorsUpdated()" ></spectrum-picker>
 		</div>
 	</div>
 </div>
