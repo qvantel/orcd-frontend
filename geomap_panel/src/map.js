@@ -2,6 +2,7 @@ export default class Map {
     constructor (ctrl, container, onReadyCallback) {
         this.ctrl = ctrl;
         this.container = container;
+        this.readyCallback = onReadyCallback;
         this.options = {
             region: this.ctrl.getRegion(),
             colorAxis: {
@@ -19,7 +20,6 @@ export default class Map {
             }
         };
         this.setColors(this.ctrl.panel.colors);
-        this.ready = false;
         this.loadGoogle();
     }
 
@@ -38,17 +38,24 @@ export default class Map {
     }
 
     createMap () {
-        this.ready = true;
         var self = this;
         this.map = new google.visualization.GeoChart(this.container);
         google.visualization.events.addListener(this.map, 'regionClick', function (e) {
-            self.ctrl.log(e);
             self.options.region = e.region;
         });
+        google.visualization.events.addListener(this.map, 'ready', function (e) {
+            self.ready = true;
+
+            if (self.readyCallback) {
+                self.readyCallback();
+            }
+        });
+
         this.draw();
     }
 
     draw () {
+        this.ready = false;
         var data = [['Country', 'Popularity']];
         for (var key in this.ctrl.data) {
             data.push([key, this.ctrl.data[key]]);
