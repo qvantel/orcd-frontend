@@ -6,8 +6,7 @@ const panelDefaults = {
     mapRegion: 'World',
     showLegend: true,
     animate: true,
-    animationDuration: 1000,
-    animationFrameRate: 30,
+    animationDuration: 2,
     colorAmount: 1,
     colors: ['#6699cc']
 };
@@ -41,6 +40,7 @@ export default class GeoMapPanelCtrl extends MetricsPanelCtrl {
         this.events.on('init-edit-mode', this.onInitEditMode.bind(this));
         this.events.on('data-received', this.onDataReceived.bind(this));
 
+        this.updateDynamicSheet();
         this.updateColors();
     }
 
@@ -90,11 +90,18 @@ export default class GeoMapPanelCtrl extends MetricsPanelCtrl {
         }
 
         this.updateColors();
+        this.updateDynamicSheet();
+        this.render();
+    }
+
+    updateAnimation () {
+        this.updateDynamicSheet();
         this.render();
     }
 
     changeColors () {
         this.updateColors();
+        this.updateDynamicSheet();
         this.render();
     }
 
@@ -102,21 +109,22 @@ export default class GeoMapPanelCtrl extends MetricsPanelCtrl {
         if (this.map) {
             this.map.setColors(this.panel.colors);
         }
-
-        this.updatePathColor(this.panel.colors[this.panel.colors.length - 1]);
     }
 
-    updatePathColor (color) {
+    updateDynamicSheet () {
         if (!this.dynamicSheet) {
             this.dynamicSheet = window.document.createElement('style');
             window.document.body.appendChild(this.dynamicSheet);
         }
 
-        this.dynamicSheet.innerHTML = '.map path {stroke: ' + color + '}';
-    }
-
-    getNumbers () {
-        return new Array(this.panel.colorAmount);
+        var sheet = '';
+        sheet += '.map path {';
+        sheet += 'stroke: ' + this.panel.colors[this.panel.colors.length - 1] + ';';
+        if (this.panel.animate) {
+            sheet += 'transition: fill ' + this.panel.animationDuration + 's ease;';
+        }
+        sheet += '}';
+        this.dynamicSheet.innerHTML = sheet;
     }
 
     abs (val) {

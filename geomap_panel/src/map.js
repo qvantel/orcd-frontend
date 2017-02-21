@@ -2,7 +2,7 @@ export default class Map {
     constructor (ctrl, container, onReadyCallback) {
         this.ctrl = ctrl;
         this.container = container;
-        this.onReadyCallback = onReadyCallback;
+        this.readyCallback = onReadyCallback;
         this.options = {
             region: this.ctrl.getRegion(),
             colorAxis: {
@@ -19,8 +19,6 @@ export default class Map {
                 focus: 'focus'
             }
         };
-        this.data = [];
-        this.ready = false;
         this.setColors(this.ctrl.panel.colors);
         this.loadGoogle();
     }
@@ -42,46 +40,29 @@ export default class Map {
     createMap () {
         var self = this;
         this.map = new google.visualization.GeoChart(this.container);
-        google.visualization.events.addListener(this.map, 'ready', function () {
-            self.ready = true;
-            self.onReadyCallback();
-        });
         google.visualization.events.addListener(this.map, 'regionClick', function (e) {
-            self.ctrl.log(e);
             self.options.region = e.region;
         });
+        google.visualization.events.addListener(this.map, 'ready', function (e) {
+            self.ready = true;
+
+            if (self.readyCallback) {
+                self.readyCallback();
+            }
+        });
+
         this.draw();
     }
 
     draw () {
+        this.ready = false;
         var data = [['Country', 'Popularity']];
-        for (var key in this.data) {
-            data.push([key, this.data[key].current]);
+        for (var key in this.ctrl.data) {
+            data.push([key, this.ctrl.data[key]]);
         }
         data = google.visualization.arrayToDataTable(data);
 
         this.map.draw(data, this.options);
-    }
-
-    setData (data) {
-        for (var key in data) {
-            var last = (this.data[key] ? this.data[key].wanted : 0);
-            this.data[key] = {
-                wanted: data[key],
-                last: last,
-                current: last
-            };
-        }
-    }
-
-    lerpDataValues (ratio) {
-        for (var key in this.data) {
-            this.data[key].current = this.lerp(this.data[key].last, this.data[key].wanted, ratio);
-        }
-    }
-
-    lerp (x, y, t) {
-        return x + t * (y - x);
     }
 
     setRegion (region) {
