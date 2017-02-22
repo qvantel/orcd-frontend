@@ -1,6 +1,7 @@
 import {MetricsPanelCtrl} from 'app/plugins/sdk';
 import mapRenderer from './map_renderer';
 import DataGenerator from './dataGenerator';
+import Utilities from './utilities';
 
 /** Default panel settings */
 const panelDefaults = {
@@ -46,6 +47,9 @@ export default class GeoMapPanelCtrl extends MetricsPanelCtrl {
         this.log = function (msg) {
             $log.log(msg);
         };
+
+        // Instantiate utilities class
+        this.utilities = new Utilities();
 
         // Determine which Grafan theme the user is using
         this.lightTheme = contextSrv.user.lightTheme
@@ -128,9 +132,9 @@ export default class GeoMapPanelCtrl extends MetricsPanelCtrl {
     */
     optionColorAmountUpdated () {
         // Make sure that color amount doesn't break the limits
-        this.panel.colorAmount = this.clamp(this.panel.colorAmount, options.minColors, options.maxColors);
+        this.panel.colorAmount = this.utilities.clamp(this.panel.colorAmount, options.minColors, options.maxColors);
 
-        var diff = this.abs(this.panel.colorAmount - this.panel.colors.length);
+        var diff = this.utilities.abs(this.panel.colorAmount - this.panel.colors.length);
 
         // Remove or add elements in the color-array
         for (var i = 0; i < diff; i++) {
@@ -193,41 +197,6 @@ export default class GeoMapPanelCtrl extends MetricsPanelCtrl {
     */
     getRegion () {
         return regionMapping[this.panel.mapRegion];
-    }
-
-    /**
-    * Clamp a value
-    *
-    * @param {number} val - The value to be clamped
-    * @param {number} min - The min value
-    * @param {number} max - The max value
-    * @return {number} - The clamped value
-    */
-    clamp (val, min, max) {
-        if (val < min) return min;
-        if (val > max) return max;
-        return val;
-    }
-
-    /**
-    * Clamp a value between 0 and 1
-    *
-    * @param {number} val - The value to be clamped
-    * @return {number} - The clamped value
-    */
-    clamp01 (val) {
-        return this.clamp(val, 0, 1);
-    }
-
-    /**
-    * Get the absolute value
-    *
-    * @param {number} val - The value to be absoluted
-    * @return {number} - The absolute value
-    */
-    abs (val) {
-        if (val < 0) return val * -1;
-        return val;
     }
 }
 
