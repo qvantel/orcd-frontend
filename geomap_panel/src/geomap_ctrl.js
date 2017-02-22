@@ -134,7 +134,7 @@ export default class GeoMapPanelCtrl extends MetricsPanelCtrl {
         // Make sure that color amount doesn't break the limits
         this.panel.colorAmount = this.utilities.clamp(this.panel.colorAmount, options.minColors, options.maxColors);
 
-        var diff = this.utilities.abs(this.panel.colorAmount - this.panel.colors.length);
+        var diff = Math.abs(this.panel.colorAmount - this.panel.colors.length);
 
         // Remove or add elements in the color-array
         for (var i = 0; i < diff; i++) {

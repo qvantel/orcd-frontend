@@ -23,15 +23,4 @@ export default class Utilities {
     clamp01 (val) {
         return this.clamp(val, 0, 1);
     }
-
-    /**
-    * Get the absolute value
-    *
-    * @param {number} val - The value to be absoluted
-    * @return {number} - The absolute value
-    */
-    abs (val) {
-        if (val < 0) return val * -1;
-        return val;
-    }
 }
