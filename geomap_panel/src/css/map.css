@@ -1,8 +1,6 @@
-.map {
-    width: 100%;
-    height: 100%;
-}
+/* Default stylesheet which will be used for any Grafana theme */
 
+/* Styling for GeoChart country borders */
 .map path {
     stroke-width: 1;
 }
