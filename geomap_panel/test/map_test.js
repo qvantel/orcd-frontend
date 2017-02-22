@@ -33,47 +33,6 @@ describe('Map', () => {
     });
   });
 
-  describe('Test lerp function', () => {
-    it('value is', () => {
-      expect(map1.lerp(10,20,0.5)).to.be(15);
-    });
-  });
-
-  describe('Test lerp function', () => {
-    it('value is', () => {
-      expect(map1.lerp(10,20,0.5)).to.not.be(25);
-    });
-  });
-
-  describe('Test setData function', () => {
-    it('value is', () => {
-        map1.setData({"SE":2});
-        map1.setData({"SE":4});
-        map1.setData({"SE":7});
-      expect(map1.data["SE"].wanted).to.be(7);
-      expect(map1.data["SE"].last).to.be(4);
-      expect(map1.data["SE"].current).to.be(4);
-    });
-  });
-
-  describe('Test setData function', () => {
-    it('value is', () => {
-        map1.setData({"SE":4});
-        map1.setData({"SE":8});
-        map1.lerpDataValues(0.5);
-        expect(map1.data["SE"].current).to.be(6);
-    });
-  });
-
-  describe('Test setData function', () => {
-    it('value is', () => {
-        map1.setData({"SE":4});
-        map1.setData({"SE":8});
-        map1.lerpDataValues(0.5);
-        expect(map1.data["SE"].current).to.not.be(7);
-    });
-  });
-
   afterEach (() => {
     document.body.removeChild(document.getElementById('map'));
 });
