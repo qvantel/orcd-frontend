@@ -12,7 +12,7 @@ describe('Map', () => {
 
     describe('when a map is created', () => {
         it('should add Google GeoCharts to the map div', () => {
-            expect(document.getElementById('fixture').children.length).to.not.be(0);
+            expect(document.getElementById('fixture').children.length).to.not.equal(0);
         });
     });
 
@@ -22,7 +22,7 @@ describe('Map', () => {
         });
 
         it('the map option for region should be set to the specified region', () => {
-            expect(map.options.region).to.be('SE');
+            expect(map.options.region).to.equal('SE');
         });
     });
 
@@ -33,7 +33,7 @@ describe('Map', () => {
         });
 
         it('the legend in map option should be built accordingly', () => {
-            expect(map.options.legend.textStyle.color).to.be('#000');
+            expect(map.options.legend.textStyle.color).to.equal('#000');
         });
     });
 
@@ -44,7 +44,7 @@ describe('Map', () => {
         });
 
         it('the legend in map option should be built accordingly', () => {
-            expect(map.options.legend).to.be('none');
+            expect(map.options.legend).to.equal('none');
         });
     });
 
@@ -54,10 +54,10 @@ describe('Map', () => {
         });
 
         it('the color in map option should be correctly set', () => {
-            expect(map.options.colorAxis.colors[0]).to.be('#f5f5f3');
-            expect(map.options.colorAxis.colors[1]).to.be('#ff0000');
-            expect(map.options.colorAxis.colors[2]).to.be('#00ff00');
-            expect(map.options.colorAxis.colors[3]).to.be('#0000ff');
+            expect(map.options.colorAxis.colors[0]).to.equal('#f5f5f3');
+            expect(map.options.colorAxis.colors[1]).to.equal('#ff0000');
+            expect(map.options.colorAxis.colors[2]).to.equal('#00ff00');
+            expect(map.options.colorAxis.colors[3]).to.equal('#0000ff');
         });
     });
 
@@ -68,7 +68,6 @@ describe('Map', () => {
     function setupMap (callback) {
         const fixture = '<div id="fixture" class="map"></div>';
         document.body.insertAdjacentHTML('afterbegin', fixture);
-
         ctrl = {
             panel: {
                 showLegend: true,
