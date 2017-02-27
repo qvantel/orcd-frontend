@@ -7,12 +7,12 @@ describe('Map', () => {
 
   beforeEach((done) => {
     setupWorldmapFixture();
-    var interv = setInterval(function() {
-        if(finish){
+    var interv = setInterval(function (){
+        if (finish){
             clearInterval(interv);
             done();
         }
-    },20);
+    }, 20);
   });
 
   describe('when a map is created', () => {
@@ -29,7 +29,6 @@ describe('Map', () => {
 
   describe('If svg is created', () => {
     it('check width', () => {
-        console.log(document.getElementsByTagName('svg')[0].getAttribute("width"));
       expect(document.getElementsByTagName('svg')[0].getAttribute("width")).to.be('500');
     });
   });
