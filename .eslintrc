@@ -127,7 +127,13 @@
     "yield-star-spacing": [2, "both"],
     "yoda": [2, "never"]
   },
-  "globals" : {
-    "google" : true
+  "globals": {
+    "google": true,
+    "describe": true,
+    "let": true,
+    "beforeEach": true,
+    "afterEach": true,
+    "it": true,
+    "expect": true
   }
 }

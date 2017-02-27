@@ -3,17 +3,20 @@ var istanbul = require('browserify-istanbul');
 
 module.exports = function(config) {
   config.set({
-    basePath: '.',
-    frameworks: ['browserify', 'mocha'],
+    basePath: '',
+    frameworks: ['browserify', 'chai', 'mocha'],
 
     files: [
+      'https://www.gstatic.com/charts/loader.js',
       'src/map.js',
-      { pattern: 'test/*.js', watched: false },
+      'src/utilities.js',
+      'test/*.js'
     ],
 
     preprocessors: {
       'src/map.js': ['browserify'],
-      'test/*.js': ['browserify'],
+      'src/utilities.js': ['browserify'],
+      'test/*.js': ['browserify']
     },
 
     reporters: ['progress', 'coverage'],
@@ -43,8 +46,8 @@ module.exports = function(config) {
       ]
     },
 
-    browsers: [
-      'Firefox'
-    ]
+    browsers: ['Firefox'],
+
+    crossOriginAttribute: false
   });
 };
