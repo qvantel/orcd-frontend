@@ -5,7 +5,6 @@ describe('Map', () => {
     let ctrl;
 
     beforeEach((done) => {
-        console.log("test");
         setupMap(function () {
             done();
         });
@@ -69,8 +68,6 @@ describe('Map', () => {
     function setupMap (callback) {
         const fixture = '<div id="fixture" class="map"></div>';
         document.body.insertAdjacentHTML('afterbegin', fixture);
-
-
         ctrl = {
             panel: {
                 showLegend: true,

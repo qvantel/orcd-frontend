@@ -1,7 +1,7 @@
 var isparta = require('isparta');
 var istanbul = require('browserify-istanbul');
 
-module.exports = function(config) {
+module.exports = function (config) {
   config.set({
     basePath: '',
     frameworks: ['browserify', 'chai', 'mocha'],
@@ -19,9 +19,7 @@ module.exports = function(config) {
       'test/*.js': ['browserify']
     },
 
-    reporters: ['progress', 'coverage'],
-
-    logLevel: config.LOG_DEBUG,
+    reporters: ['dots', 'coverage'],
 
     coverageReporter: {
       type: 'lcov',
