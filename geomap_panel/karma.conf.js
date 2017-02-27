@@ -8,7 +8,7 @@ module.exports = (config) => {
     files: [
       'https://www.gstatic.com/charts/loader.js',
       'src/map.js',
-      'src/dataGenerator.js',
+      'src/utilities.js',
       'test/*.js'
     ],
 
