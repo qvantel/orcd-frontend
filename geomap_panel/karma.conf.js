@@ -1,85 +1,50 @@
-module.exports = (config) => {
+var isparta = require('isparta');
+var istanbul = require('browserify-istanbul');
+
+module.exports = function(config) {
   config.set({
-
-    basePath: '',
-
-    frameworks: ['systemjs', 'mocha', 'expect'],
+    basePath: '.',
+    frameworks: ['browserify', 'mocha'],
 
     files: [
-      'https://www.gstatic.com/charts/loader.js',
       'src/map.js',
-      'src/dataGenerator.js',
-      'test/*.js'
+      { pattern: 'test/*.js', watched: false },
     ],
-
-    exclude: [
-    ],
-
-    plugins: ['karma-systemjs', 'karma-babel-preprocessor', 'karma-mocha',
-      'karma-expect', 'karma-firefox-launcher'],
 
     preprocessors: {
-      'src/**/*.js': ['babel'],
-      'test/**/*.js': ['babel']
+      'src/map.js': ['browserify'],
+      'test/*.js': ['browserify'],
     },
 
-    // Babel preprocessor specific configuration
-    babelPreprocessor: {
-      options: {
-        presets: ['es2015'], // use the es2015 preset
-        plugins: ['transform-es2015-modules-systemjs', 'transform-es2015-for-of'],
-        sourceMap: 'inline' // inline source maps inside compiled files
-      },
-      // filename: function (file) {
-      //   return file.originalPath.replace(/\.js$/, '.es5.js');
-      // },
-      sourceFileName: (file) => {
-        return file.originalPath;
-      }
+    reporters: ['progress', 'coverage'],
+
+    coverageReporter: {
+      type: 'lcov',
+      dir: 'test/coverage',
+      instrumenters: { isparta: isparta },
+      instrumenter: { '**/*.js': 'isparta' }
     },
 
-    systemjs: {
-        // File patterns for application code, dependencies, and test suites
-      files: [
-        'src/map.js',
-        'src/dataGenerator.js',
-        'test/**/*.js'
-      ],
+    browserify: {
+      debug: true,
 
-      // SystemJS configuration specifically for tests, added after your config file.
-      // Good for adding test libraries and mock modules
-      config: {
-        defaultJSExtensions: true,
-        baseURL: '.',
-
-        // Set path for third-party libraries as modules
-        paths: {
-          'babel': 'node_modules/babel-core/lib/api/browser.js',
-          'systemjs': 'node_modules/systemjs/dist/system.js',
-          'system-polyfills': 'node_modules/systemjs/dist/system-polyfills.js',
-          'es6-module-loader': 'node_modules/es6-module-loader/dist/es6-module-loader.js'
-        },
-
-        transpiler: 'babel'
-      }
+      transform: [
+        [istanbul({
+          instrumenter: isparta,
+          instrumenterConfig: {
+            babel: {
+              presets: ['es2015']
+            }
+          }
+        })],
+        ['babelify', {
+          presets: ['es2015']
+        }]
+      ]
     },
 
-    reporters: ['dots'],
-
-    crossOriginAttribute: false,
-
-    port: 9876,
-
-    colors: true,
-
-    logLevel: config.LOG_INFO,
-
-    autoWatch: true,
-
-    browsers: ['Firefox'],
-
-    singleRun: false,
-
-    concurrency: Infinity
+    browsers: [
+      'Firefox'
+    ]
   });
 };
