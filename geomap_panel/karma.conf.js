@@ -21,6 +21,8 @@ module.exports = function(config) {
 
     reporters: ['progress', 'coverage'],
 
+    logLevel: config.LOG_DEBUG,
+
     coverageReporter: {
       type: 'lcov',
       dir: 'test/coverage',
