@@ -22,7 +22,9 @@ module.exports = function (config) {
     reporters: ['dots', 'coverage'],
 
     coverageReporter: {
-      type: 'lcov',
+        reporters: [
+          { type: 'lcov'}
+      ],
       dir: 'test/coverage',
       instrumenters: { isparta: isparta },
       instrumenter: { '**/*.js': 'isparta' }
