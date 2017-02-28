@@ -6,7 +6,7 @@ describe('Map', () => {
 
     describe('when a map is created', () => {
         beforeEach((done) => {
-            setupMap(function () {
+            setupMap(() => {
                 done();
             });
         });
@@ -17,7 +17,7 @@ describe('Map', () => {
 
     describe('when the region option has been altered', () => {
         beforeEach((done) => {
-            setupMap(function () {
+            setupMap(() => {
                 done();
             });
             map.setRegion('SE');
@@ -30,7 +30,7 @@ describe('Map', () => {
 
     describe('when the legend is shown', () => {
         beforeEach((done) => {
-            setupMap(function () {
+            setupMap(() => {
                 done();
             });
             ctrl.panel.showLegend = true;
@@ -44,7 +44,7 @@ describe('Map', () => {
 
     describe('when the legend is hidden', () => {
         beforeEach((done) => {
-            setupMap(function () {
+            setupMap(() => {
                 done();
             });
             ctrl.panel.showLegend = false;
@@ -58,7 +58,7 @@ describe('Map', () => {
 
     describe('when a new color scheme is set', () => {
         beforeEach((done) => {
-            setupMap(function () {
+            setupMap(() => {
                 done();
             });
             map.setColors(['#ff0000', '#00ff00', '#0000ff']);
@@ -74,7 +74,7 @@ describe('Map', () => {
 
     describe('when showLegend is false', () => {
         beforeEach((done) => {
-            setupMap(function () {
+            setupMap(() => {
                 done();
             }, false);
         });
