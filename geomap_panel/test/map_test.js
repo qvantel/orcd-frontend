@@ -76,7 +76,8 @@ describe('Map', () => {
             lightTheme: true,
             getRegion: function () {
                 return 'world';
-            }
+            },
+            data: [['Countries', 'Frequency'], ['SE', 10]]
         }
 
         map = new Map(ctrl, document.getElementById('fixture'), callback);

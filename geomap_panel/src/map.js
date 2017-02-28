@@ -10,8 +10,8 @@ export default class Map {
         this.options = {
             region: this.ctrl.getRegion(),
             colorAxis: {
-                minValue: 0,
-                maxValue: 100,
+                // minValue: 0,
+                // maxValue: 100,
                 colors: [this.ctrl.lightTheme ? '#f5f5f3' : '#151515']
             },
             backgroundColor: {
@@ -68,12 +68,8 @@ export default class Map {
     draw () {
         this.ready = false;
 
-        // Get data from the controller and store it the way Google expects it
-        var data = [['Country', 'Popularity']];
-        for (var key in this.ctrl.data) {
-            data.push([key, this.ctrl.data[key]]);
-        }
-        data = google.visualization.arrayToDataTable(data);
+        // Get data from the controller
+        var data = google.visualization.arrayToDataTable(this.ctrl.data);
 
         this.map.draw(data, this.options);
     }
