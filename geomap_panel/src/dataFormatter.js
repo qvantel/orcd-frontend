@@ -1,3 +1,4 @@
+/** Datapoint definition */
 const datapointDef = {
     value: 0,
     timestamp: 1
@@ -5,6 +6,9 @@ const datapointDef = {
 
 /** Class representing the DataFormatter */
 export default class DataFormatter {
+    /**
+    * Build the data formatter
+    */
     constructor (ctrl) {
         this.ctrl = ctrl;
     }
