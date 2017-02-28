@@ -42,7 +42,7 @@ export default class Map {
             }, 30);
         } else {
             google.charts.load('upcoming', {'packages': ['geochart']});
-            google.charts.setOnLoadCallback(function () {
+            google.charts.setOnLoadCallback(() => {
                 self.createMap();
             });
         }
@@ -54,7 +54,7 @@ export default class Map {
     createMap () {
         var self = this;
         this.map = new google.visualization.GeoChart(this.container);
-        google.visualization.events.addListener(this.map, 'ready', function (e) {
+        google.visualization.events.addListener(this.map, 'ready', (e) => {
             self.ready = true;
             /* istanbul ignore else  */
             if (self.readyCallback) {
@@ -102,7 +102,7 @@ export default class Map {
     */
     getLegend () {
         if (!this.ctrl.panel.showLegend) {
-            return 'none';
+            return null;
         }
 
         return {

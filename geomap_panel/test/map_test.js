@@ -52,7 +52,7 @@ describe('Map', () => {
         });
 
         it('the legend in map option should be built accordingly', () => {
-            expect(map.options.legend).to.equal('none');
+            expect(map.options.legend).to.be.null;
         });
     });
 
@@ -79,7 +79,7 @@ describe('Map', () => {
             }, false);
         });
         it('the legend should be false in config', () => {
-            expect(map.options.legend).to.equal('none');
+            expect(map.options.legend).to.be.null;
         });
     });
 
