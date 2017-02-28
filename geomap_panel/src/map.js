@@ -34,8 +34,10 @@ export default class Map {
         var self = this;
 
         // If google has yet been loaded, wait 30ms and try again
+        /* istanbul ignore if */
         if (typeof google === 'undefined') {
-            setTimeout(function () {
+            /* istanbul ignore next */
+            setTimeout(() => {
                 self.loadGoogle();
             }, 30);
         } else {
@@ -54,6 +56,7 @@ export default class Map {
         this.map = new google.visualization.GeoChart(this.container);
         google.visualization.events.addListener(this.map, 'ready', function (e) {
             self.ready = true;
+            /* istanbul ignore else  */
             if (self.readyCallback) {
                 self.readyCallback();
             }
@@ -80,6 +83,7 @@ export default class Map {
     * @param {string} region - The region to be zoomed into
     */
     setRegion (region) {
+        /* istanbul ignore else  */
         if (this.options.region !== region) {
             this.options.region = region;
         }
