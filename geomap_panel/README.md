@@ -43,7 +43,7 @@ The color amount option let's you specify how many colors to be used in the grad
 #### Colors
 Depending on how many colors you have selected in the previous option, that amount of colors will appear in this option. Changing any of these colors will manipulate the gradient. As mentioned in the previous option, the first color of the gradient will always be the same, depending on the theme used within Grafana.
 
+![Metrics](images/Tab_Options.png)
+
 ### Grafana themes
 The plugin will respond to whether the user are using the dark or light theme that exists within Grafana. What's affected by the theme are the colors of the map. When using the light theme, lighter colors will be used and if the dark theme is used, darker colors will be used.
-
-![Metrics](images/Tab_Options.png)
