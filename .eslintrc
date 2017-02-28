@@ -134,6 +134,7 @@
     "beforeEach": true,
     "afterEach": true,
     "it": true,
-    "expect": true
+    "expect": true,
+    "$": true
   }
 }

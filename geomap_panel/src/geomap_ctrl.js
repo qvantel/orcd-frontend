@@ -52,16 +52,12 @@ export default class GeoMapPanelCtrl extends MetricsPanelCtrl {
         // Determine which Grafan theme the user is using
         this.lightTheme = contextSrv.user.lightTheme
 
-        // Instantiate utilities class
+        // Components
         this.utilities = new Utilities();
-
-        // Instantiate the data generator
         this.dataGenerator = new DataGenerator();
-
-        // Instantiate the data formatter
         this.dataFormatter = new DataFormatter(this);
 
-                // Inser the default values into the panel where the current setting is not found
+        // Insert the default values into the panel where the current setting is not found
         for (var key in panelDefaults) {
             if (typeof this.panel[key] === 'undefined') {
                 this.panel[key] = panelDefaults[key];
@@ -74,6 +70,14 @@ export default class GeoMapPanelCtrl extends MetricsPanelCtrl {
 
         // Intially set the build the dynamic stylesheet
         this.updateDynamicSheet();
+        this.loadLocations();
+    }
+
+    loadLocations () {
+        var self = this;
+        $.getJSON('public/plugins/qvantel-geomap-panel/data/locations.json').then((res) => {
+            self.locations = res;
+        });
     }
 
     /**
