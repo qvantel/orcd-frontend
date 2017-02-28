@@ -10,12 +10,14 @@ module.exports = function (config) {
       'https://www.gstatic.com/charts/loader.js',
       'src/map.js',
       'src/utilities.js',
+      'src/dataFormatter.js',
       'test/*.js'
     ],
 
     preprocessors: {
       'src/map.js': ['browserify'],
       'src/utilities.js': ['browserify'],
+      'src/dataFormatter.js': ['browserify'],
       'test/*.js': ['browserify']
     },
 

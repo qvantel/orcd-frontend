@@ -10,8 +10,8 @@ export default class Map {
         this.options = {
             region: this.ctrl.getRegion(),
             colorAxis: {
-                minValue: 0,
-                maxValue: 100,
+                // minValue: 0,
+                // maxValue: 100,
                 colors: [this.ctrl.lightTheme ? '#f5f5f3' : '#151515']
             },
             backgroundColor: {
@@ -34,13 +34,15 @@ export default class Map {
         var self = this;
 
         // If google has yet been loaded, wait 30ms and try again
+        /* istanbul ignore if */
         if (typeof google === 'undefined') {
-            setTimeout(function () {
+            /* istanbul ignore next */
+            setTimeout(() => {
                 self.loadGoogle();
             }, 30);
         } else {
             google.charts.load('upcoming', {'packages': ['geochart']});
-            google.charts.setOnLoadCallback(function () {
+            google.charts.setOnLoadCallback(() => {
                 self.createMap();
             });
         }
@@ -52,8 +54,9 @@ export default class Map {
     createMap () {
         var self = this;
         this.map = new google.visualization.GeoChart(this.container);
-        google.visualization.events.addListener(this.map, 'ready', function (e) {
+        google.visualization.events.addListener(this.map, 'ready', (e) => {
             self.ready = true;
+            /* istanbul ignore else  */
             if (self.readyCallback) {
                 self.readyCallback();
             }
@@ -68,12 +71,8 @@ export default class Map {
     draw () {
         this.ready = false;
 
-        // Get data from the controller and store it the way Google expects it
-        var data = [['Country', 'Popularity']];
-        for (var key in this.ctrl.data) {
-            data.push([key, this.ctrl.data[key]]);
-        }
-        data = google.visualization.arrayToDataTable(data);
+        // Get data from the controller
+        var data = google.visualization.arrayToDataTable(this.ctrl.data);
 
         this.map.draw(data, this.options);
     }
@@ -84,6 +83,7 @@ export default class Map {
     * @param {string} region - The region to be zoomed into
     */
     setRegion (region) {
+        /* istanbul ignore else  */
         if (this.options.region !== region) {
             this.options.region = region;
         }

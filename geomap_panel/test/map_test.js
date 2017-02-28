@@ -5,7 +5,7 @@ describe('Map', () => {
     let ctrl;
 
     beforeEach((done) => {
-        setupMap(function () {
+        setupMap(() => {
             done();
         });
     });
@@ -61,6 +61,19 @@ describe('Map', () => {
         });
     });
 
+    describe('when theme is dark', () => {
+        beforeEach((done) => {
+            ctrl.lightTheme = false;
+            updateMap(() => {
+                done();
+            });
+        });
+
+        it('the colors should be altered', () => {
+            expect(map.options.colorAxis.colors[0]).to.equal('#151515');
+        });
+    });
+
     afterEach(() => {
         document.body.removeChild(document.getElementById('fixture'));
     });
@@ -68,6 +81,7 @@ describe('Map', () => {
     function setupMap (callback) {
         const fixture = '<div id="fixture" class="map"></div>';
         document.body.insertAdjacentHTML('afterbegin', fixture);
+
         ctrl = {
             panel: {
                 showLegend: true,
@@ -76,9 +90,14 @@ describe('Map', () => {
             lightTheme: true,
             getRegion: function () {
                 return 'world';
-            }
+            },
+            data: [['Countries', 'Frequency'], ['SE', 10]]
         }
 
+        updateMap(callback);
+    }
+
+    function updateMap (callback) {
         map = new Map(ctrl, document.getElementById('fixture'), callback);
     }
 });

@@ -1,5 +1,6 @@
 import {MetricsPanelCtrl} from 'app/plugins/sdk';
 import mapRenderer from './map_renderer';
+import DataFormatter from './dataFormatter';
 import DataGenerator from './dataGenerator';
 import Utilities from './utilities';
 
@@ -48,16 +49,15 @@ export default class GeoMapPanelCtrl extends MetricsPanelCtrl {
             $log.log(msg);
         };
 
-        // Instantiate utilities class
-        this.utilities = new Utilities();
-
         // Determine which Grafan theme the user is using
         this.lightTheme = contextSrv.user.lightTheme
 
-        // Instantiate the data generator
+        // Components
+        this.utilities = new Utilities();
         this.dataGenerator = new DataGenerator();
+        this.dataFormatter = new DataFormatter(this);
 
-        // Inser the default values into the panel where the current setting is not found
+        // Insert the default values into the panel where the current setting is not found
         for (var key in panelDefaults) {
             if (typeof this.panel[key] === 'undefined') {
                 this.panel[key] = panelDefaults[key];
@@ -70,6 +70,14 @@ export default class GeoMapPanelCtrl extends MetricsPanelCtrl {
 
         // Intially set the build the dynamic stylesheet
         this.updateDynamicSheet();
+        this.loadLocations();
+    }
+
+    loadLocations () {
+        var self = this;
+        $.getJSON('public/plugins/qvantel-geomap-panel/data/locations.json').then((res) => {
+            self.locations = res;
+        });
     }
 
     /**
@@ -83,7 +91,8 @@ export default class GeoMapPanelCtrl extends MetricsPanelCtrl {
     * Listen to new data - currently, when new data is presented, generated random data and re-render the map
     */
     onDataReceived (dataList) {
-        this.data = this.dataGenerator.generate();
+        // this.data = this.dataGenerator.generate();
+        this.data = this.dataFormatter.generate(dataList);
         this.render();
     }
 
