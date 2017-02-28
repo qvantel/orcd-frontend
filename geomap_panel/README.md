@@ -20,6 +20,8 @@ The plugin will retrieve a set of data points for each country, depending on the
 
 For the plugin to work properly, you'll also need to use the **aliasByNode** function to point to the field containing the country code. This will let the plugin easily retrieve the country code.
 
+![Metrics](images/Tab_Metrics.png)
+
 ### Options
 There are several options in order to manipulate the visualization of the map. These options can be accessed from the **Options** tab when editing the panel, you'll need an admin account in order to see this tab.
 
@@ -43,3 +45,5 @@ Depending on how many colors you have selected in the previous option, that amou
 
 ### Grafana themes
 The plugin will respond to whether the user are using the dark or light theme that exists within Grafana. What's affected by the theme are the colors of the map. When using the light theme, lighter colors will be used and if the dark theme is used, darker colors will be used.
+
+![Metrics](images/Tab_Options.png)
