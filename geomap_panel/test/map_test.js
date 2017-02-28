@@ -4,20 +4,22 @@ describe('Map', () => {
     let map;
     let ctrl;
 
-    beforeEach((done) => {
-        setupMap(function () {
-            done();
-        });
-    });
-
     describe('when a map is created', () => {
+        beforeEach((done) => {
+            setupMap(function () {
+                done();
+            });
+        });
         it('should add Google GeoCharts to the map div', () => {
             expect(document.getElementById('fixture').children.length).to.not.equal(0);
         });
     });
 
     describe('when the region option has been altered', () => {
-        beforeEach(() => {
+        beforeEach((done) => {
+            setupMap(function () {
+                done();
+            });
             map.setRegion('SE');
         });
 
@@ -27,7 +29,10 @@ describe('Map', () => {
     });
 
     describe('when the legend is shown', () => {
-        beforeEach(() => {
+        beforeEach((done) => {
+            setupMap(function () {
+                done();
+            });
             ctrl.panel.showLegend = true;
             map.toggleLegend();
         });
@@ -38,7 +43,10 @@ describe('Map', () => {
     });
 
     describe('when the legend is hidden', () => {
-        beforeEach(() => {
+        beforeEach((done) => {
+            setupMap(function () {
+                done();
+            });
             ctrl.panel.showLegend = false;
             map.toggleLegend();
         });
@@ -49,7 +57,10 @@ describe('Map', () => {
     });
 
     describe('when a new color scheme is set', () => {
-        beforeEach(() => {
+        beforeEach((done) => {
+            setupMap(function () {
+                done();
+            });
             map.setColors(['#ff0000', '#00ff00', '#0000ff']);
         });
 
@@ -61,16 +72,28 @@ describe('Map', () => {
         });
     });
 
+    describe('when showLegend is false', () => {
+        beforeEach((done) => {
+            setupMap(function () {
+                done();
+            }, false);
+        });
+        it('the legend should be false in config', () => {
+            expect(map.options.legend).to.equal('none');
+        });
+    });
+
     afterEach(() => {
         document.body.removeChild(document.getElementById('fixture'));
     });
 
-    function setupMap (callback) {
+    function setupMap (callback, showLegend) {
         const fixture = '<div id="fixture" class="map"></div>';
         document.body.insertAdjacentHTML('afterbegin', fixture);
+        showLegend = (showLegend != null ? showLegend : true)
         ctrl = {
             panel: {
-                showLegend: true,
+                showLegend: showLegend,
                 colors: ['#fff', '#000']
             },
             lightTheme: true,
