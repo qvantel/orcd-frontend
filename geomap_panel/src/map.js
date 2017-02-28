@@ -102,7 +102,7 @@ export default class Map {
     */
     getLegend () {
         if (!this.ctrl.panel.showLegend) {
-            return null;
+            return 'none';
         }
 
         return {
