@@ -9,7 +9,7 @@ When loading up the plugin, you'll initially see a world map with colorized coun
 
 In the bottom left corner you'll see a legend with a color gradient, a minimum and a maximum value. The color of each country will be determined by using this scale. A country with a frequency closer to the minimum value will recieve a color close to the left hand side of the gradient.
 
-A countrys frequency can be more clearly seen by hovering the mouse hover a specific country, a popup will appear displaying its frequency of roaming calls. A country must have data in order for the popup to show.
+A country's frequency can be more clearly seen by hovering the mouse hover a specific country, a popup will appear displaying its frequency of roaming calls. A country must have data in order for the popup to show.
 
 ### Metrics
 In order to retrieve data to the plugin you'll need to setup a Graphite data source. Graphite will need to send a country code and a value for that specific country. The value will represent the frequency of the country. You'll need an admin account in order to add a data source.
