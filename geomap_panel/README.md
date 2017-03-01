@@ -16,7 +16,8 @@ In order to retrieve data to the plugin you'll need to setup a data source. The 
 
 To setup a data source, please refer to documentation found in the repositories main readme: ![Repository documentation](https://github.com/flygare/QvantelFrontend#data-source-setup)
 
-You'll then need to go into the **Metrics** tab to alter the Graphite query, you'll need an admin account in order to see this tab.
+#### Graphite query setup
+When you have setup your Graphite data source, you'll need to go into the **Metrics** tab to alter the Graphite query, you'll need an admin account in order to see this tab.
 
 The plugin will retrieve a set of data points for each country, the amount depends on the time ranged specified within Grafana and how frequent Graphite retrieves data. As the plugin will summarize the value of each datapoint to its respective country, it's recommended to let Graphite summarize the data points, this is to take unecessary load off of the client. There are several ways to achieve this, but one way is to let the option **Max data points** to be set to **1** and then adding the **consolidateBy** function with the **sum** as parameter. This basically means that the plugin only wants 1 data point per country, and the overflow of data points should be summarized. You can alter this setting to your own needs, if you for example instead would want the **average**, **min** or **max** value of the country frequency.
 
