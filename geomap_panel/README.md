@@ -2,7 +2,7 @@
 
 This plugin visualizes roaming calls for each country. This is achieved by using the map service from Google GeoCharts. The location data is retrieved from a Graphite data source.
 
-![GeoMap](images/GeoMap_Preview.gif)
+![GeoMap](images/GeoMap_Preview_Dark.gif)
 
 ### How to use
 When loading up the plugin, you'll initially see a world map with colorized countries (if data is present). The color represents the frequency of a countrys roaming calls compared to the other countries currently displayed on the map. 
@@ -47,3 +47,5 @@ Depending on how many colors you have selected in the previous option, that amou
 
 ### Grafana themes
 The plugin will also respond to whether the user is using the Grafana pre-existing dark theme or respectively the light theme. The plugin will use a lighter color scheme if the user are using the light theme and a darker color scheme if the user are using the dark theme.
+
+![GeoMap](images/GeoMap_Preview_Light.gif)
