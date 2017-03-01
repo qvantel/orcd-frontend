@@ -4,7 +4,7 @@
 This repository contains Grafana plugins, the included plugins are the GeoMap panel plugin and the Heatmap plugin. Here, we'll also go through how to install the plugins into Grafana, and how to set them up so they properly work. Both plugin supports retrieving data from a Graphite data source. The plugin may work with other data sources, but we can't guarantee nor support it.
 
 ## GeoMap panel plugin
-The GeoMap panel plugin visualizes roaming calls for each country. This is achieved by using the map service from Google GeoCharts. Each country will recieve a color based on their frequency of roaming calls, the color is determined by a color gradient. If a country has less frequency, it's color will be picked on the left hand side of the gradient. Documentation for this plugin can be found here: ![GeoMap documentation](geomap_panel)
+The GeoMap panel plugin visualizes roaming calls for each country. This is achieved by using the map service from Google GeoCharts. Each country will recieve a color based on their frequency of roaming calls, the color is determined by a color gradient. If a country has less frequency, it's color will be picked on the left hand side of the gradient. Documentation for this plugin can be found here: ![GeoMap documentation](geomap_panel#geomap-panel-plugin-for-grafana)
 
 ![GeoMap Preview](geomap_panel/images/GeoMap_Preview_Dark.gif)
 
@@ -54,7 +54,7 @@ Fill in your credentials and press the Save & Test button. This will make sure t
 
 When you data source is setup, navigate to the dashboard that contains the plugin that you want to connect the data source to. Again, make sure you're logged into an account with administration access. We'll now need to access the **Metrics** for the dashboard. Click the titel of the dashboard and menu will appear, click the **Edit** option and a new section below the dashboard will appear. You will see a set of tabs (the amount may vary depending on your plugin), but the tab we're currently interested in is the **Metrics** tab. Here, you'll be able to setup the query for your data source, this query will be specific to the plugin you're using.
 
-To setup the Graphite query for the plugin, please see the documentation for respective plugin: ![GeoMap documentation](geomap_panel) and ![Heatmap documentation](heatmap_panel)
+To setup the Graphite query for the plugin, please see the documentation for respective plugin: ![GeoMap documentation](geomap_panel#metrics) and ![Heatmap documentation](heatmap_panel#metrics)
 
 ## Grafana themes
 Grafana also supports different themes, the standard is the dark theme. If you'd rather want a lighter theme you can change it. 
