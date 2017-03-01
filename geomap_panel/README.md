@@ -14,7 +14,7 @@ A country's frequency can be more clearly seen by hovering the mouse hover a spe
 ### Metrics
 In order to retrieve data to the plugin you'll need to setup a data source. The data source will need to send a country code and a value for that specific country. The value will represent the frequency of the country. We currently only support a Graphite data source, other data sources may work, but we can't guarantee it.
 
-To setup a data source, please refer to the ![documentation](https://github.com/flygare/QvantelFrontend#data-source-setup) found in the repositories main readme.
+To setup a data source, please refer to the [documentation](https://github.com/flygare/QvantelFrontend#data-source-setup) found in the repositories main readme.
 
 #### Graphite query setup
 When you have setup your Graphite data source, you'll need to go into the **Metrics** tab to alter the Graphite query, you'll need an admin account in order to see this tab.
