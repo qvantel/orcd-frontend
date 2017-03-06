@@ -7,12 +7,13 @@
  * To change settings for legend, Click the titel of the dashboard and menu will appear, click the Edit option.
   below the options tab there is a checkbox named "Show legend" press this for show and hide the legend.
 * Test all regions
-  * World
-  * Africa
-  * Europe
-  * America
-  * Asia
-  * Oceania
+  * Under the options tab dropdown named Region, chose the region you want to test, the regions to be tested is listet below.
+    * World
+    * Africa
+    * Europe
+    * America
+    * Asia
+    * Oceania
 * Animation
   * Turn on/off
   * Duration
