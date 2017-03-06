@@ -18,3 +18,6 @@
   * Turn on/off
   * Duration
 * Test one or multiple colors
+* Breadcrumbs
+  * Press on some country
+  * Test go back to world by press "World" in the breadcrum
