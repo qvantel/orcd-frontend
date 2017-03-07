@@ -8,11 +8,17 @@ import Utilities from './utilities';
 const panelDefaults = {
     mapRegion: 'World',
     showLegend: true,
+    showBreadcrumbs: true,
     animate: true,
     animationDuration: 2,
     colorAmount: 1,
     colors: ['#6699cc'],
-    breadcrumbs: ['World']
+    breadcrumbs: ['World'],
+    zoom: {
+        continent: 'World',
+        subContinent: 'None',
+        country: 'None'
+    }
 };
 
 /** Region mapping from name to code */
@@ -117,11 +123,33 @@ export default class GeoMapPanelCtrl extends MetricsPanelCtrl {
     /**
     * When the region option is updated, tell the map and re-render
     */
-    optionRegionUpdated () {
+    optionZoomChanged (type) {
+        if (type === 'continent') {
+            this.panel.zoom.subContinent = 'None';
+            this.panel.zoom.country = 'None';
+        }
+
+        if (type === 'subContinent') {
+            this.panel.zoom.country = 'None';
+        }
+
         if (!this.map) return;
 
-        this.map.setRegion(this.getRegion());
-        this.render();
+        var zoom = ["World"];
+
+        if (this.panel.zoom.continent !== 'World') {
+            zoom.push(this.panel.zoom.continent);
+        }
+
+        if (this.panel.zoom.subContinent !== 'None') {
+            zoom.push(this.panel.zoom.subContinent);
+        }
+
+        if (this.panel.zoom.country !== 'None') {
+            zoom.push(this.panel.zoom.country);
+        }
+
+        this.map.setZoom(zoom);
     }
 
     /**
@@ -207,6 +235,12 @@ export default class GeoMapPanelCtrl extends MetricsPanelCtrl {
 
             this.breadcrumbs[i] = res;
         }
+
+        this.log(panelDefaults.zoom.continent);
+
+        this.panel.zoom.continent = (items.length > 1 ? items[1] : panelDefaults.zoom.continent);
+        this.panel.zoom.subContinent = (items.length > 2 ? items[2] : panelDefaults.zoom.subContinent);
+        this.panel.zoom.country = (items.length > 3 ? items[3] : panelDefaults.zoom.country);
 
         if (typeof doApply === 'undefined' || doApply) {
             this.scope.$apply();

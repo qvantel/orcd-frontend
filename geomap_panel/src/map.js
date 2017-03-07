@@ -129,6 +129,11 @@ export default class Map {
         }
     }
 
+    setZoom (zoom) {
+        this.zoom = zoom;
+        this.finishZoom(false);
+    }
+
     /**
     *
     */
