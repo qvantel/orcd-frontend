@@ -71,7 +71,6 @@ export default class GeoMapPanelCtrl extends MetricsPanelCtrl {
         this.events.on('init-edit-mode', this.onInitEditMode.bind(this));
         this.events.on('data-received', this.onDataReceived.bind(this));
 
-        // Intially set the build the dynamic stylesheet
         this.updateDynamicSheet();
         this.loadLocations();
     }
@@ -83,6 +82,7 @@ export default class GeoMapPanelCtrl extends MetricsPanelCtrl {
         var self = this;
         $.getJSON('public/plugins/qvantel-geomap-panel/data/locations.json').then((res) => {
             self.locations = res;
+            self.updatePanelZoom();
         });
     }
 
@@ -235,6 +235,24 @@ export default class GeoMapPanelCtrl extends MetricsPanelCtrl {
         this.panel.zoom.continent = (items.length > 1 ? items[1] : panelDefaults.zoom.continent);
         this.panel.zoom.subContinent = (items.length > 2 ? items[2] : panelDefaults.zoom.subContinent);
         this.panel.zoom.country = (items.length > 3 ? items[3] : panelDefaults.zoom.country);
+
+        // Only get the continents once
+        if (!this.zoomedContinents) {
+            this.zoomedContinents = this.getContinentsSorted();
+        }
+
+        // Only get the sub continents if the continent actually have changed
+        if (this.oldContinent != this.panel.zoom.continent) {
+            this.zoomedSubContinents = this.getSubContinentsSorted();
+        }
+
+        // Only get the countries if the sub continent actually have changed
+        if (this.oldSubContinent != this.panel.zoom.subContinent) {
+            this.zoomedCountries = this.getCountriesSorted();
+        }
+
+        this.oldContinent = this.panel.zoom.continent;
+        this.oldSubContinent = this.panel.zoom.subContinent;
     }
 
     /**
@@ -271,6 +289,65 @@ export default class GeoMapPanelCtrl extends MetricsPanelCtrl {
 
         sheet += '}';
         this.dynamicSheet.innerHTML = sheet;
+    }
+
+    /***
+    * Sort the continents by its value
+    *
+    * @return {array} - Array of sorted continents
+    */
+    getContinentsSorted () {
+        var sortable = [];
+
+        for (var key in this.locations.continents) {
+            sortable.push({key:key, name:this.locations.continents[key]});
+        }
+
+        sortable.sort(function (a, b) {
+            return a.name.localeCompare(b.name);
+        });
+
+        return sortable;
+    }
+
+    /***
+    * Sort the sub continents by its value and filtered by the currently zoomed in continent
+    *
+    * @return {array} - Array of sorted sub continents
+    */
+    getSubContinentsSorted () {
+        var sortable = [];
+        for (var key in this.locations.subContinents) {
+            if (this.locations.subContinents[key].continent === this.panel.zoom.continent) {
+                sortable.push({key:key, name:this.locations.subContinents[key].name});
+            }
+        }
+
+        sortable.sort(function (a, b) {
+            return a.name.localeCompare(b.name);
+        });
+
+        return sortable;
+    }
+
+    /***
+    * Sort the country by its value and filtered by the currently zoomed in sub continent
+    *
+    * @return {array} - Array of sorted countries
+    */
+    getCountriesSorted () {
+        var sortable = [];
+        for (var key in this.locations.countries) {
+        	if (this.locations.countries[key].subContinent === this.panel.zoom.subContinent && this.locations.countries[key].name !== 'N/A') {
+        		sortable.push({key:key, name:this.locations.countries[key].name});
+            }
+        }
+
+        sortable.sort(function (a, b) {
+        	return a.name.localeCompare(b.name);
+        });
+
+        return sortable;
     }
 }
 
