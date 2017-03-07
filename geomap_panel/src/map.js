@@ -8,7 +8,6 @@ export default class Map {
         this.container = container;
         this.readyCallback = onReadyCallback;
         this.options = {
-            region: this.ctrl.getRegion(),
             colorAxis: {
                 // minValue: 0,
                 // maxValue: 100,
@@ -23,7 +22,8 @@ export default class Map {
                 focus: 'focus'
             }
         };
-        this.zoom = ['World'];
+
+        this.setRegion(this.ctrl.zoomHandler.getLastZoom());
         this.setColors(this.ctrl.panel.colors);
         this.loadGoogle();
     }
@@ -45,7 +45,7 @@ export default class Map {
             google.charts.load('upcoming', {'packages': ['geochart']});
             google.charts.setOnLoadCallback(() => {
                 self.createMap();
-                self.ctrl.createBreadcrumbs(this.zoom);
+                self.ctrl.updateBreadcrumbs();
             });
         }
     }
@@ -64,7 +64,7 @@ export default class Map {
             }
         });
         google.visualization.events.addListener(this.map, 'regionClick', (e) => {
-            self.zoomIn(e.region);
+            self.ctrl.zoomHandler.zoomIn(e.region);
         });
         this.draw();
     }
@@ -87,10 +87,12 @@ export default class Map {
     * @param {string} region - The region to be zoomed into
     */
     setRegion (region) {
-        /* istanbul ignore else  */
-        if (this.options.region !== region) {
-            this.options.region = region;
+        region = region.toLowerCase();
+        if(region !== 'world') {
+            region = region.toUpperCase();
         }
+
+        this.options.region = region;
     }
 
     /**
@@ -127,71 +129,5 @@ export default class Map {
         for (var i = 0; i < colors.length; i++) {
             this.options.colorAxis.colors[i + 1] = colors[i];
         }
-    }
-
-    setZoom (zoom) {
-        this.zoom = zoom;
-        this.finishZoom(false);
-    }
-
-    /**
-    *
-    */
-    zoomIn (region) {
-        if (typeof this.ctrl.locations.countries[region] !== "undefined") {
-            this.zoomInsertCountry(region);
-        } else if (typeof this.ctrl.locations.subContinents[region] !== "undefined") {
-            this.zoomInsertSubContinent(region);
-        } else if (typeof this.ctrl.locations.continents[region] !== "undefined") {
-            this.zoomInsertContinent(region);
-        } else {
-            return;
-        }
-
-        this.finishZoom();
-    }
-
-    zoomInsertCountry (country) {
-        if (this.zoom.length >= 3) {
-            this.zoom[3] = country;
-        }
-
-        if (this.zoom.length >= 2) {
-            this.zoom[2] = this.ctrl.locations.countries[country].subContinent;
-        }
-
-        if (this.zoom.length >= 1) {
-            this.zoom[1] = this.ctrl.locations.subContinents[this.ctrl.locations.countries[country].subContinent].continent;
-        }
-    }
-
-    zoomInsertSubContinent (subContinent) {
-        if (this.zoom.length >= 2) {
-            this.zoom[2] = subContinent;
-        }
-
-        if (this.zoom.length >= 1) {
-            this.zoom[1] = this.ctrl.locations.subContinents[subContinent].continent;
-        }
-    }
-
-    zoomInsertContinent (continent) {
-        this.zoom[1] = continent;
-    }
-
-    zoomOut (index) {
-        this.zoom.length = index + 1;
-        this.finishZoom(false);
-    }
-
-    finishZoom (doApply) {
-        var region = this.zoom[this.zoom.length - 1].toLowerCase();
-        if(region !== 'world') {
-            region = region.toUpperCase();
-        }
-
-        this.options.region = region;
-        this.ctrl.updateBreadcrumbs(this.zoom, doApply);
-        this.ctrl.render();
     }
 }

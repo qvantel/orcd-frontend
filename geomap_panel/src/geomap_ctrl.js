@@ -2,6 +2,7 @@ import {MetricsPanelCtrl} from 'app/plugins/sdk';
 import mapRenderer from './map_renderer';
 import DataFormatter from './dataFormatter';
 import DataGenerator from './dataGenerator';
+import ZoomHandler from './zoomHandler';
 import Utilities from './utilities';
 
 /** Default panel settings */
@@ -57,16 +58,7 @@ export default class GeoMapPanelCtrl extends MetricsPanelCtrl {
         };
 
         this.scope = $scope;
-
-        // Determine which Grafan theme the user is using
-        this.lightTheme = contextSrv.user.lightTheme
-
-        this.breadcrumbs = ['World'];
-
-        // Components
-        this.utilities = new Utilities();
-        this.dataGenerator = new DataGenerator();
-        this.dataFormatter = new DataFormatter(this);
+        this.panelDefaults = panelDefaults;
 
         // Insert the default values into the panel where the current setting is not found
         for (var key in panelDefaults) {
@@ -74,6 +66,16 @@ export default class GeoMapPanelCtrl extends MetricsPanelCtrl {
                 this.panel[key] = panelDefaults[key];
             }
         }
+
+        // Setup variables
+        this.lightTheme = contextSrv.user.lightTheme
+        this.breadcrumbs = ['World'];
+
+        // Components
+        this.utilities = new Utilities();
+        this.dataGenerator = new DataGenerator();
+        this.dataFormatter = new DataFormatter(this);
+        this.zoomHandler = new ZoomHandler(this);
 
         // Bind events
         this.events.on('init-edit-mode', this.onInitEditMode.bind(this));
@@ -149,7 +151,7 @@ export default class GeoMapPanelCtrl extends MetricsPanelCtrl {
             zoom.push(this.panel.zoom.country);
         }
 
-        this.map.setZoom(zoom);
+        this.zoomHandler.setZoom(zoom);
     }
 
     /**
@@ -204,15 +206,11 @@ export default class GeoMapPanelCtrl extends MetricsPanelCtrl {
         this.render();
     }
 
-    /**
-    * Create a HTML-div elemnt to represent the breadcrumbs
-    *
-    * @param {array} initialItems - An array with locations to be displayed inside the breadcrumbs
-    */
-    createBreadcrumbs (initialItems) {
-        if (initialItems) {
-            this.updateBreadcrumbs(initialItems);
-        }
+    zoomUpdated (doApply) {
+        this.map.setRegion(this.zoomHandler.getLastZoom());
+        this.updateBreadcrumbs(doApply);
+        this.updatePanelZoom();
+        this.render();
     }
 
     /**
@@ -220,35 +218,24 @@ export default class GeoMapPanelCtrl extends MetricsPanelCtrl {
     *
     * @param {array} items - An array with locations to be displayed inside the breadcrumbs
     */
-    updateBreadcrumbs (items, doApply) {
-        this.breadcrumbs = [];
-        for (var i = 0; i < items.length; i++) {
-            var res = items[i];
-
-            if (i === 1) {
-                res = this.locations.continents[items[i]];
-            } else if (i === 2) {
-                res = this.locations.subContinents[items[i]].name;
-            } else if(i === 3) {
-                res = this.locations.countries[items[i]].name;
-            }
-
-            this.breadcrumbs[i] = res;
-        }
-
-        this.log(panelDefaults.zoom.continent);
-
-        this.panel.zoom.continent = (items.length > 1 ? items[1] : panelDefaults.zoom.continent);
-        this.panel.zoom.subContinent = (items.length > 2 ? items[2] : panelDefaults.zoom.subContinent);
-        this.panel.zoom.country = (items.length > 3 ? items[3] : panelDefaults.zoom.country);
+    updateBreadcrumbs (doApply) {
+        this.breadcrumbs = this.zoomHandler.getZoomNames();
 
         if (typeof doApply === 'undefined' || doApply) {
             this.scope.$apply();
         }
     }
 
+    updatePanelZoom () {
+        var items = this.zoomHandler.getZoomCodes();
+
+        this.panel.zoom.continent = (items.length > 1 ? items[1] : panelDefaults.zoom.continent);
+        this.panel.zoom.subContinent = (items.length > 2 ? items[2] : panelDefaults.zoom.subContinent);
+        this.panel.zoom.country = (items.length > 3 ? items[3] : panelDefaults.zoom.country);
+    }
+
     breadcrumbClicked (index) {
-        this.map.zoomOut(index);
+        this.zoomHandler.zoomOut(index);
     }
 
     /**
@@ -278,15 +265,6 @@ export default class GeoMapPanelCtrl extends MetricsPanelCtrl {
 
         sheet += '}';
         this.dynamicSheet.innerHTML = sheet;
-    }
-
-    /**
-    * Get the mapped region
-    *
-    * @return {string} - the mapped region
-    */
-    getRegion () {
-        return regionMapping[this.panel.mapRegion];
     }
 }
 
