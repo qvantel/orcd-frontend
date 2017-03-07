@@ -1,11 +1,17 @@
+/* This class will handle the zooming of the map */
 export default class ZoomHandler {
+
+    /* Build the zoom handler */
     constructor (ctrl) {
         this.ctrl = ctrl;
         this.loadZoom();
     }
 
-    loadZoom() {
-        this.zoom = ["World"];
+    /**
+    * Load the initial zoom from the panel options
+    */
+    loadZoom () {
+        this.zoom = ['World'];
 
         var continent = this.ctrl.panel.zoom.continent;
         var subContinent = this.ctrl.panel.zoom.subContinent;
@@ -24,20 +30,32 @@ export default class ZoomHandler {
         }
     }
 
+    /**
+    * Give the zoomhandler a complete zoom array
+    */
     setZoom (zoom) {
         this.zoom = zoom;
         this.finishZoom(false);
     }
 
+    /**
+    * Get the last element in the zoom array
+    */
     getLastZoom () {
         return this.zoom[this.zoom.length - 1];
     }
 
-    getZoomCodes() {
+    /**
+    * Get an array with zoom codes (Like; world -> 150 -> 153 -> SE)
+    */
+    getZoomCodes () {
         return this.zoom;
     }
 
-    getZoomNames() {
+    /**
+    * Get an array with zoom names (Like; World -> Europe -> Northern Europe -> Sweden)
+    */
+    getZoomNames () {
         var zoom = [];
         for (var i = 0; i < this.zoom.length; i++) {
             var res = this.zoom[i];
@@ -46,7 +64,7 @@ export default class ZoomHandler {
                 res = this.ctrl.locations.continents[this.zoom[i]];
             } else if (i === 2) {
                 res = this.ctrl.locations.subContinents[this.zoom[i]].name;
-            } else if(i === 3) {
+            } else if (i === 3) {
                 res = this.ctrl.locations.countries[this.zoom[i]].name;
             }
 
@@ -57,14 +75,16 @@ export default class ZoomHandler {
     }
 
     /**
+    * Zoom in given a specific region, the region could be either a continent, country or a sub continent
     *
+    * @param {string} region - The region to be zoomed into
     */
     zoomIn (region) {
-        if (typeof this.ctrl.locations.countries[region] !== "undefined") {
+        if (typeof this.ctrl.locations.countries[region] !== 'undefined') {
             this.zoomInsertCountry(region);
-        } else if (typeof this.ctrl.locations.subContinents[region] !== "undefined") {
+        } else if (typeof this.ctrl.locations.subContinents[region] !== 'undefined') {
             this.zoomInsertSubContinent(region);
-        } else if (typeof this.ctrl.locations.continents[region] !== "undefined") {
+        } else if (typeof this.ctrl.locations.continents[region] !== 'undefined') {
             this.zoomInsertContinent(region);
         } else {
             return;
@@ -73,11 +93,17 @@ export default class ZoomHandler {
         this.finishZoom();
     }
 
+    /**
+    * Zoom out given an index for the zoom array, it will zoom back to that region
+    */
     zoomOut (index) {
         this.zoom.length = index + 1;
         this.finishZoom(false);
     }
 
+    /**
+    * Insert a country to the zoom array and make sure that the sub continent and continent matches
+    */
     zoomInsertCountry (country) {
         if (this.zoom.length >= 3) {
             this.zoom[3] = country;
@@ -92,6 +118,9 @@ export default class ZoomHandler {
         }
     }
 
+    /**
+    * Insert a sub continent to the zoom array and make sure that the continent matches
+    */
     zoomInsertSubContinent (subContinent) {
         if (this.zoom.length >= 2) {
             this.zoom[2] = subContinent;
@@ -102,10 +131,16 @@ export default class ZoomHandler {
         }
     }
 
+    /**
+    * Insert a continent into the zoom array
+    */
     zoomInsertContinent (continent) {
         this.zoom[1] = continent;
     }
 
+    /**
+    * Tell the controller that a zooming has occured
+    */
     finishZoom (doApply) {
         this.ctrl.zoomUpdated(doApply);
     }

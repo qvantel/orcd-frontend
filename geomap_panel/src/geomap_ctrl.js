@@ -22,16 +22,6 @@ const panelDefaults = {
     }
 };
 
-/** Region mapping from name to code */
-const regionMapping = {
-    World: 'world',
-    Africa: '002',
-    Europe: '150',
-    America: '019',
-    Asia: '142',
-    Oceania: '009'
-};
-
 /** options */
 const options = {
     minColors: 1,
@@ -86,6 +76,9 @@ export default class GeoMapPanelCtrl extends MetricsPanelCtrl {
         this.loadLocations();
     }
 
+    /**
+    * Load the locations from the json file
+    */
     loadLocations () {
         var self = this;
         $.getJSON('public/plugins/qvantel-geomap-panel/data/locations.json').then((res) => {
@@ -101,11 +94,12 @@ export default class GeoMapPanelCtrl extends MetricsPanelCtrl {
     }
 
     /**
-    * Listen to new data - currently, when new data is presented, generated random data and re-render the map
+    * Listen to new data, send data over to the formatter to format it in order for google to be able to read it
+    *
+    * @param {array} datalist - list of datapoints
     */
     onDataReceived (dataList) {
         // this.data = this.dataGenerator.generate();
-        this.log(dataList);
         this.data = this.dataFormatter.generate(dataList);
         this.render();
     }
@@ -123,21 +117,24 @@ export default class GeoMapPanelCtrl extends MetricsPanelCtrl {
     }
 
     /**
-    * When the region option is updated, tell the map and re-render
+    * When the region option is updated
+    *
+    * @param {string} type - Continent, SubContinent or Country
     */
-    optionZoomChanged (type) {
+    optionRegionChanged (type) {
+        // If a continent is set, reset sub categories
         if (type === 'continent') {
             this.panel.zoom.subContinent = 'None';
             this.panel.zoom.country = 'None';
         }
 
+        // If a sub continent is set, reset sub categories
         if (type === 'subContinent') {
             this.panel.zoom.country = 'None';
         }
 
-        if (!this.map) return;
-
-        var zoom = ["World"];
+        // Collect the panel data into an array and send it over to the zoom handler
+        var zoom = ['World'];
 
         if (this.panel.zoom.continent !== 'World') {
             zoom.push(this.panel.zoom.continent);
@@ -206,6 +203,9 @@ export default class GeoMapPanelCtrl extends MetricsPanelCtrl {
         this.render();
     }
 
+    /**
+    * When the zooming of a map has been changed, call this function and it will tell other components
+    */
     zoomUpdated (doApply) {
         this.map.setRegion(this.zoomHandler.getLastZoom());
         this.updateBreadcrumbs(doApply);
@@ -226,6 +226,9 @@ export default class GeoMapPanelCtrl extends MetricsPanelCtrl {
         }
     }
 
+    /**
+    * If the zooming has been changed due to clicking the map, also update the panel options
+    */
     updatePanelZoom () {
         var items = this.zoomHandler.getZoomCodes();
 
@@ -234,6 +237,9 @@ export default class GeoMapPanelCtrl extends MetricsPanelCtrl {
         this.panel.zoom.country = (items.length > 3 ? items[3] : panelDefaults.zoom.country);
     }
 
+    /**
+    * When a breadcrumb has been clicked, this method is called and will let the zoomHandler know which element that was clicked
+    */
     breadcrumbClicked (index) {
         this.zoomHandler.zoomOut(index);
     }

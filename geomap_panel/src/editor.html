@@ -1,42 +1,44 @@
 <!-- This HTML page holds all the settings for the GeoMap plugin -->
 <div class="editor-row">
 	<div class="section gf-form-group">
-		<!-- Visual options -->
+		<!-- Region options -->
 		<h5 class="section-heading">Map Region Options</h5>
 
-		<!-- List of predefiened regions to be zoomed into -->
+		<!-- Selector for the continent -->
 		<div class="gf-form">
 			<label class="gf-form-label width-10">Continent</label>
 			<div class="gf-form-select-wrapper max-width-10">
-				<select class="input-small gf-form-input" ng-model="ctrl.panel.zoom.continent" ng-change="ctrl.optionZoomChanged('continent')">
+				<select class="input-small gf-form-input" ng-model="ctrl.panel.zoom.continent" ng-change="ctrl.optionRegionChanged('continent')">
 					<option value="World">World</option>
 					<option ng-repeat="(key, value) in ctrl.locations.continents" value="{{key}}">{{value}}</option>
 				</select>
 			</div>
 		</div>
 
+		<!-- Selector for the sub continent -->
 		<div class="gf-form" ng-if="ctrl.panel.zoom.continent!=null&&ctrl.panel.zoom.continent!='World'">
 			<label class="gf-form-label width-10">Sub Continent</label>
 			<div class="gf-form-select-wrapper max-width-10">
-				<select class="input-small gf-form-input" ng-model="ctrl.panel.zoom.subContinent" ng-change="ctrl.optionZoomChanged('subContinent')">
+				<select class="input-small gf-form-input" ng-model="ctrl.panel.zoom.subContinent" ng-change="ctrl.optionRegionChanged('subContinent')">
 					<option value = "None">None</option>
 					<option ng-if="value.continent==ctrl.panel.zoom.continent" ng-repeat="(key, value) in ctrl.locations.subContinents" value="{{key}}">{{value.name}}</option>
 				</select>
 			</div>
 		</div>
 
+		<!-- Selector for the country -->
 		<div class="gf-form" ng-if="ctrl.panel.zoom.subContinent!=null&&ctrl.panel.zoom.subContinent!='None'">
 			<label class="gf-form-label width-10">Country</label>
 			<div class="gf-form-select-wrapper max-width-10">
-				<select class="input-small gf-form-input" ng-model="ctrl.panel.zoom.country" ng-change="ctrl.optionZoomChanged('country')">
+				<select class="input-small gf-form-input" ng-model="ctrl.panel.zoom.country" ng-change="ctrl.optionRegionChanged('country')">
 					<option value = "None">None</option>
 					<option ng-if="value.subContinent==ctrl.panel.zoom.subContinent&&value.name!='N/A'" ng-repeat="(key, value) in ctrl.locations.countries" value="{{key}}">{{value.name}}</option>
 				</select>
 			</div>
 		</div>
 	</div>
+
 	<div class="section gf-form-group">
-		<!-- Animation settings -->
 		<h5 class="section-heading">Map Visual Options</h5>
 
 		<!-- Checkbox to toggle wether or not the legend should be showing -->

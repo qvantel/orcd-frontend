@@ -88,7 +88,7 @@ export default class Map {
     */
     setRegion (region) {
         region = region.toLowerCase();
-        if(region !== 'world') {
+        if (region !== 'world') {
             region = region.toUpperCase();
         }
 
