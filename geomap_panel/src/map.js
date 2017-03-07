@@ -63,6 +63,7 @@ export default class Map {
                 self.readyCallback();
             }
         });
+        /* istanbul ignore next */
         google.visualization.events.addListener(this.map, 'regionClick', (e) => {
             self.ctrl.zoomHandler.zoomIn(e.region);
         });

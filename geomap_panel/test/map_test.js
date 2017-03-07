@@ -88,10 +88,16 @@ describe('Map', () => {
                 colors: ['#fff', '#000']
             },
             lightTheme: true,
-            getRegion: function () {
+            data: [['Countries', 'Frequency'], ['SE', 10]],
+            getRegion: () => {
                 return 'world';
             },
-            data: [['Countries', 'Frequency'], ['SE', 10]]
+            zoomHandler: {
+                getLastZoom: () => {
+                    return 'SE';
+                }
+            },
+            updateBreadcrumbs: () => {}
         }
 
         updateMap(callback);

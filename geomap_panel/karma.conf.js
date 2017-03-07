@@ -11,6 +11,7 @@ module.exports = function (config) {
       'src/map.js',
       'src/utilities.js',
       'src/dataFormatter.js',
+      'src/zoomHandler.js',
       'test/*.js'
     ],
 
@@ -18,6 +19,7 @@ module.exports = function (config) {
       'src/map.js': ['browserify'],
       'src/utilities.js': ['browserify'],
       'src/dataFormatter.js': ['browserify'],
+      'src/zoomHandler.js': ['browserify'],
       'test/*.js': ['browserify']
     },
 
