@@ -11,7 +11,8 @@ const panelDefaults = {
     animate: true,
     animationDuration: 2,
     colorAmount: 1,
-    colors: ['#6699cc']
+    colors: ['#6699cc'],
+    breadcrumbs: ['World']
 };
 
 /** Region mapping from name to code */
@@ -49,8 +50,12 @@ export default class GeoMapPanelCtrl extends MetricsPanelCtrl {
             $log.log(msg);
         };
 
+        this.scope = $scope;
+
         // Determine which Grafan theme the user is using
         this.lightTheme = contextSrv.user.lightTheme
+
+        this.breadcrumbs = ['World'];
 
         // Components
         this.utilities = new Utilities();
@@ -92,6 +97,7 @@ export default class GeoMapPanelCtrl extends MetricsPanelCtrl {
     */
     onDataReceived (dataList) {
         // this.data = this.dataGenerator.generate();
+        this.log(dataList);
         this.data = this.dataFormatter.generate(dataList);
         this.render();
     }
@@ -168,6 +174,47 @@ export default class GeoMapPanelCtrl extends MetricsPanelCtrl {
         this.map.setColors(this.panel.colors);
         this.updateDynamicSheet();
         this.render();
+    }
+
+    /**
+    * Create a HTML-div elemnt to represent the breadcrumbs
+    *
+    * @param {array} initialItems - An array with locations to be displayed inside the breadcrumbs
+    */
+    createBreadcrumbs (initialItems) {
+        if (initialItems) {
+            this.updateBreadcrumbs(initialItems);
+        }
+    }
+
+    /**
+    * Update the breadcrumbs
+    *
+    * @param {array} items - An array with locations to be displayed inside the breadcrumbs
+    */
+    updateBreadcrumbs (items, doApply) {
+        this.breadcrumbs = [];
+        for (var i = 0; i < items.length; i++) {
+            var res = items[i];
+
+            if (i === 1) {
+                res = this.locations.continents[items[i]];
+            } else if (i === 2) {
+                res = this.locations.subContinents[items[i]].name;
+            } else if(i === 3) {
+                res = this.locations.countries[items[i]].name;
+            }
+
+            this.breadcrumbs[i] = res;
+        }
+
+        if (typeof doApply === 'undefined' || doApply) {
+            this.scope.$apply();
+        }
+    }
+
+    breadcrumbClicked (index) {
+        this.map.zoomOut(index);
     }
 
     /**

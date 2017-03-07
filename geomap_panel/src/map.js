@@ -23,6 +23,7 @@ export default class Map {
                 focus: 'focus'
             }
         };
+        this.zoom = ['World'];
         this.setColors(this.ctrl.panel.colors);
         this.loadGoogle();
     }
@@ -44,6 +45,7 @@ export default class Map {
             google.charts.load('upcoming', {'packages': ['geochart']});
             google.charts.setOnLoadCallback(() => {
                 self.createMap();
+                self.ctrl.createBreadcrumbs(this.zoom);
             });
         }
     }
@@ -61,7 +63,9 @@ export default class Map {
                 self.readyCallback();
             }
         });
-
+        google.visualization.events.addListener(this.map, 'regionClick', (e) => {
+            self.zoomIn(e.region);
+        });
         this.draw();
     }
 
@@ -123,5 +127,66 @@ export default class Map {
         for (var i = 0; i < colors.length; i++) {
             this.options.colorAxis.colors[i + 1] = colors[i];
         }
+    }
+
+    /**
+    *
+    */
+    zoomIn (region) {
+        if (typeof this.ctrl.locations.countries[region] !== "undefined") {
+            this.zoomInsertCountry(region);
+        } else if (typeof this.ctrl.locations.subContinents[region] !== "undefined") {
+            this.zoomInsertSubContinent(region);
+        } else if (typeof this.ctrl.locations.continents[region] !== "undefined") {
+            this.zoomInsertContinent(region);
+        } else {
+            return;
+        }
+
+        this.finishZoom();
+    }
+
+    zoomInsertCountry (country) {
+        if (this.zoom.length >= 3) {
+            this.zoom[3] = country;
+        }
+
+        if (this.zoom.length >= 2) {
+            this.zoom[2] = this.ctrl.locations.countries[country].subContinent;
+        }
+
+        if (this.zoom.length >= 1) {
+            this.zoom[1] = this.ctrl.locations.subContinents[this.ctrl.locations.countries[country].subContinent].continent;
+        }
+    }
+
+    zoomInsertSubContinent (subContinent) {
+        if (this.zoom.length >= 2) {
+            this.zoom[2] = subContinent;
+        }
+
+        if (this.zoom.length >= 1) {
+            this.zoom[1] = this.ctrl.locations.subContinents[subContinent].continent;
+        }
+    }
+
+    zoomInsertContinent (continent) {
+        this.zoom[1] = continent;
+    }
+
+    zoomOut (index) {
+        this.zoom.length = index + 1;
+        this.finishZoom(false);
+    }
+
+    finishZoom (doApply) {
+        var region = this.zoom[this.zoom.length - 1].toLowerCase();
+        if(region !== 'world') {
+            region = region.toUpperCase();
+        }
+
+        this.options.region = region;
+        this.ctrl.updateBreadcrumbs(this.zoom, doApply);
+        this.ctrl.render();
     }
 }

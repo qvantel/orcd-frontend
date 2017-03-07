@@ -4,3 +4,18 @@
 .map path {
     stroke-width: 1;
 }
+
+
+.map-holder {
+    position: relative;
+}
+
+.breadcrumbs {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+}
+
+.breadcrumbs div {
+    display: inline;
+}

@@ -1,5 +1,19 @@
 <!-- Get the GeoChart map service -->
-<script type='text/javascript' src='https://www.gstatic.com/charts/loader.js'></script>
+<script type = "text/javascript" src = "https://www.gstatic.com/charts/loader.js"></script>
 
 <!-- This div will hold the content of the GeoChart map -->
-<div id='map' class = 'map'></div>
+<div class = "map-holder">
+    <div id = "map" class = "map"></div>
+    <div id = "breadcrumbs" class = "breadcrumbs">
+        <div ng-repeat = "n in ctrl.breadcrumbs track by $index">
+            <div ng-if="!$last">
+                <a href = "#" ng-click = "ctrl.breadcrumbClicked($index)">{{n}}</a>&nbsp;>&nbsp;
+            </div>
+            <div ng-if="$last">
+                {{n}}
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id = "testtest"></div>

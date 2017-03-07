@@ -3,3 +3,12 @@
 .map text {
     stroke: #fff;
 }
+
+.breadcrumbs {
+    color: #000;
+    text-shadow:
+    -1px -1px 0 #fff,
+    1px -1px 0 #fff,
+    -1px 1px 0 #fff,
+    1px 1px 0 #fff;
+}
