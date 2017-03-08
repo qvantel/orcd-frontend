@@ -8,7 +8,7 @@
 		<div class="gf-form">
 			<label class="gf-form-label width-10">Continent</label>
 			<div class="gf-form-select-wrapper max-width-10">
-				<select class="input-small gf-form-input" ng-model="ctrl.panel.zoom.continent" ng-change="ctrl.optionRegionChanged('continent')">
+				<select class="input-small gf-form-input" ng-model="ctrl.panel.zoomContinent" ng-change="ctrl.optionRegionChanged('continent')">
 					<option value="World">World</option>
 					<option ng-repeat="location in ctrl.zoomedContinents" value="{{location.key}}">{{location.name}}</option>
 				</select>
@@ -16,10 +16,10 @@
 		</div>
 
 		<!-- Selector for the sub continent -->
-		<div class="gf-form" ng-if="ctrl.panel.zoom.continent!=null&&ctrl.panel.zoom.continent!='World'">
+		<div class="gf-form" ng-if="ctrl.panel.zoomContinent!=null&&ctrl.panel.zoomContinent!='World'">
 			<label class="gf-form-label width-10">Sub Continent</label>
 			<div class="gf-form-select-wrapper max-width-10">
-				<select class="input-small gf-form-input" ng-model="ctrl.panel.zoom.subContinent" ng-change="ctrl.optionRegionChanged('subContinent')">
+				<select class="input-small gf-form-input" ng-model="ctrl.panel.zoomSubContinent" ng-change="ctrl.optionRegionChanged('subContinent')">
 					<option value = "None">None</option>
 					<option ng-repeat="location in ctrl.zoomedSubContinents" value="{{location.key}}">{{location.name}}</option>
 				</select>
@@ -27,10 +27,10 @@
 		</div>
 
 		<!-- Selector for the country -->
-		<div class="gf-form" ng-if="ctrl.panel.zoom.subContinent!=null&&ctrl.panel.zoom.subContinent!='None'">
+		<div class="gf-form" ng-if="ctrl.panel.zoomSubContinent!=null&&ctrl.panel.zoomSubContinent!='None'">
 			<label class="gf-form-label width-10">Country</label>
 			<div class="gf-form-select-wrapper max-width-10">
-				<select class="input-small gf-form-input" ng-model="ctrl.panel.zoom.country" ng-change="ctrl.optionRegionChanged('country')">
+				<select class="input-small gf-form-input" ng-model="ctrl.panel.zoomCountry" ng-change="ctrl.optionRegionChanged('country')">
 					<option value = "None">None</option>
 					<option ng-repeat="location in ctrl.zoomedCountries" value="{{location.key}}">{{location.name}}</option>
 				</select>

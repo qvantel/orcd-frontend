@@ -1,4 +1,4 @@
-import ZoomHandler from '../src/zoomHandler';
+    import ZoomHandler from '../src/zoomHandler';
 
 describe('ZoomHandler', () => {
     let zoomHandler;
@@ -10,7 +10,9 @@ describe('ZoomHandler', () => {
 
     describe('when the zoom handler is loaded without any saved options', () => {
         beforeEach(() => {
-            ctrl.panel.zoom = ctrl.panelDefaults.zoom;
+            ctrl.panel.zoomContinent = ctrl.panelDefaults.zoomContinent;
+            ctrl.panel.zoomSubContinent = ctrl.panelDefaults.zoomSubContinent;
+            ctrl.panel.zoomCountry = ctrl.panelDefaults.zoomCountry;
             zoomHandler.loadZoom();
         });
 
@@ -22,11 +24,9 @@ describe('ZoomHandler', () => {
 
     describe('when the zoom handler is loaded with only a continent', () => {
         beforeEach(() => {
-            ctrl.panel.zoom = {
-                continent: 'Europe',
-                subContinent: ctrl.panelDefaults.zoom.subContinent,
-                country: ctrl.panelDefaults.zoom.country
-            };
+            ctrl.panel.zoomContinent = 'Europe';
+            ctrl.panel.zoomSubContinent = ctrl.panelDefaults.zoomSubContinent;
+            ctrl.panel.zoomCountry = ctrl.panelDefaults.zoomCountry;
             zoomHandler.loadZoom();
         });
 
@@ -39,11 +39,9 @@ describe('ZoomHandler', () => {
 
     describe('when the zoom handler is loaded with world, continent and sub continent', () => {
         beforeEach(() => {
-            ctrl.panel.zoom = {
-                continent: 'Europe',
-                subContinent: 'Northern Europe',
-                country: ctrl.panelDefaults.zoom.country
-            };
+            ctrl.panel.zoomContinent = 'Europe';
+            ctrl.panel.zoomSubContinent = 'Northern Europe';
+            ctrl.panel.zoomCountry = ctrl.panelDefaults.zoomCountry;
             zoomHandler.loadZoom();
         });
 
@@ -57,11 +55,9 @@ describe('ZoomHandler', () => {
 
     describe('when the zoom handler is loaded with world, continent, sub continent and country', () => {
         beforeEach(() => {
-            ctrl.panel.zoom = {
-                continent: 'Europe',
-                subContinent: 'Northern Europe',
-                country: 'Sweden'
-            };
+            ctrl.panel.zoomContinent = 'Europe';
+            ctrl.panel.zoomSubContinent = 'Northern Europe';
+            ctrl.panel.zoomCountry = 'Sweden';
             zoomHandler.loadZoom();
         });
 
@@ -261,18 +257,14 @@ describe('ZoomHandler', () => {
     function setupZoomHandler () {
         ctrl = {
             panelDefaults: {
-                zoom: {
-                    continent: 'World',
-                    subContinent: 'None',
-                    country: 'None'
-                }
+                zoomContinent: 'World',
+                zoomSubContinent: 'None',
+                zoomCountry: 'None'
             },
             panel: {
-                zoom: {
-                    continent: 'Europe',
-                    subContinent: 'Northern Europe',
-                    country: 'Sweden'
-                }
+                zoomContinent: 'Europe',
+                zoomSubContinent: 'Northern Europe',
+                zoomCountry: 'Sweden'
             },
             locations: {
                 continents: {

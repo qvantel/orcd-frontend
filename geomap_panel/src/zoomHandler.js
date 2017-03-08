@@ -13,19 +13,19 @@ export default class ZoomHandler {
     loadZoom () {
         this.zoom = ['World'];
 
-        var continent = this.ctrl.panel.zoom.continent;
-        var subContinent = this.ctrl.panel.zoom.subContinent;
-        var country = this.ctrl.panel.zoom.country;
+        var continent = this.ctrl.panel.zoomContinent;
+        var subContinent = this.ctrl.panel.zoomSubContinent;
+        var country = this.ctrl.panel.zoomCountry;
 
-        if (continent !== this.ctrl.panelDefaults.zoom.continent) {
+        if (continent !== this.ctrl.panelDefaults.zoomContinent) {
             this.zoom.push(continent);
         }
 
-        if (subContinent !== this.ctrl.panelDefaults.zoom.subContinent) {
+        if (subContinent !== this.ctrl.panelDefaults.zoomSubContinent) {
             this.zoom.push(subContinent);
         }
 
-        if (country !== this.ctrl.panelDefaults.zoom.country) {
+        if (country !== this.ctrl.panelDefaults.zoomCountry) {
             this.zoom.push(country);
         }
     }

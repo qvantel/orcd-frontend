@@ -15,11 +15,9 @@ const panelDefaults = {
     colorAmount: 1,
     colors: ['#6699cc'],
     breadcrumbs: ['World'],
-    zoom: {
-        continent: 'World',
-        subContinent: 'None',
-        country: 'None'
-    }
+    zoomContinent: 'World',
+    zoomSubContinent: 'None',
+    zoomCountry: 'None'
 };
 
 /** options */
@@ -124,28 +122,28 @@ export default class GeoMapPanelCtrl extends MetricsPanelCtrl {
     optionRegionChanged (type) {
         // If a continent is set, reset sub categories
         if (type === 'continent') {
-            this.panel.zoom.subContinent = 'None';
-            this.panel.zoom.country = 'None';
+            this.panel.zoomSubContinent = 'None';
+            this.panel.zoomCountry = 'None';
         }
 
         // If a sub continent is set, reset sub categories
         if (type === 'subContinent') {
-            this.panel.zoom.country = 'None';
+            this.panel.zoomCountry = 'None';
         }
 
         // Collect the panel data into an array and send it over to the zoom handler
         var zoom = ['World'];
 
-        if (this.panel.zoom.continent !== 'World') {
-            zoom.push(this.panel.zoom.continent);
+        if (this.panel.zoomContinent !== 'World') {
+            zoom.push(this.panel.zoomContinent);
         }
 
-        if (this.panel.zoom.subContinent !== 'None') {
-            zoom.push(this.panel.zoom.subContinent);
+        if (this.panel.zoomSubContinent !== 'None') {
+            zoom.push(this.panel.zoomSubContinent);
         }
 
-        if (this.panel.zoom.country !== 'None') {
-            zoom.push(this.panel.zoom.country);
+        if (this.panel.zoomCountry !== 'None') {
+            zoom.push(this.panel.zoomCountry);
         }
 
         this.zoomHandler.setZoom(zoom);
@@ -232,9 +230,9 @@ export default class GeoMapPanelCtrl extends MetricsPanelCtrl {
     updatePanelZoom () {
         var items = this.zoomHandler.getZoomCodes();
 
-        this.panel.zoom.continent = (items.length > 1 ? items[1] : panelDefaults.zoom.continent);
-        this.panel.zoom.subContinent = (items.length > 2 ? items[2] : panelDefaults.zoom.subContinent);
-        this.panel.zoom.country = (items.length > 3 ? items[3] : panelDefaults.zoom.country);
+        this.panel.zoomContinent = (items.length > 1 ? items[1] : panelDefaults.zoomContinent);
+        this.panel.zoomSubContinent = (items.length > 2 ? items[2] : panelDefaults.zoomSubContinent);
+        this.panel.zoomCountry = (items.length > 3 ? items[3] : panelDefaults.zoomCountry);
 
         // Only get the continents once
         if (!this.zoomedContinents) {
@@ -242,17 +240,17 @@ export default class GeoMapPanelCtrl extends MetricsPanelCtrl {
         }
 
         // Only get the sub continents if the continent actually have changed
-        if (this.oldContinent !== this.panel.zoom.continent) {
+        if (this.oldContinent !== this.panel.zoomContinent) {
             this.zoomedSubContinents = this.getSubContinentsSorted();
         }
 
         // Only get the countries if the sub continent actually have changed
-        if (this.oldSubContinent !== this.panel.zoom.subContinent) {
+        if (this.oldSubContinent !== this.panel.zoomSubContinent) {
             this.zoomedCountries = this.getCountriesSorted();
         }
 
-        this.oldContinent = this.panel.zoom.continent;
-        this.oldSubContinent = this.panel.zoom.subContinent;
+        this.oldContinent = this.panel.zoomContinent;
+        this.oldSubContinent = this.panel.zoomSubContinent;
     }
 
     /**
@@ -318,7 +316,7 @@ export default class GeoMapPanelCtrl extends MetricsPanelCtrl {
     getSubContinentsSorted () {
         var sortable = [];
         for (var key in this.locations.subContinents) {
-            if (this.locations.subContinents[key].continent === this.panel.zoom.continent) {
+            if (this.locations.subContinents[key].continent === this.panel.zoomContinent) {
                 sortable.push({key: key, name: this.locations.subContinents[key].name});
             }
         }
@@ -338,7 +336,7 @@ export default class GeoMapPanelCtrl extends MetricsPanelCtrl {
     getCountriesSorted () {
         var sortable = [];
         for (var key in this.locations.countries) {
-            if (this.locations.countries[key].subContinent === this.panel.zoom.subContinent && this.locations.countries[key].name !== 'N/A') {
+            if (this.locations.countries[key].subContinent === this.panel.zoomSubContinent && this.locations.countries[key].name !== 'N/A') {
                 sortable.push({key: key, name: this.locations.countries[key].name});
             }
         }
