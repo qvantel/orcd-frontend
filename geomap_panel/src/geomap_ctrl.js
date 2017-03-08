@@ -10,6 +10,7 @@ const panelDefaults = {
     mapRegion: 'World',
     showLegend: true,
     showBreadcrumbs: true,
+    clickToZoomEnabled: true,
     animate: true,
     animationDuration: 2,
     colorAmount: 1,
