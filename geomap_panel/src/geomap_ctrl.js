@@ -242,12 +242,12 @@ export default class GeoMapPanelCtrl extends MetricsPanelCtrl {
         }
 
         // Only get the sub continents if the continent actually have changed
-        if (this.oldContinent != this.panel.zoom.continent) {
+        if (this.oldContinent !== this.panel.zoom.continent) {
             this.zoomedSubContinents = this.getSubContinentsSorted();
         }
 
         // Only get the countries if the sub continent actually have changed
-        if (this.oldSubContinent != this.panel.zoom.subContinent) {
+        if (this.oldSubContinent !== this.panel.zoom.subContinent) {
             this.zoomedCountries = this.getCountriesSorted();
         }
 
@@ -300,7 +300,7 @@ export default class GeoMapPanelCtrl extends MetricsPanelCtrl {
         var sortable = [];
 
         for (var key in this.locations.continents) {
-            sortable.push({key:key, name:this.locations.continents[key]});
+            sortable.push({key: key, name: this.locations.continents[key]});
         }
 
         sortable.sort(function (a, b) {
@@ -319,7 +319,7 @@ export default class GeoMapPanelCtrl extends MetricsPanelCtrl {
         var sortable = [];
         for (var key in this.locations.subContinents) {
             if (this.locations.subContinents[key].continent === this.panel.zoom.continent) {
-                sortable.push({key:key, name:this.locations.subContinents[key].name});
+                sortable.push({key: key, name: this.locations.subContinents[key].name});
             }
         }
 
@@ -338,13 +338,13 @@ export default class GeoMapPanelCtrl extends MetricsPanelCtrl {
     getCountriesSorted () {
         var sortable = [];
         for (var key in this.locations.countries) {
-        	if (this.locations.countries[key].subContinent === this.panel.zoom.subContinent && this.locations.countries[key].name !== 'N/A') {
-        		sortable.push({key:key, name:this.locations.countries[key].name});
+            if (this.locations.countries[key].subContinent === this.panel.zoom.subContinent && this.locations.countries[key].name !== 'N/A') {
+                sortable.push({key: key, name: this.locations.countries[key].name});
             }
         }
 
         sortable.sort(function (a, b) {
-        	return a.name.localeCompare(b.name);
+            return a.name.localeCompare(b.name);
         });
 
         return sortable;
