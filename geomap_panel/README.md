@@ -11,6 +11,10 @@ In the bottom left corner you'll see a legend with a color gradient, a minimum a
 
 A country's frequency can be more clearly seen by hovering the mouse hover a specific country, a popup will appear displaying its frequency of roaming calls. A country must have data in order for the popup to show.
 
+You can also zoom into the map by clicking on a region. The zooming will occur in several steps, let's say that you click on the country Sweden and you're current zoom state is the world. When clicking Sweden, you'd get zoomed into Europe. Clicking Sweden again (when zoomed into Europe), the map would zoom into Northern Europe and by clicking Sweden once again, you'd now be zoomed into Sweden. 
+
+In the top left corner, you can find a breadcrumb that displays your current zoom state. If you click an item in the breadcrumbs, you will be zoomed out to the clicked region.
+
 ### Metrics
 In order to retrieve data to the plugin you'll need to setup a data source. The data source will need to send a country code and a value for that specific country. The value will represent the frequency of the country. We currently only support a Graphite data source, other data sources may work, but we can't guarantee it.
 
@@ -29,7 +33,10 @@ For the plugin to work properly, you'll also need to use the **aliasByNode** fun
 There are several options in order to manipulate the visualization of the map. These options can be accessed from the **Options** tab when editing the panel, you'll need an admin account in order to see this tab.
 
 #### Region
-You can find a dropdown setting which let's you specify a continent. By doing so, the map will zoom in on the selected region.
+You can find a dropdown called continent in the options tab, this drowdown contains an option for each continent, but also the world. If a continent is selected, the map will zoom into that specific continent, and another dropdown option will appear containing all sub-continents for continent previously selected. If the you now would select the world, the map will zoom back and display the whole world and the sub continent dropdown will dissapear. If you select a sub continent after selecting a continent, the map will zoom into that sub continent and a dropdown of countries contained in that sub continent will appear. Selecting a country will make the map zoom into that country.
+
+### Show breadcrumbs
+This option will toggle to whether display the breadcrumbs in the top left corner. This could be usefull if you don't want someone without an admin account to be able to zoom out the map.
 
 #### Show legend
 Here you can specify if you want the legend to be shown or not. When refering to "the legend", we mean the gradient in the bottom left corner of the map.
