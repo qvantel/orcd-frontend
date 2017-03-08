@@ -35,7 +35,7 @@ There are several options in order to manipulate the visualization of the map. T
 #### Region
 You can find a dropdown called continent in the options tab, this drowdown contains an option for each continent, but also the world. If a continent is selected, the map will zoom into that specific continent, and another dropdown option will appear containing all sub-continents for continent previously selected. If the you now would select the world, the map will zoom back and display the whole world and the sub continent dropdown will dissapear. If you select a sub continent after selecting a continent, the map will zoom into that sub continent and a dropdown of countries contained in that sub continent will appear. Selecting a country will make the map zoom into that country.
 
-### Show breadcrumbs
+#### Show breadcrumbs
 This option will toggle to whether display the breadcrumbs in the top left corner. This could be usefull if you don't want someone without an admin account to be able to zoom out the map.
 
 #### Show legend
