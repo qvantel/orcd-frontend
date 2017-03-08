@@ -4,3 +4,20 @@
 .map path {
     stroke-width: 1;
 }
+
+/* Make sure the holder is relative so absolute children get its bounds*/
+.map-holder {
+    position: relative;
+}
+
+/* Position the breadcrumbs in the top left corner*/
+.breadcrumbs {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+}
+
+/* Make sure the elements inside the breadcrumbs are inline so they don't stack under each other*/
+.breadcrumbs div {
+    display: inline;
+}

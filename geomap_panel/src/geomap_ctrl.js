@@ -2,26 +2,22 @@ import {MetricsPanelCtrl} from 'app/plugins/sdk';
 import mapRenderer from './map_renderer';
 import DataFormatter from './dataFormatter';
 import DataGenerator from './dataGenerator';
+import ZoomHandler from './zoomHandler';
 import Utilities from './utilities';
 
 /** Default panel settings */
 const panelDefaults = {
     mapRegion: 'World',
     showLegend: true,
+    showBreadcrumbs: true,
     animate: true,
     animationDuration: 2,
     colorAmount: 1,
-    colors: ['#6699cc']
-};
-
-/** Region mapping from name to code */
-const regionMapping = {
-    World: 'world',
-    Africa: '002',
-    Europe: '150',
-    America: '019',
-    Asia: '142',
-    Oceania: '009'
+    colors: ['#6699cc'],
+    breadcrumbs: ['World'],
+    zoomContinent: 'World',
+    zoomSubContinent: 'None',
+    zoomCountry: 'None'
 };
 
 /** options */
@@ -49,13 +45,8 @@ export default class GeoMapPanelCtrl extends MetricsPanelCtrl {
             $log.log(msg);
         };
 
-        // Determine which Grafan theme the user is using
-        this.lightTheme = contextSrv.user.lightTheme
-
-        // Components
-        this.utilities = new Utilities();
-        this.dataGenerator = new DataGenerator();
-        this.dataFormatter = new DataFormatter(this);
+        this.scope = $scope;
+        this.panelDefaults = panelDefaults;
 
         // Insert the default values into the panel where the current setting is not found
         for (var key in panelDefaults) {
@@ -64,19 +55,32 @@ export default class GeoMapPanelCtrl extends MetricsPanelCtrl {
             }
         }
 
+        // Setup variables
+        this.lightTheme = contextSrv.user.lightTheme
+        this.breadcrumbs = ['World'];
+
+        // Components
+        this.utilities = new Utilities();
+        this.dataGenerator = new DataGenerator();
+        this.dataFormatter = new DataFormatter(this);
+        this.zoomHandler = new ZoomHandler(this);
+
         // Bind events
         this.events.on('init-edit-mode', this.onInitEditMode.bind(this));
         this.events.on('data-received', this.onDataReceived.bind(this));
 
-        // Intially set the build the dynamic stylesheet
         this.updateDynamicSheet();
         this.loadLocations();
     }
 
+    /**
+    * Load the locations from the json file
+    */
     loadLocations () {
         var self = this;
         $.getJSON('public/plugins/qvantel-geomap-panel/data/locations.json').then((res) => {
             self.locations = res;
+            self.updatePanelZoom();
         });
     }
 
@@ -88,7 +92,9 @@ export default class GeoMapPanelCtrl extends MetricsPanelCtrl {
     }
 
     /**
-    * Listen to new data - currently, when new data is presented, generated random data and re-render the map
+    * Listen to new data, send data over to the formatter to format it in order for google to be able to read it
+    *
+    * @param {array} datalist - list of datapoints
     */
     onDataReceived (dataList) {
         // this.data = this.dataGenerator.generate();
@@ -109,13 +115,38 @@ export default class GeoMapPanelCtrl extends MetricsPanelCtrl {
     }
 
     /**
-    * When the region option is updated, tell the map and re-render
+    * When the region option is updated
+    *
+    * @param {string} type - Continent, SubContinent or Country
     */
-    optionRegionUpdated () {
-        if (!this.map) return;
+    optionRegionChanged (type) {
+        // If a continent is set, reset sub categories
+        if (type === 'continent') {
+            this.panel.zoomSubContinent = 'None';
+            this.panel.zoomCountry = 'None';
+        }
 
-        this.map.setRegion(this.getRegion());
-        this.render();
+        // If a sub continent is set, reset sub categories
+        if (type === 'subContinent') {
+            this.panel.zoomCountry = 'None';
+        }
+
+        // Collect the panel data into an array and send it over to the zoom handler
+        var zoom = ['World'];
+
+        if (this.panel.zoomContinent !== 'World') {
+            zoom.push(this.panel.zoomContinent);
+        }
+
+        if (this.panel.zoomSubContinent !== 'None') {
+            zoom.push(this.panel.zoomSubContinent);
+        }
+
+        if (this.panel.zoomCountry !== 'None') {
+            zoom.push(this.panel.zoomCountry);
+        }
+
+        this.zoomHandler.setZoom(zoom);
     }
 
     /**
@@ -171,6 +202,65 @@ export default class GeoMapPanelCtrl extends MetricsPanelCtrl {
     }
 
     /**
+    * When the zooming of a map has been changed, call this function and it will tell other components
+    */
+    zoomUpdated (doApply) {
+        this.map.setRegion(this.zoomHandler.getLastZoom());
+        this.updateBreadcrumbs(doApply);
+        this.updatePanelZoom();
+        this.render();
+    }
+
+    /**
+    * Update the breadcrumbs
+    *
+    * @param {array} items - An array with locations to be displayed inside the breadcrumbs
+    */
+    updateBreadcrumbs (doApply) {
+        this.breadcrumbs = this.zoomHandler.getZoomNames();
+
+        if (typeof doApply === 'undefined' || doApply) {
+            this.scope.$apply();
+        }
+    }
+
+    /**
+    * If the zooming has been changed due to clicking the map, also update the panel options
+    */
+    updatePanelZoom () {
+        var items = this.zoomHandler.getZoomCodes();
+
+        this.panel.zoomContinent = (items.length > 1 ? items[1] : panelDefaults.zoomContinent);
+        this.panel.zoomSubContinent = (items.length > 2 ? items[2] : panelDefaults.zoomSubContinent);
+        this.panel.zoomCountry = (items.length > 3 ? items[3] : panelDefaults.zoomCountry);
+
+        // Only get the continents once
+        if (!this.zoomedContinents) {
+            this.zoomedContinents = this.getContinentsSorted();
+        }
+
+        // Only get the sub continents if the continent actually have changed
+        if (this.oldContinent !== this.panel.zoomContinent) {
+            this.zoomedSubContinents = this.getSubContinentsSorted();
+        }
+
+        // Only get the countries if the sub continent actually have changed
+        if (this.oldSubContinent !== this.panel.zoomSubContinent) {
+            this.zoomedCountries = this.getCountriesSorted();
+        }
+
+        this.oldContinent = this.panel.zoomContinent;
+        this.oldSubContinent = this.panel.zoomSubContinent;
+    }
+
+    /**
+    * When a breadcrumb has been clicked, this method is called and will let the zoomHandler know which element that was clicked
+    */
+    breadcrumbClicked (index) {
+        this.zoomHandler.zoomOut(index);
+    }
+
+    /**
     * Create a HTML-style element in order to dynamically be able to change style of multiple objects
     */
     createDynamicSheet () {
@@ -199,13 +289,63 @@ export default class GeoMapPanelCtrl extends MetricsPanelCtrl {
         this.dynamicSheet.innerHTML = sheet;
     }
 
-    /**
-    * Get the mapped region
+    /***
+    * Sort the continents by its value
     *
-    * @return {string} - the mapped region
+    * @return {array} - Array of sorted continents
     */
-    getRegion () {
-        return regionMapping[this.panel.mapRegion];
+    getContinentsSorted () {
+        var sortable = [];
+
+        for (var key in this.locations.continents) {
+            sortable.push({key: key, name: this.locations.continents[key]});
+        }
+
+        sortable.sort(function (a, b) {
+            return a.name.localeCompare(b.name);
+        });
+
+        return sortable;
+    }
+
+    /***
+    * Sort the sub continents by its value and filtered by the currently zoomed in continent
+    *
+    * @return {array} - Array of sorted sub continents
+    */
+    getSubContinentsSorted () {
+        var sortable = [];
+        for (var key in this.locations.subContinents) {
+            if (this.locations.subContinents[key].continent === this.panel.zoomContinent) {
+                sortable.push({key: key, name: this.locations.subContinents[key].name});
+            }
+        }
+
+        sortable.sort(function (a, b) {
+            return a.name.localeCompare(b.name);
+        });
+
+        return sortable;
+    }
+
+    /***
+    * Sort the country by its value and filtered by the currently zoomed in sub continent
+    *
+    * @return {array} - Array of sorted countries
+    */
+    getCountriesSorted () {
+        var sortable = [];
+        for (var key in this.locations.countries) {
+            if (this.locations.countries[key].subContinent === this.panel.zoomSubContinent && this.locations.countries[key].name !== 'N/A') {
+                sortable.push({key: key, name: this.locations.countries[key].name});
+            }
+        }
+
+        sortable.sort(function (a, b) {
+            return a.name.localeCompare(b.name);
+        });
+
+        return sortable;
     }
 }
 

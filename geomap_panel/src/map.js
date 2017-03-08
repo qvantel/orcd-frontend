@@ -8,7 +8,6 @@ export default class Map {
         this.container = container;
         this.readyCallback = onReadyCallback;
         this.options = {
-            region: this.ctrl.getRegion(),
             colorAxis: {
                 // minValue: 0,
                 // maxValue: 100,
@@ -23,6 +22,8 @@ export default class Map {
                 focus: 'focus'
             }
         };
+
+        this.setRegion(this.ctrl.zoomHandler.getLastZoom());
         this.setColors(this.ctrl.panel.colors);
         this.loadGoogle();
     }
@@ -44,6 +45,7 @@ export default class Map {
             google.charts.load('upcoming', {'packages': ['geochart']});
             google.charts.setOnLoadCallback(() => {
                 self.createMap();
+                self.ctrl.updateBreadcrumbs();
             });
         }
     }
@@ -61,7 +63,10 @@ export default class Map {
                 self.readyCallback();
             }
         });
-
+        /* istanbul ignore next */
+        google.visualization.events.addListener(this.map, 'regionClick', (e) => {
+            self.ctrl.zoomHandler.zoomIn(e.region);
+        });
         this.draw();
     }
 
@@ -83,10 +88,12 @@ export default class Map {
     * @param {string} region - The region to be zoomed into
     */
     setRegion (region) {
-        /* istanbul ignore else  */
-        if (this.options.region !== region) {
-            this.options.region = region;
+        region = region.toLowerCase();
+        if (region !== 'world') {
+            region = region.toUpperCase();
         }
+
+        this.options.region = region;
     }
 
     /**
