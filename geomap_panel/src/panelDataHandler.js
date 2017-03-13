@@ -19,7 +19,6 @@ export default class PanelDataHandler {
     constructor (ctrl) {
         this.ctrl = ctrl;
         this.panelDefaults = panelDefaults;
-        this.currentPanelData = [];
         this.subscriptions = [];
 
         // Insert the default values into the panel where the current setting is not found
@@ -31,18 +30,6 @@ export default class PanelDataHandler {
                     }
                 }
                 this.ctrl.panel[key] = panelDefaults[key];
-            }
-        }
-
-        // Copy all values to the currentPanelData in order to perform comparison
-        for (key in this.ctrl.panel) {
-            if ($.isArray(this.ctrl.panel[key])) {
-                this.currentPanelData[key] = [];
-                for (key2 in this.ctrl.panel[key]) {
-                    this.currentPanelData[key][key2] = this.ctrl.panel[key][key2];
-                }
-            } else {
-                this.currentPanelData[key] = this.ctrl.panel[key];
             }
         }
     }
@@ -80,16 +67,7 @@ export default class PanelDataHandler {
     * @param {object} param - (Optional) A param passable to the callback
     */
     panelDataUpdated (key, param) {
-        if (typeof this.subscriptions[key] === 'undefined' || this.ctrl.panel[key] === this.currentPanelData[key]) return;
-
-        if ($.isArray(this.ctrl.panel[key])) {
-            for (var key2 in this.ctrl.panel[key]) {
-                this.currentPanelData[key][key2] = this.ctrl.panel[key][key2];
-            }
-        } else {
-            this.currentPanelData[key] = this.ctrl.panel[key];
-        }
-
+        if (typeof this.subscriptions[key] === 'undefined') return;
         this.subscriptions[key](param);
     }
 }
