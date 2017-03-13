@@ -16,13 +16,23 @@ describe('Map', () => {
         });
     });
 
-    describe('when the region option has been altered', () => {
+    describe('when the region option has been altered to a country', () => {
         beforeEach(() => {
             map.setRegion('SE');
         });
 
         it('the map option for region should be set to the specified region', () => {
             expect(map.options.region).to.equal('SE');
+        });
+    });
+
+    describe('when the region option has been altered to world with lower case', () => {
+        beforeEach(() => {
+            map.setRegion('World');
+        });
+
+        it('the map option for region should be set to the specified region', () => {
+            expect(map.options.region).to.equal('world');
         });
     });
 
