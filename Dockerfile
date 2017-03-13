@@ -1,8 +1,8 @@
 FROM grafana/grafana
 
-CMD ["QvantelFrontend", "-f"]
-
 EXPOSE 3000
+
+WORKDIR QvantelFrontend/
 
 COPY config/etc/ /etc/grafana/
 COPY config/lib/ /var/lib/grafana/
