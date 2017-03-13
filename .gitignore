@@ -4,6 +4,7 @@
 
 # nodejs
 config/lib/plugins/
+config/lib/sessions/
 node_modules/
 npm-debug.log
 dist/
