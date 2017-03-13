@@ -3,6 +3,7 @@
 .DS_Store
 
 # nodejs
+config/lib/plugins/
 node_modules/
 npm-debug.log
 dist/

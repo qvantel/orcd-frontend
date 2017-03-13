@@ -4,6 +4,7 @@
   "description": "GeoMap panel plugin for Grafana",
   "main": "module.js",
   "scripts": {
+    "grunt": "grunt",
     "test": "karma start --single-run",
     "test:watch": "karma start"
   },
