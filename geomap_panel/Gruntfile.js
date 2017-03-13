@@ -53,6 +53,5 @@ module.exports = function(grunt) {
     },
 
   });
-  console.log('test');
   grunt.registerTask('default', ['clean', 'copy:src_to_dist', 'copy:pluginDef', 'babel']);
 };
