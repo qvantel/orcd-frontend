@@ -35,10 +35,10 @@ export default class PanelDataHandler {
         }
 
         // Copy all values to the currentPanelData in order to perform comparison
-        for (var key in this.ctrl.panel) {
+        for (key in this.ctrl.panel) {
             if ($.isArray(this.ctrl.panel[key])) {
                 this.currentPanelData[key] = [];
-                for (var key2 in this.ctrl.panel[key]) {
+                for (key2 in this.ctrl.panel[key]) {
                     this.currentPanelData[key][key2] = this.ctrl.panel[key][key2];
                 }
             } else {
@@ -63,7 +63,7 @@ export default class PanelDataHandler {
     * @param {function} callback The function to be called when the data has changed
     */
     subscribe (key, callback) {
-        if($.isArray(key)) {
+        if ($.isArray(key)) {
             for (var i = 0; i < key.length; i++) {
                 this.subscribe(key[i], callback);
             }
@@ -86,8 +86,7 @@ export default class PanelDataHandler {
             for (var key2 in this.ctrl.panel[key]) {
                 this.currentPanelData[key][key2] = this.ctrl.panel[key][key2];
             }
-        }
-        else {
+        } else {
             this.currentPanelData[key] = this.ctrl.panel[key];
         }
 
