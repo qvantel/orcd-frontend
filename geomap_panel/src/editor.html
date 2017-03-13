@@ -84,4 +84,14 @@
 			<spectrum-picker class="gf-form-input width-3" ng-repeat="color in ctrl.panel.colors track by $index" ng-model="ctrl.panel.colors[$index]" ng-change="ctrl.optionColorsUpdated()" ></spectrum-picker>
 		</div>
 	</div>
+
+	<div class="section gf-form-group">
+		<!-- Debug options -->
+		<h5 class="section-heading">Debug Options</h5>
+
+		<!-- Checkbox to toggle wether or not to use faked data -->
+		<div class="gf-form">
+			<gf-form-switch class="gf-form" label="Use fake data" label-class="width-10" checked="ctrl.panel.useFakeData" on-change="ctrl.refresh()"></gf-form-switch>
+		</div>
+	</div>
 </div>
