@@ -28,8 +28,9 @@ export default class PanelDataHandler {
                     for (var key2 in panelDefaults[key]) {
                         this.ctrl.panel[key][key2] = panelDefaults[key][key2];
                     }
+                } else {
+                    this.ctrl.panel[key] = panelDefaults[key];
                 }
-                this.ctrl.panel[key] = panelDefaults[key];
             }
         }
     }
