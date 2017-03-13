@@ -8,7 +8,7 @@
 		<div class="gf-form">
 			<label class="gf-form-label width-10">Continent</label>
 			<div class="gf-form-select-wrapper max-width-10">
-				<select class="input-small gf-form-input" ng-model="ctrl.panel.zoomContinent" ng-change="ctrl.optionRegionChanged('continent')">
+				<select class="input-small gf-form-input" ng-model="ctrl.panel.zoomContinent" ng-change="ctrl.optionChanged('zoomContinent', 'continent')">
 					<option value="World">World</option>
 					<option ng-repeat="location in ctrl.zoomedContinents" value="{{location.key}}">{{location.name}}</option>
 				</select>
@@ -19,7 +19,7 @@
 		<div class="gf-form" ng-if="ctrl.panel.zoomContinent!=null&&ctrl.panel.zoomContinent!='World'">
 			<label class="gf-form-label width-10">Sub Continent</label>
 			<div class="gf-form-select-wrapper max-width-10">
-				<select class="input-small gf-form-input" ng-model="ctrl.panel.zoomSubContinent" ng-change="ctrl.optionRegionChanged('subContinent')">
+				<select class="input-small gf-form-input" ng-model="ctrl.panel.zoomSubContinent" ng-change="ctrl.optionChanged('zoomSubContinent', 'subContinent')">
 					<option value = "None">None</option>
 					<option ng-repeat="location in ctrl.zoomedSubContinents" value="{{location.key}}">{{location.name}}</option>
 				</select>
@@ -30,7 +30,7 @@
 		<div class="gf-form" ng-if="ctrl.panel.zoomSubContinent!=null&&ctrl.panel.zoomSubContinent!='None'">
 			<label class="gf-form-label width-10">Country</label>
 			<div class="gf-form-select-wrapper max-width-10">
-				<select class="input-small gf-form-input" ng-model="ctrl.panel.zoomCountry" ng-change="ctrl.optionRegionChanged('country')">
+				<select class="input-small gf-form-input" ng-model="ctrl.panel.zoomCountry" ng-change="ctrl.optionChanged('zoomSubContinent', 'country')">
 					<option value = "None">None</option>
 					<option ng-repeat="location in ctrl.zoomedCountries" value="{{location.key}}">{{location.name}}</option>
 				</select>
@@ -43,7 +43,7 @@
 
 		<!-- Checkbox to toggle wether or not the legend should be showing -->
 		<div class="gf-form">
-			<gf-form-switch class="gf-form" label="Show Legend" label-class="width-10" checked="ctrl.panel.showLegend" on-change="ctrl.optionShowLegendUpdated()"></gf-form-switch>
+			<gf-form-switch class="gf-form" label="Show Legend" label-class="width-10" checked="ctrl.panel.showLegend" on-change="ctrl.optionChanged('showLegend')"></gf-form-switch>
 		</div>
 
 		<!-- Checkbox to toggle wether or not the breadcrumbs should be showing -->
@@ -58,13 +58,13 @@
 
 		<!-- Checkbox to toggle wether or not the map should animate -->
 		<div class="gf-form">
-			<gf-form-switch class="gf-form" label="Animate" label-class="width-10" checked="ctrl.panel.animate" on-change="ctrl.optionAnimationUpdated()"></gf-form-switch>
+			<gf-form-switch class="gf-form" label="Animate" label-class="width-10" checked="ctrl.panel.animate" on-change="ctrl.optionChanged('animate')"></gf-form-switch>
 		</div>
 
 		<!-- Input to determine the duration of the animation -->
 		<div class="gf-form" ng-show="ctrl.panel.animate">
-			<label class="gf-form-label width-10">Duration (S)</label>
-			<input type="text" class="input-small gf-form-input width-10" ng-model="ctrl.panel.animationDuration" ng-change="ctrl.optionAnimationUpdated()"/>
+			<label class="gf-form-label width-10">Anim duration (S)</label>
+			<input type="text" class="input-small gf-form-input width-10" ng-model="ctrl.panel.animationDuration" on-change="ctrl.optionChanged('animationDuration')"/>
 		</div>
 	</div>
 
@@ -75,13 +75,13 @@
 		<!-- Input to determine the amount of colors -->
 		<div class="gf-form">
 			<label class="gf-form-label width-10">Color Amount</label>
-			<input type="text" class="input-small gf-form-input width-10" ng-model="ctrl.panel.colorAmount" ng-blur="ctrl.optionColorAmountUpdated()" placeholder="1" />
+			<input type="text" class="input-small gf-form-input width-10" ng-model="ctrl.panel.colorAmount" ng-blur="ctrl.optionChanged('colorAmount')" placeholder="1" />
 		</div>
 
 		<!-- List of color-pickers to select which colors to be used within the map -->
 		<div class="gf-form">
 			<label class="gf-form-label width-10">Color</label>
-			<spectrum-picker class="gf-form-input width-3" ng-repeat="color in ctrl.panel.colors track by $index" ng-model="ctrl.panel.colors[$index]" ng-change="ctrl.optionColorsUpdated()" ></spectrum-picker>
+			<spectrum-picker class="gf-form-input width-3" ng-repeat="color in ctrl.panel.colors track by $index" ng-model="ctrl.panel.colors[$index]" ng-change="ctrl.optionChanged('colors')" ></spectrum-picker>
 		</div>
 	</div>
 
@@ -91,7 +91,22 @@
 
 		<!-- Checkbox to toggle wether or not to use faked data -->
 		<div class="gf-form">
-			<gf-form-switch class="gf-form" label="Use fake data" label-class="width-10" checked="ctrl.panel.useFakeData" on-change="ctrl.refresh()"></gf-form-switch>
+			<gf-form-switch class="gf-form" label="Use fake data" label-class="width-10" checked="ctrl.panel.useFakeData" on-change="ctrl.optionChanged('useFakeData')"></gf-form-switch>
+		</div>
+	</div>
+</div>
+
+<div class="editor-row">
+	<div class="section gf-form-group">
+		<!-- Reset options -->
+		<h5 class="section-heading">Reset to Defaults</h5>
+
+		<!-- Selector for the continent -->
+		<div class="gf-form">
+			<button class="btn gf-form-btn width-10 btn-secondary" ng-click="ctrl.optionResetButtonClicked()">
+				<i class="fa fa-undo"></i>
+				&nbsp;Reset
+			</button>
 		</div>
 	</div>
 </div>

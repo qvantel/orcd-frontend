@@ -4,23 +4,7 @@ import DataFormatter from './dataFormatter';
 import DataGenerator from './dataGenerator';
 import ZoomHandler from './zoomHandler';
 import Utilities from './utilities';
-
-/** Default panel settings */
-const panelDefaults = {
-    mapRegion: 'World',
-    showLegend: true,
-    showBreadcrumbs: true,
-    clickToZoomEnabled: true,
-    animate: true,
-    animationDuration: 2,
-    colorAmount: 1,
-    colors: ['#6699cc'],
-    breadcrumbs: ['World'],
-    zoomContinent: 'World',
-    zoomSubContinent: 'None',
-    zoomCountry: 'None',
-    useFakeData: false
-};
+import PanelDataHandler from './panelDataHandler';
 
 /** options */
 const options = {
@@ -48,20 +32,13 @@ export default class GeoMapPanelCtrl extends MetricsPanelCtrl {
         };
 
         this.scope = $scope;
-        this.panelDefaults = panelDefaults;
-
-        // Insert the default values into the panel where the current setting is not found
-        for (var key in panelDefaults) {
-            if (typeof this.panel[key] === 'undefined') {
-                this.panel[key] = panelDefaults[key];
-            }
-        }
 
         // Setup variables
         this.lightTheme = contextSrv.user.lightTheme
         this.breadcrumbs = ['World'];
 
         // Components
+        this.panelDataHandler = new PanelDataHandler(this);
         this.utilities = new Utilities();
         this.dataGenerator = new DataGenerator(this);
         this.dataFormatter = new DataFormatter(this);
@@ -73,6 +50,7 @@ export default class GeoMapPanelCtrl extends MetricsPanelCtrl {
 
         this.updateDynamicSheet();
         this.loadLocations();
+        this.subscribeToPanel();
     }
 
     /**
@@ -105,7 +83,6 @@ export default class GeoMapPanelCtrl extends MetricsPanelCtrl {
             this.data = this.dataFormatter.generate(dataList);
         }
 
-        this.log(this.data);
         this.render();
     }
 
@@ -122,11 +99,48 @@ export default class GeoMapPanelCtrl extends MetricsPanelCtrl {
     }
 
     /**
+    * Subscribe all editor options to the panel data handler
+    */
+    subscribeToPanel () {
+        var self = this;
+        this.panelDataHandler.subscribe('showLegend', () => {
+            self.optionShowLegendUpdated();
+        });
+        this.panelDataHandler.subscribe(['zoomContinent', 'zoomSubContinent', 'zoomCountry'], (param) => {
+            self.optionRegionChanged(param);
+        });
+        this.panelDataHandler.subscribe(['animate', 'animationDuration'], () => {
+            self.optionAnimationUpdated();
+        });
+        this.panelDataHandler.subscribe('colorAmount', () => {
+            self.optionColorAmountUpdated();
+        });
+        this.panelDataHandler.subscribe('colors', () => {
+            self.optionColorsUpdated();
+        });
+        this.panelDataHandler.subscribe('useFakeData', () => {
+            self.refresh();
+        });
+    }
+
+    /**
+    * The editor should call this when something has changed
+    */
+    optionChanged (key, param) {
+        this.panelDataHandler.panelDataUpdated(key, param);
+    }
+
+    /**
     * When the region option is updated
     *
     * @param {string} type - Continent, SubContinent or Country
     */
     optionRegionChanged (type) {
+        if (typeof type === 'undefined') {
+            type = 'continent';
+            this.panel.zoomContinent = 'World';
+        }
+
         // If a continent is set, reset sub categories
         if (type === 'continent') {
             this.panel.zoomSubContinent = 'None';
@@ -208,6 +222,15 @@ export default class GeoMapPanelCtrl extends MetricsPanelCtrl {
         this.render();
     }
 
+    optionResetButtonClicked () {
+        for (var key in this.panelDataHandler.getPanelDefaults()) {
+            this.panel[key] = this.panelDataHandler.getPanelDefaults()[key];
+            this.panelDataHandler.panelDataUpdated(key);
+        }
+
+        this.zoomUpdated(false);
+    }
+
     /**
     * When the zooming of a map has been changed, call this function and it will tell other components
     */
@@ -237,9 +260,9 @@ export default class GeoMapPanelCtrl extends MetricsPanelCtrl {
     updatePanelZoom () {
         var items = this.zoomHandler.getZoomCodes();
 
-        this.panel.zoomContinent = (items.length > 1 ? items[1] : panelDefaults.zoomContinent);
-        this.panel.zoomSubContinent = (items.length > 2 ? items[2] : panelDefaults.zoomSubContinent);
-        this.panel.zoomCountry = (items.length > 3 ? items[3] : panelDefaults.zoomCountry);
+        this.panel.zoomContinent = (items.length > 1 ? items[1] : this.panelDataHandler.getPanelDefaults().zoomContinent);
+        this.panel.zoomSubContinent = (items.length > 2 ? items[2] : this.panelDataHandler.getPanelDefaults().zoomSubContinent);
+        this.panel.zoomCountry = (items.length > 3 ? items[3] : this.panelDataHandler.getPanelDefaults().zoomCountry);
 
         // Only get the continents once
         if (!this.zoomedContinents) {

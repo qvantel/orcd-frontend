@@ -17,15 +17,15 @@ export default class ZoomHandler {
         var subContinent = this.ctrl.panel.zoomSubContinent;
         var country = this.ctrl.panel.zoomCountry;
 
-        if (continent !== this.ctrl.panelDefaults.zoomContinent) {
+        if (continent !== this.ctrl.panelDataHandler.getPanelDefaults().zoomContinent) {
             this.zoom.push(continent);
         }
 
-        if (subContinent !== this.ctrl.panelDefaults.zoomSubContinent) {
+        if (subContinent !== this.ctrl.panelDataHandler.getPanelDefaults().zoomSubContinent) {
             this.zoom.push(subContinent);
         }
 
-        if (country !== this.ctrl.panelDefaults.zoomCountry) {
+        if (country !== this.ctrl.panelDataHandler.getPanelDefaults().zoomCountry) {
             this.zoom.push(country);
         }
     }
