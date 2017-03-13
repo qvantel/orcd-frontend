@@ -12,6 +12,7 @@ module.exports = function (config) {
       'src/utilities.js',
       'src/dataFormatter.js',
       'src/zoomHandler.js',
+      'src/dataGenerator.js',
       'test/*.js'
     ],
 
@@ -20,6 +21,7 @@ module.exports = function (config) {
       'src/utilities.js': ['browserify'],
       'src/dataFormatter.js': ['browserify'],
       'src/zoomHandler.js': ['browserify'],
+      'src/dataGenerator.js': ['browserify'],
       'test/*.js': ['browserify']
     },
 

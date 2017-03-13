@@ -18,7 +18,8 @@ const panelDefaults = {
     breadcrumbs: ['World'],
     zoomContinent: 'World',
     zoomSubContinent: 'None',
-    zoomCountry: 'None'
+    zoomCountry: 'None',
+    useFakeData: false
 };
 
 /** options */
@@ -62,7 +63,7 @@ export default class GeoMapPanelCtrl extends MetricsPanelCtrl {
 
         // Components
         this.utilities = new Utilities();
-        this.dataGenerator = new DataGenerator();
+        this.dataGenerator = new DataGenerator(this);
         this.dataFormatter = new DataFormatter(this);
         this.zoomHandler = new ZoomHandler(this);
 
@@ -98,8 +99,13 @@ export default class GeoMapPanelCtrl extends MetricsPanelCtrl {
     * @param {array} datalist - list of datapoints
     */
     onDataReceived (dataList) {
-        // this.data = this.dataGenerator.generate();
-        this.data = this.dataFormatter.generate(dataList);
+        if (this.panel.useFakeData) {
+            this.data = this.dataGenerator.generate();
+        } else {
+            this.data = this.dataFormatter.generate(dataList);
+        }
+
+        this.log(this.data);
         this.render();
     }
 
