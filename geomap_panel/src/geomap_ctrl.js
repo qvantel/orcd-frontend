@@ -36,6 +36,8 @@ export default class GeoMapPanelCtrl extends MetricsPanelCtrl {
         // Setup variables
         this.lightTheme = contextSrv.user.lightTheme
         this.breadcrumbs = ['World'];
+        this.disableRenderer = false;
+        this.disableRefresh = false;
 
         // Components
         this.panelDataHandler = new PanelDataHandler(this);
@@ -84,6 +86,7 @@ export default class GeoMapPanelCtrl extends MetricsPanelCtrl {
         }
 
         this.render();
+        this.disableRefresh = false;
     }
 
     /**
@@ -96,6 +99,23 @@ export default class GeoMapPanelCtrl extends MetricsPanelCtrl {
     */
     link (scope, elem, attrs, ctrl) {
         mapRenderer(scope, elem, attrs, ctrl);
+    }
+
+    render () {
+        if (!this.disableRenderer) {
+            super.render();
+        }
+    }
+
+    refresh () {
+        if (!this.disableRenderer) {
+            if (this.disableRefresh) {
+                this.render();
+            } else {
+                this.disableRefresh = true;
+                super.refresh();
+            }
+        }
     }
 
     /**
@@ -222,13 +242,15 @@ export default class GeoMapPanelCtrl extends MetricsPanelCtrl {
         this.render();
     }
 
-    optionResetButtonClicked () {
-        for (var key in this.panelDataHandler.getPanelDefaults()) {
-            this.panel[key] = this.panelDataHandler.getPanelDefaults()[key];
-            this.panelDataHandler.panelDataUpdated(key);
-        }
 
-        this.zoomUpdated(false);
+    /**
+    * Callback for the reset button
+    */
+    optionResetButtonClicked () {
+        this.disableRenderer = true;
+        this.panelDataHandler.resetToDefaults(true, true);
+        this.disableRenderer = false;
+        this.refresh();
     }
 
     /**

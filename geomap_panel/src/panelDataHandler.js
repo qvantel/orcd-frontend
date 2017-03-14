@@ -21,18 +21,7 @@ export default class PanelDataHandler {
         this.panelDefaults = panelDefaults;
         this.subscriptions = [];
 
-        // Insert the default values into the panel where the current setting is not found
-        for (var key in panelDefaults) {
-            if (typeof this.ctrl.panel[key] === 'undefined') {
-                if ($.isArray(panelDefaults[key])) {
-                    for (var key2 in panelDefaults[key]) {
-                        this.ctrl.panel[key][key2] = panelDefaults[key][key2];
-                    }
-                } else {
-                    this.ctrl.panel[key] = panelDefaults[key];
-                }
-            }
-        }
+        this.resetToDefaults();
     }
 
     /**
@@ -42,6 +31,32 @@ export default class PanelDataHandler {
     */
     getPanelDefaults () {
         return this.panelDefaults;
+    }
+
+    /**
+    * Iterate the defaults and put data into the panel data if not present
+    *
+    * @param {boolean} overwrite - Put data even if data is already present
+    * @param {boolean} executeCallbacks - Whetether or not the execute the callbacks
+    *
+    */
+    resetToDefaults (overwrite, executeCallbacks) {
+        // Insert the default values into the panel where the current setting is not found
+        for (var key in panelDefaults) {
+            if (overwrite || typeof this.ctrl.panel[key] === 'undefined') {
+                if ($.isArray(panelDefaults[key])) {
+                    for (var key2 in panelDefaults[key]) {
+                        this.ctrl.panel[key][key2] = panelDefaults[key][key2];
+                    }
+                } else {
+                    this.ctrl.panel[key] = panelDefaults[key];
+                }
+
+                if (executeCallbacks) {
+                    this.panelDataUpdated(key);
+                }
+            }
+        }
     }
 
     /**

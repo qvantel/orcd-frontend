@@ -10,7 +10,7 @@ export default function link (scope, elem, attrs, ctrl) {
     // Bind the render call
     ctrl.events.on('render', function () {
         render();
-        ctrl.renderingCompleted();
+        // ctrl.renderingCompleted();
     });
 
     /**
