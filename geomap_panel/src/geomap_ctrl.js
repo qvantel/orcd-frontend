@@ -242,7 +242,6 @@ export default class GeoMapPanelCtrl extends MetricsPanelCtrl {
         this.render();
     }
 
-
     /**
     * Callback for the reset button
     */
