@@ -1,5 +1,7 @@
 {
   "scripts": {
+    "build": "npm install && npm run grunt_geomap;",
+    "grunt_geomap": "cd geomap_panel && npm install && npm run grunt;",
     "testGeomap": "cd geomap_panel; npm install; npm test;",
     "testEslint": "eslint  templates/**/src/*.js geomap_panel/src/*.js",
     "testCsslint": "csslint templates/**/src/css/*.css geomap_panel/src/css/*.css",
