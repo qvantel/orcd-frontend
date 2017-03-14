@@ -3,6 +3,7 @@
 .DS_Store
 
 # nodejs
+config/lib/grafana.db
 config/lib/plugins/
 config/lib/sessions/
 node_modules/
