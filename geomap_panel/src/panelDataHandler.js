@@ -45,6 +45,7 @@ export default class PanelDataHandler {
         for (var key in panelDefaults) {
             if (overwrite || typeof this.ctrl.panel[key] === 'undefined') {
                 if ($.isArray(panelDefaults[key])) {
+                    this.ctrl.panel[key] = [];
                     for (var key2 in panelDefaults[key]) {
                         this.ctrl.panel[key][key2] = panelDefaults[key][key2];
                     }
