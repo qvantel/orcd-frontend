@@ -10,9 +10,9 @@ describe('ZoomHandler', () => {
 
     describe('when the zoom handler is loaded without any saved options', () => {
         beforeEach(() => {
-            ctrl.panel.zoomContinent = ctrl.panelDefaults.zoomContinent;
-            ctrl.panel.zoomSubContinent = ctrl.panelDefaults.zoomSubContinent;
-            ctrl.panel.zoomCountry = ctrl.panelDefaults.zoomCountry;
+            ctrl.panel.zoomContinent = ctrl.panelDataHandler.getPanelDefaults().zoomContinent;
+            ctrl.panel.zoomSubContinent = ctrl.panelDataHandler.getPanelDefaults().zoomSubContinent;
+            ctrl.panel.zoomCountry = ctrl.panelDataHandler.getPanelDefaults().zoomCountry;
             zoomHandler.loadZoom();
         });
 
@@ -25,8 +25,8 @@ describe('ZoomHandler', () => {
     describe('when the zoom handler is loaded with only a continent', () => {
         beforeEach(() => {
             ctrl.panel.zoomContinent = 'Europe';
-            ctrl.panel.zoomSubContinent = ctrl.panelDefaults.zoomSubContinent;
-            ctrl.panel.zoomCountry = ctrl.panelDefaults.zoomCountry;
+            ctrl.panel.zoomSubContinent = ctrl.panelDataHandler.getPanelDefaults().zoomSubContinent;
+            ctrl.panel.zoomCountry = ctrl.panelDataHandler.getPanelDefaults().zoomCountry;
             zoomHandler.loadZoom();
         });
 
@@ -41,7 +41,7 @@ describe('ZoomHandler', () => {
         beforeEach(() => {
             ctrl.panel.zoomContinent = 'Europe';
             ctrl.panel.zoomSubContinent = 'Northern Europe';
-            ctrl.panel.zoomCountry = ctrl.panelDefaults.zoomCountry;
+            ctrl.panel.zoomCountry = ctrl.panelDataHandler.getPanelDefaults().zoomCountry;
             zoomHandler.loadZoom();
         });
 
@@ -256,10 +256,14 @@ describe('ZoomHandler', () => {
 
     function setupZoomHandler () {
         ctrl = {
-            panelDefaults: {
-                zoomContinent: 'World',
-                zoomSubContinent: 'None',
-                zoomCountry: 'None'
+            panelDataHandler: {
+                getPanelDefaults: () => {
+                    return {
+                        zoomContinent: 'World',
+                        zoomSubContinent: 'None',
+                        zoomCountry: 'None'
+                    };
+                }
             },
             panel: {
                 zoomContinent: 'Europe',
