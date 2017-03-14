@@ -1,0 +1,383 @@
+
+
+<style>
+    .vis-timeline{
+        border: none;
+    }
+
+    .vis-legend-text{
+        color: black;
+    }
+
+    .red{
+        //fill: red;
+        background-image: url("https://upload.wikimedia.org/wikipedia/commons/1/16/Deletion_icon.svg");
+    }
+
+    /*.vis-panel.vis-center, .vis-panel.vis-left, .vis-panel.vis-right, .vis-panel.vis-top, .vis-panel.vis-bottom{
+        border: 2px solid white !important;
+    }*/
+
+    .vis-panel.vis-center{
+        border: 2px solid white !important;
+    }
+    .info-container{
+        background: red; /* For browsers that do not support gradients */
+        background: -webkit-linear-gradient(#50b2ff, #a6ff8a); /* For Safari 5.1 to 6.0 */
+        background: -o-linear-gradient(red, yellow); /* For Opera 11.1 to 12.0 */
+        background: -moz-linear-gradient(red, yellow); /* For Firefox 3.6 to 15 */
+        background: linear-gradient(45deg, #50b2ff, #c76eff); /* Standard syntax (must be last) */
+
+        transition: height 2s;
+        //border: 1px solid white;
+        width: 100%;
+        //height: auto;
+        margin: 20px 0;
+        border-radius: 5px;
+    }
+
+    .transformable {
+        overflow: hidden;
+    }
+
+    .small {
+        height:40px;
+        transition: max-height 1s;
+    }
+
+    .small-image{
+        width: 100%;
+        height: 40px;
+        //background-image: url("http://cdn.onlinewebfonts.com/svg/img_549.svg");
+        //background-size: 30px;
+        //background-repeat: no-repeat;
+        //background-position: center;
+        padding: 7px;
+    }
+
+    .small .small-image .icon{
+        background-color: white;
+        -webkit-mask:  url("http://cdn.onlinewebfonts.com/svg/img_549.svg") no-repeat 50% 50%;
+        mask: url("http://cdn.onlinewebfonts.com/svg/img_549.svg") no-repeat 50% 50%;
+        height: 26px;
+    }
+
+    .big {
+        padding: 10px;
+        max-height: 1000px; //280
+        transition: max-height 1s;
+    }
+
+    .hide-container{
+        opacity: 0;
+        -webkit-transition: opacity .15s ease-in-out;
+        -moz-transition: opacity .15s ease-in-out;
+        -ms-transition: opacity .15s ease-in-out;
+        -o-transition: opacity .15s ease-in-out;
+        transition: opacity .15s ease-in-out;
+    }
+
+    .show-container{
+        opacity: 1;
+        -webkit-transition: opacity .15s ease-in-out;
+        -moz-transition: opacity .15s ease-in-out;
+        -ms-transition: opacity .15s ease-in-out;
+        -o-transition: opacity .15s ease-in-out;
+        transition: opacity .15s ease-in-out;
+    }
+
+    .circle {
+        border-radius: 50%;
+        width: 80px;
+        height: 80px;
+        background-color: transparent;
+        border: 3px solid white;
+        transition: background-color 3s;
+    }
+
+    .notify-circle{
+        top: -10px;
+        right: -10px;
+        padding: 3px;
+        border-radius: 50%;
+        width: 20px;
+        height: 20px;
+        font-size: 10px;
+        background-color: red;
+        position: absolute;
+        color: white;
+    }
+
+    .small-circle {
+        border-radius: 50%;
+        width: 54px;
+        height: 54px;
+        background-color: transparent;
+        border: 3px solid white;
+        transition: background-color 3s;
+    }
+
+    @keyframes pulse {
+        0% {
+            -webkit-transform: scale(1.0);
+            -moz-transform: scale(1.0);
+            -o-transform: scale(1.0);
+            -ms-transform: scale(1.0);
+            //transform: scale(1.0);
+            transform: scale(1.5);
+            opacity: 0;
+        }
+        20%{
+            opacity: 1;
+        }
+        25% {
+            transform: scale(1.0);
+            transform: translateX(0px);
+        }
+        85%{
+            opacity: 1;
+        }
+        100% {
+            opacity: 0;
+            //transform: scale(1.0);
+            transform: translateX(-85px);
+        }
+        /*from{
+            transform: translateX(0px);
+        }
+        to{
+            transform: translateX(-40px);
+        }*/
+    }
+
+    .big-box{
+        background: linear-gradient(45deg, #50b2ff, #c76eff);
+        padding: 5px;
+        height: 100%;
+        border-radius: 5px;
+    }
+
+    .small-box{
+        //position: relative;
+        margin: 0 0 5px 5px;
+        padding: 3px;
+        background-color: #424242;
+        border-radius: 5px;
+        width: 60px;
+        float: left;
+        border: 1px solid transparent;
+    }
+    
+    .box{
+        position: relative;
+        margin: 0 0px 5px 5px;
+        padding: 10px;
+        background-color: #424242;
+        border-radius: 5px;
+        width: 100px;
+        //display: block;
+        float: left;
+        border: 1px solid transparent;
+    }
+    .box:hover{
+        cursor: pointer;
+        border: 1px solid white;
+    }
+
+    .small-box-container{
+        margin-top: 3px;
+        text-align: center;
+        height: auto;
+        color: white;
+        font-size: 8px;
+    }
+
+    .box-container{
+        margin-top: 5px;
+        text-align: center;
+        height: auto;
+        color: white;
+    }
+
+    .active{
+        border: 1px solid white;
+    }
+
+    .tl-menu{
+        margin: auto;
+        width: 30%;
+    }
+
+    .tl-button{
+        position: relative;
+        border-radius: 5px;
+        border: 2px solid white;
+        width: auto;
+        height: 33px;
+        padding: 3px 20px;
+        display: inline-block;
+        color: white;
+        text-align: center;
+        margin: 10px 10px;
+    }
+
+    .tl-button:hover{
+        background-color: white;
+        color: #50b2ff;
+        cursor: pointer;
+    }
+
+    .tl-button-active{
+        background-color: white;
+        color: #50b2ff;
+        cursor: pointer;
+    }
+
+    .tl-menu-container{
+        border: 2px solid white;
+        width: 100%;
+        height: auto;
+        border-radius: 5px;
+        padding: 10px;
+    }
+
+    .alert{
+        content: "";
+        background: red;
+        top: 0px;
+        right: 10px;
+        height: 20px;
+        width: 20px;
+        position: absolute;
+        z-index: 10000;
+    }
+
+    .alert-container{
+        border-radius: 5px;
+        width: calc(25% - 10px);
+        padding: 10px;
+        background: linear-gradient(45deg, #92ccff, #50b2ff);
+        //background-color: #50b2ff;
+        margin-left: 10px;
+        margin-bottom: 10px;
+        height: 140px;
+        float: left;
+        color: white;
+        display: inline-block;
+    }
+
+    .alert-container .badge{
+        font-weight: 300;
+        border-radius: 3px;
+        background-color: #424242;
+        color: white;
+        padding: 2px 5px;
+        height: auto;
+        width: auto;
+    }
+
+    .alert-options{
+        background: linear-gradient(45deg, #d39cff, #dabfff);
+        //background-color: #d39cff;
+    }
+</style>
+
+
+<div class="info-container small" class="transformable" ng-class="{'small':!vm.showTl, 'big':vm.showTl}">
+    <!-- vm.selProducts.length > 0 --->
+    <div class="small-image" ng-show="!vm.showTl"><div class="icon">s</div></div>
+    <div class="" ng-show="vm.showTl" ng-class="{'hide-container':!vm.showTl, 'show-container':vm.showTl}">
+
+
+        <div id="tl" style="position: relative;">
+            <!--<div ng-show="vm.alertDataPoint > 0">
+                <p ng-bind-html="vm.alertHTML"></p>
+            </div>-->
+            <div ng-repeat="alert in vm.alarms">
+                <div ng-bind-html="vm.trustHTML(alert.HTML)"></div>
+            </div>
+
+        </div>
+        <div class="tl-menu">
+            <div class="tl-button" ng-click="vm.setSelectedMenuItem('filter')" ng-class="{'tl-button-active': vm.tlMenuItemClicked === 'filter'}" >Filter</div>
+            <div class="tl-button" ng-click="vm.setSelectedMenuItem('alert')" ng-class="{'tl-button-active': vm.tlMenuItemClicked === 'alert'}" >Alert
+                <div class="notify-circle" ng-show="vm.showAlarmNotis">{{vm.nrOfAlarmsNotify}}</div>
+            </div>
+            <div class="tl-button" ng-click="vm.setSelectedMenuItem('color')" ng-class="{'tl-button-active': vm.tlMenuItemClicked === 'color'}" >Change color</div>
+        </div>
+        <div class="tl-menu-container" ng-show="vm.tlMenuItemClicked">
+            <div ng-show="vm.tlMenuItemClicked === 'filter'">
+                Hej!
+            </div>
+
+            <div ng-show="vm.tlMenuItemClicked === 'alert'">
+                <div class="alert-container alert-options">
+                    <form style="color: black;">
+                        <label for="selectProductAlarm">Product:</label>
+                        <select id="selectProductAlarm" name="selectProductAlarm" ng-model="vm.selalarmProd">
+                            <option selected> Select Product from Graph </option>
+                            <option ng-repeat="product in vm.selProducts" value={{product.name}}>{{product.name}}</option>
+                        </select>
+
+                        <label for="productProcent">Procent:</label>
+                        <input id="productProcent" name="productProcent" type="number" ng-model="vm.alarmProcent" min="0" max="100" step="5">
+
+                        <button ng-click="vm.setAlarms()">Create alarm</button>
+                    </form>
+                </div>
+
+
+                <div style="color: black;" ng-repeat="alarmProduct in vm.alarms" class="alert-container">
+                    Product: <div class="badge">{{alarmProduct.name}}</div> <br>
+                    Percent: <div class="badge">{{alarmProduct.procent}}%</div> <br>
+                    First time alert: <div class="badge">{{vm.convertTStoString(alarmProduct.firstAlert)}}</div> <br>
+                    Last time alert: <div class="badge">{{vm.convertTStoString(alarmProduct.lastAlert)}}</div> <br>
+                    <button ng-click="vm.deleteAlarm(alarmProduct)">Delete</button>
+                </div>
+
+            </div>
+            <div style="clear: both"></div>
+        </div>
+    </div>
+</div>
+
+
+<div ng-if="vm.selBoxSize == 2" ng-repeat="product in vm.testData | filter:vm.filterGroups()">
+    <div class="box" ng-click="vm.selectProduct(product)" ng-class="{ 'active' : vm.isBoxSelected(product) == true}">
+        <div class="circle" ng-style="{'background-color' : '#' + vm.transformColors(product.value)}"></div>
+        <div class="box-container">{{product.name}}</div>
+    </div>
+</div>
+
+<div ng-if="vm.selBoxSize == 1" ng-repeat="product in vm.testData | filter:vm.filterGroups()">
+    <div class="small-box" ng-click="vm.selectProduct(product)" ng-class="{ 'active' : vm.isBoxSelected(product) == true}">
+        <div class="small-circle" ng-style="{'background-color' : '#' + vm.transformColors(product.value)}"></div>
+        <div class="small-box-container">{{product.name}}</div>
+    </div>
+</div>
+
+
+<!-- PRODUCTS -->
+<!--
+<div style="clear: both"></div>
+<div ng-repeat="product in vm.selProducts">
+    Products: {{product.name}}
+</div>
+Search word: {{vm.search}}<br>
+Search: <input type="text" ng-model="vm.search"> <button ng-click="vm.filterGroups()">SEARCH</button>
+<button ng-click="vm.setBoxOptions()">Change size</button>
+-->
+
+
+<br>
+<!--
+<div id="chart"></div>
+Data stream:
+<br>
+<table>
+    <tr ng-repeat="x in vm.dataSet">
+        <td>Service: {{ x[2] }}  </td>
+        <td>Value: {{ x[0] }}</td>
+    </tr>
+</table>
+-->

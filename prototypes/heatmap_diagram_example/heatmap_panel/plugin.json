@@ -1,0 +1,20 @@
+{
+  "type": "panel",
+  "name": "Heatmap-panel",
+  "id": "Heatmap-panel",
+
+  "info": {
+    "description": "Heatmap-panel for grafana",
+    "author": {
+      "name": "Me"
+    },
+    "keywords": ["heatmap", "panel"],
+    "version": "1.0.0",
+    "updated": "2017-01-31"
+  },
+
+  "dependencies": {
+    "grafanaVersion": "3.x.x",
+    "plugins": [ ]
+  }
+}
