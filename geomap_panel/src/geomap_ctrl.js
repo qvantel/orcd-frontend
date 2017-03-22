@@ -4,22 +4,7 @@ import DataFormatter from './dataFormatter';
 import DataGenerator from './dataGenerator';
 import ZoomHandler from './zoomHandler';
 import Utilities from './utilities';
-
-/** Default panel settings */
-const panelDefaults = {
-    mapRegion: 'World',
-    showLegend: true,
-    showBreadcrumbs: true,
-    clickToZoomEnabled: true,
-    animate: true,
-    animationDuration: 2,
-    colorAmount: 1,
-    colors: ['#6699cc'],
-    breadcrumbs: ['World'],
-    zoomContinent: 'World',
-    zoomSubContinent: 'None',
-    zoomCountry: 'None'
-};
+import PanelDataHandler from './panelDataHandler';
 
 /** options */
 const options = {
@@ -47,22 +32,17 @@ export default class GeoMapPanelCtrl extends MetricsPanelCtrl {
         };
 
         this.scope = $scope;
-        this.panelDefaults = panelDefaults;
-
-        // Insert the default values into the panel where the current setting is not found
-        for (var key in panelDefaults) {
-            if (typeof this.panel[key] === 'undefined') {
-                this.panel[key] = panelDefaults[key];
-            }
-        }
 
         // Setup variables
         this.lightTheme = contextSrv.user.lightTheme
         this.breadcrumbs = ['World'];
+        this.disableRenderer = false;
+        this.disableRefresh = false;
 
         // Components
+        this.panelDataHandler = new PanelDataHandler(this);
         this.utilities = new Utilities();
-        this.dataGenerator = new DataGenerator();
+        this.dataGenerator = new DataGenerator(this);
         this.dataFormatter = new DataFormatter(this);
         this.zoomHandler = new ZoomHandler(this);
 
@@ -72,6 +52,7 @@ export default class GeoMapPanelCtrl extends MetricsPanelCtrl {
 
         this.updateDynamicSheet();
         this.loadLocations();
+        this.subscribeToPanel();
     }
 
     /**
@@ -98,9 +79,14 @@ export default class GeoMapPanelCtrl extends MetricsPanelCtrl {
     * @param {array} datalist - list of datapoints
     */
     onDataReceived (dataList) {
-        // this.data = this.dataGenerator.generate();
-        this.data = this.dataFormatter.generate(dataList);
+        if (this.panel.useFakeData) {
+            this.data = this.dataGenerator.generate();
+        } else {
+            this.data = this.dataFormatter.generate(dataList);
+        }
+
         this.render();
+        this.disableRefresh = false;
     }
 
     /**
@@ -115,12 +101,66 @@ export default class GeoMapPanelCtrl extends MetricsPanelCtrl {
         mapRenderer(scope, elem, attrs, ctrl);
     }
 
+    render () {
+        if (!this.disableRenderer) {
+            super.render();
+        }
+    }
+
+    refresh () {
+        if (!this.disableRenderer) {
+            if (this.disableRefresh) {
+                this.render();
+            } else {
+                this.disableRefresh = true;
+                super.refresh();
+            }
+        }
+    }
+
+    /**
+    * Subscribe all editor options to the panel data handler
+    */
+    subscribeToPanel () {
+        var self = this;
+        this.panelDataHandler.subscribe('showLegend', () => {
+            self.optionShowLegendUpdated();
+        });
+        this.panelDataHandler.subscribe(['zoomContinent', 'zoomSubContinent', 'zoomCountry'], (param) => {
+            self.optionRegionChanged(param);
+        });
+        this.panelDataHandler.subscribe(['animate', 'animationDuration'], () => {
+            self.optionAnimationUpdated();
+        });
+        this.panelDataHandler.subscribe('colorAmount', () => {
+            self.optionColorAmountUpdated();
+        });
+        this.panelDataHandler.subscribe('colors', () => {
+            self.optionColorsUpdated();
+        });
+        this.panelDataHandler.subscribe('useFakeData', () => {
+            self.refresh();
+        });
+    }
+
+    /**
+    * The editor should call this when something has changed
+    */
+    optionChanged (key, param) {
+        this.panelDataHandler.panelDataUpdated(key, param);
+    }
+
     /**
     * When the region option is updated
     *
     * @param {string} type - Continent, SubContinent or Country
     */
     optionRegionChanged (type) {
+        if (typeof type === 'undefined') {
+            type = 'continent';
+            this.panel.zoomContinent = 'World';
+        }
+
         // If a continent is set, reset sub categories
         if (type === 'continent') {
             this.panel.zoomSubContinent = 'None';
@@ -203,6 +243,16 @@ export default class GeoMapPanelCtrl extends MetricsPanelCtrl {
     }
 
     /**
+    * Callback for the reset button
+    */
+    optionResetButtonClicked () {
+        this.disableRenderer = true;
+        this.panelDataHandler.resetToDefaults(true, true);
+        this.disableRenderer = false;
+        this.refresh();
+    }
+
+    /**
     * When the zooming of a map has been changed, call this function and it will tell other components
     */
     zoomUpdated (doApply) {
@@ -231,9 +281,9 @@ export default class GeoMapPanelCtrl extends MetricsPanelCtrl {
     updatePanelZoom () {
         var items = this.zoomHandler.getZoomCodes();
 
-        this.panel.zoomContinent = (items.length > 1 ? items[1] : panelDefaults.zoomContinent);
-        this.panel.zoomSubContinent = (items.length > 2 ? items[2] : panelDefaults.zoomSubContinent);
-        this.panel.zoomCountry = (items.length > 3 ? items[3] : panelDefaults.zoomCountry);
+        this.panel.zoomContinent = (items.length > 1 ? items[1] : this.panelDataHandler.getPanelDefaults().zoomContinent);
+        this.panel.zoomSubContinent = (items.length > 2 ? items[2] : this.panelDataHandler.getPanelDefaults().zoomSubContinent);
+        this.panel.zoomCountry = (items.length > 3 ? items[3] : this.panelDataHandler.getPanelDefaults().zoomCountry);
 
         // Only get the continents once
         if (!this.zoomedContinents) {
