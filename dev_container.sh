@@ -7,20 +7,29 @@ fi
 
 docker stop $name
 docker rm $name
-npm run build
+
 
 if [[ $OSTYPE == *"darwin"* ]]; then
+    if [ ! -e "config/lib/grafana.db" ]; then
+        cp config/lib/config_grafana.db config/lib/grafana.db
+    fi
+    npm run build
     docker run -d --name $name -p 3001:3000  \
-    -v $HOME/Qvantel/QvantelFrontend/config/lib:/var/lib/grafana \
+    -v $HOME/Qvantel/QvantelFrontend/config/lib/grafana.db:/var/lib/grafana/grafana.db \
     -v $HOME/Qvantel/QvantelFrontend/config/etc:/etc/grafana \
-    -v $HOME/Qvantel/QvantelFrontend/geomap_panel/:/var/lib/grafana/plugins/geomap_panel \
-    -v $HOME/Qvantel/QvantelFrontend/heatmap_panel/:/var/lib/grafana/plugins/heatmap_panel \
+    -v $HOME/Qvantel/QvantelFrontend/geomap_panel/dist/:/var/lib/grafana/plugins/geomap_panel \
     grafana/grafana
+    #-v $HOME/Qvantel/QvantelFrontend/heatmap_panel/:/var/lib/grafana/plugins/heatmap_panel \
 else
-    docker run -d --net=host --name $name -p 3001:3000 \
-    -v $HOME/Qvantel/QvantelFrontend/config/lib:/var/lib/grafana \
+    if [ ! -e "config/lib/grafana.db" ]; then
+        sudo cp config/lib/config_grafana.db config/lib/grafana.db
+    fi
+    sudo npm run build
+    docker run -d --name $name -p 3001:3000 \
+    -v $HOME/Qvantel/QvantelFrontend/config/lib/grafana.db:/var/lib/grafana/grafana.db \
     -v $HOME/Qvantel/QvantelFrontend/config/etc:/etc/grafana \
-    -v $HOME/Qvantel/QvantelFrontend/geomap_panel/:/var/lib/grafana/plugins/geomap_panel \
-    -v $HOME/Qvantel/QvantelFrontend/heatmap_panel/:/var/lib/grafana/plugins/heatmap_panel \
+    -v $HOME/Qvantel/QvantelFrontend/geomap_panel/dist/:/var/lib/grafana/plugins/geomap_panel \
     grafana/grafana
+    #-v $HOME/Qvantel/QvantelFrontend/heatmap_panel/:/var/lib/grafana/plugins/heatmap_panel \
+
 fi
