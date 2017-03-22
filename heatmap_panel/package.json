@@ -4,6 +4,7 @@
   "description": "example panel for fake datasource",
   "main": "module.js",
   "scripts": {
+    "grunt": "grunt",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [

@@ -1,4 +1,4 @@
-FROM grafana/grafana:4.1.1
+FROM grafana/grafana
 
 EXPOSE 3000
 
