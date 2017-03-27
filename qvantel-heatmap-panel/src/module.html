@@ -1,7 +1,7 @@
 <h2>{{ ctrl.header }}</h2>
 <table>
-  <tr ng-repeat="x in ctrl.datapoints">
-    <td>Service: {{ x[2] }}  </td>
-    <td>Value: {{ x[0] }}</td>
+  <tr ng-repeat="x in ctrl.currentDataList">
+    <td>Service: {{ x.target }}  </td>
+    <td>Value: {{ x.datapoints[x.datapoints.length - 1] }}</td>
   </tr>
 </table>

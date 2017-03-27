@@ -3,7 +3,7 @@ import _ from 'lodash';
 import './css/template-panel.css!';
 
 export class TemplateCtrl extends MetricsPanelCtrl {
-  constructor($scope, $injector, $rootScope) {
+  constructor ($scope, $injector, $rootScope) {
     super($scope, $injector);
     this.$rootScope = $rootScope;
 
@@ -25,10 +25,10 @@ export class TemplateCtrl extends MetricsPanelCtrl {
       valueName: 'current',
       strokeWidth: 1,
       fontSize: '80%',
-  	  combine: {
-  	    threshold: 0.0,
-  	    label: 'Others'
-  	  }
+      combine: {
+        threshold: 0.0,
+        label: 'Others'
+      }
     };
 
     _.defaults(this.panel, panelDefaults);
@@ -41,20 +41,18 @@ export class TemplateCtrl extends MetricsPanelCtrl {
     // this.events.on('init-edit-mode', this.onInitEditMode.bind(this));
   }
 
-  onDataError() {
+  onDataError () {
     this.series = [];
     this.render();
   }
 
-  onDataReceived(dataList) {
-    // Might contain multiple targets in array.
-    this.header = dataList[0].target;
-    this.datapoints = dataList[0].datapoints;
+  onDataReceived (dataList) {
+    this.currentDataList = dataList;
   }
 
-  onRender() {
+  onRender () {
     // When is this used?
   }
 }
 
-TemplateCtrl.templateUrl ='module.html';
+TemplateCtrl.templateUrl = 'module.html';
