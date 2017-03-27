@@ -26,7 +26,7 @@ export default class TemplateHandler {
     updateVariable (variableName, options, query, currentText, currentValue) {
         if (!this.variableExists(variableName)) return;
 
-        var variable = this.variableSrc.variables[this.getVariableIndexByName(variableName)];
+        var variable = this.variableSrv.variables[this.getVariableIndexByName(variableName)];
         variable.options = options;
         variable.query = query;
         variable.current.text = currentText;

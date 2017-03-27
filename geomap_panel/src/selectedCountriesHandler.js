@@ -54,6 +54,6 @@ export default class SelectedCountriesHandler {
     }
 
     formatQuery (query) {
-        return this.couqueryntriesQuery.split(',').join(' + ');
+        return query.split(',').join(' + ');
     }
 }
