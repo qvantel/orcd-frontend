@@ -3,7 +3,7 @@ export default class Map {
     /**
     * Build the inputManager and set some initiate variables
     */
-    constructor (ctrl, container, onReadyCallback) {
+    constructor (ctrl) {
         this.ctrl = ctrl;
         this.ctrlKeyDown = false;
     }
