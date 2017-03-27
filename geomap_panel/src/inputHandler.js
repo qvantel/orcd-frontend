@@ -6,6 +6,7 @@ export default class Map {
     constructor (ctrl) {
         this.ctrl = ctrl;
         this.ctrlKeyDown = false;
+        this.bindEvents();
     }
 
     /**

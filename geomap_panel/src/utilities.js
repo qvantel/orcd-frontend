@@ -23,4 +23,14 @@ export default class Utilities {
     clamp01 (val) {
         return this.clamp(val, 0, 1);
     }
+
+    arrayIndexOf (array, val) {
+        for (var i = 0; i < array.length; i++) {
+            if (array[i] === val) {
+                return i;
+            }
+        }
+
+        return -1;
+    }
 }

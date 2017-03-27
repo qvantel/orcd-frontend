@@ -7,7 +7,7 @@ import Utilities from './utilities';
 import InputHandler from './inputHandler';
 import PanelDataHandler from './panelDataHandler';
 import TemplateHandler from './templateHandler';
-import SelectedCountries from './selectedCountries';
+import SelectedCountriesHandler from './selectedCountriesHandler';
 
 /** options */
 const options = {
@@ -45,12 +45,12 @@ export default class GeoMapPanelCtrl extends MetricsPanelCtrl {
         // Components
         this.panelDataHandler = new PanelDataHandler(this);
         this.utilities = new Utilities();
-        this.inputHandler = new InputHandler();
+        this.inputHandler = new InputHandler(this);
         this.dataGenerator = new DataGenerator(this);
         this.dataFormatter = new DataFormatter(this);
         this.zoomHandler = new ZoomHandler(this);
         this.templateHandler = new TemplateHandler(this, templateSrv, variableSrv);
-        this.selectedCountries = new SelectedCountries(this);
+        this.selectedCountriesHandler = new SelectedCountriesHandler(this);
 
         // Bind events
         this.events.on('init-edit-mode', this.onInitEditMode.bind(this));
