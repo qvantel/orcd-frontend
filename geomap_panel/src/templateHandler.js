@@ -39,9 +39,12 @@ export default class TemplateHandler {
         this.templateSrv.init(this.variableSrv.variables);
     }
 
-    deleteVariable () {
-        delete this.countriesVariable;
-        this.variableSrv.variables.splice(1, 1);
+    deleteVariable (name) {
+        var variableIndex = this.getVariableIndexByName(name);
+
+        if (variableIndex !== -1) {
+            this.variableSrv.variables.splice(variableIndex, 1);
+        }
     }
 
     getVariableIndexByName (name) {
