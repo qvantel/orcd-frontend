@@ -22,9 +22,9 @@ if [[ $OSTYPE == *"darwin"* ]]; then
     #-v $HOME/Qvantel/QvantelFrontend/heatmap_panel/:/var/lib/grafana/plugins/heatmap_panel \
 else
     if [ ! -e "config/lib/grafana.db" ]; then
-        sudo cp config/lib/config_grafana.db config/lib/grafana.db
+        cp config/lib/config_grafana.db config/lib/grafana.db
     fi
-    sudo npm run build
+    npm run build
     docker run -d --name $name -p 3001:3000 \
     -v $HOME/Qvantel/QvantelFrontend/config/lib/grafana.db:/var/lib/grafana/grafana.db \
     -v $HOME/Qvantel/QvantelFrontend/config/etc:/etc/grafana \
