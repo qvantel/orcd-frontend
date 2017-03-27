@@ -1,7 +1,15 @@
 <h2>{{ ctrl.header }}</h2>
 <table>
   <tr ng-repeat="x in ctrl.currentDataList">
-    <td>Service: {{ x.target }}  </td>
-    <td>Value: {{ x.datapoints[x.datapoints.length - 1] }}</td>
+    <td>Service: {{ ctrl.parseName(x.target) }}  </td>
+    <td>Value: {{ x.datapoints[x.datapoints.length - 1][0] }}</td>
   </tr>
 </table>
+<div class="center-flex-container">
+  <div class="item" ng-repeat="x in ctrl.currentDataList">
+    <div class="circle-container">
+      <div class="circle" ng-style="ctrl.styleCircle(x.datapoints[x.datapoints.length - 1][0])"></div>
+    </div>
+    {{ ctrl.parseName(x.target) }}
+  </div>
+</div>

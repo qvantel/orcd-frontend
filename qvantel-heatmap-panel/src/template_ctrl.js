@@ -1,5 +1,5 @@
 import {MetricsPanelCtrl} from 'app/plugins/sdk';
-import _ from 'lodash';
+import LinearScale from './LinearScale';
 import './css/template-panel.css!';
 
 export class TemplateCtrl extends MetricsPanelCtrl {
@@ -8,31 +8,15 @@ export class TemplateCtrl extends MetricsPanelCtrl {
     this.$rootScope = $rootScope;
 
     var panelDefaults = {
-      legend: {
-        show: true, // disable/enable legend
-        values: true
-      },
-      links: [],
-      datasource: null,
-      maxDataPoints: 3,
-      interval: null,
-      targets: [{}],
-      cacheTimeout: null,
-      nullPointMode: 'connected',
-      legendType: 'Under graph',
-      aliasColors: {},
-      format: 'short',
-      valueName: 'current',
-      strokeWidth: 1,
-      fontSize: '80%',
-      combine: {
-        threshold: 0.0,
-        label: 'Others'
-      }
     };
 
-    _.defaults(this.panel, panelDefaults);
-    _.defaults(this.panel.legend, panelDefaults.legend);
+    for (var key in panelDefaults) {
+      if (typeof this.panel[key] === 'undefined') {
+        this.panel[key] = panelDefaults[key];
+      }
+    }
+
+    this.linearScale = new LinearScale();
 
     this.events.on('render', this.onRender.bind(this));
     this.events.on('data-received', this.onDataReceived.bind(this));
@@ -47,11 +31,28 @@ export class TemplateCtrl extends MetricsPanelCtrl {
   }
 
   onDataReceived (dataList) {
+    this.linearScale.setRange([0, 1000]);
+    this.linearScale.setDomain([0, 200]);
+
     this.currentDataList = dataList;
   }
 
   onRender () {
     // When is this used?
+  }
+
+  styleCircle (size) {
+    var style = {
+      'height': this.linearScale.scale(size),
+      'width': this.linearScale.scale(size),
+      'transition': 'width 2s'
+    }
+
+    return style;
+  }
+
+  parseName (target) {
+    return target.replace(/.*[.]([\w])/i, '$1');
   }
 }
 
