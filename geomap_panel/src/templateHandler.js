@@ -21,6 +21,8 @@ export default class TemplateHandler {
             query: query,
             multi: multi
         });
+
+        this.variableUpdated();
     }
 
     updateVariable (variableName, options, query, currentText, currentValue) {
@@ -31,12 +33,8 @@ export default class TemplateHandler {
         variable.query = query;
         variable.current.text = currentText;
         variable.current.value = currentValue;
-    }
 
-    variableUpdated () {
-        this.variableSrv.$rootScope.$emit('template-variable-value-updated');
-        this.variableSrv.$rootScope.$broadcast('refresh');
-        this.templateSrv.init(this.variableSrv.variables);
+        this.variableUpdated();
     }
 
     deleteVariable (name) {
@@ -45,6 +43,14 @@ export default class TemplateHandler {
         if (variableIndex !== -1) {
             this.variableSrv.variables.splice(variableIndex, 1);
         }
+
+        this.variableUpdated();
+    }
+
+    variableUpdated () {
+        this.variableSrv.$rootScope.$emit('template-variable-value-updated');
+        this.variableSrv.$rootScope.$broadcast('refresh');
+        this.templateSrv.init(this.variableSrv.variables);
     }
 
     getVariableIndexByName (name) {

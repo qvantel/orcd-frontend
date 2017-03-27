@@ -48,6 +48,7 @@ export default class SelectedCountriesHandler {
                 templateLabel,
                 countriesOptions,
                 th.buildCurrent(this.formatQuery(countriesQuery), this.selectedCountries),
+                countriesQuery,
                 true
             );
         }
