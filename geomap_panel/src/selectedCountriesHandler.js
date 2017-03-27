@@ -11,6 +11,11 @@ export default class SelectedCountriesHandler {
         this.selectedCountries = [];
     }
 
+    /**
+    * This should be called when a country has been clicked , it will handle the click and then update the template variables
+    *
+    * @param {string} region - Clicked region name;
+    */
     onCountryClicked (region) {
         region = region.toLowerCase();
 
@@ -24,6 +29,9 @@ export default class SelectedCountriesHandler {
         this.updateTemplateVariable();
     }
 
+    /**
+    * Updated the template variable via the templateHandler given the data that's been gathered here
+    */
     updateTemplateVariable () {
         var th = this.ctrl.templateHandler;
         var countriesOptions = [];
@@ -54,6 +62,9 @@ export default class SelectedCountriesHandler {
         }
     }
 
+    /**
+    * Format the query to be more readable
+    */
     formatQuery (query) {
         return query.split(',').join(' + ');
     }
