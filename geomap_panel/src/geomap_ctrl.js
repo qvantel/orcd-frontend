@@ -4,6 +4,7 @@ import DataFormatter from './dataFormatter';
 import DataGenerator from './dataGenerator';
 import ZoomHandler from './zoomHandler';
 import Utilities from './utilities';
+import InputHandler from './inputHandler';
 import PanelDataHandler from './panelDataHandler';
 
 /** options */
@@ -42,6 +43,7 @@ export default class GeoMapPanelCtrl extends MetricsPanelCtrl {
         // Components
         this.panelDataHandler = new PanelDataHandler(this);
         this.utilities = new Utilities();
+        this.inputHandler = new InputHandler();
         this.dataGenerator = new DataGenerator(this);
         this.dataFormatter = new DataFormatter(this);
         this.zoomHandler = new ZoomHandler(this);
