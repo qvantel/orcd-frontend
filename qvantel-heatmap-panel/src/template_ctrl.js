@@ -35,6 +35,12 @@ export class TemplateCtrl extends MetricsPanelCtrl {
     this.linearScale.setDomain([0, 200]);
 
     this.currentDataList = dataList;
+
+    if (document.getElementsByClassName('circle')[0]) {
+      document.getElementsByClassName('circle')[0].style.transition = 'all 2s';
+      document.getElementsByClassName('circle')[0].style.height = Math.floor((Math.random()) * 1000) + 'px';
+      document.getElementsByClassName('circle')[0].style.width = Math.floor((Math.random()) * 1000) + 'px';
+    }
   }
 
   onRender () {
@@ -42,13 +48,11 @@ export class TemplateCtrl extends MetricsPanelCtrl {
   }
 
   styleCircle (size) {
-    var style = {
-      'height': this.linearScale.scale(size),
-      'width': this.linearScale.scale(size),
-      'transition': 'width 2s'
-    }
-
-    return style;
+    return {
+        'transition': 'width 2s',
+        'height': this.linearScale.scale(size) + 'px',
+        'width': this.linearScale.scale(size) + 'px'
+      }
   }
 
   parseName (target) {
