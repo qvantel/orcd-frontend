@@ -19,9 +19,9 @@ You can also zoom into the map by clicking on a region. The zooming will occur i
 
 In the top left corner, you can find a breadcrumb that displays your current zoom state. If you click an item in the breadcrumbs, you will be zoomed out to the clicked region.
 
-You can select or de-select countries by pressing your ctrl och shift key and then clicking on a country with your mouse. If you click a country that's not present, the country will be added and if it's present, it'll get removed. The selected countries will be display in the top left corner, but more important, the country will be present in the graph showing the amount of calls.
+You can select or deselect countries by pressing the ctrl or shift key on your keyboard and then clicking on a country with your mouse. The selected countries will be display in the top left corner, but more important, the country will be present in the timeline graph showing the amount of calls.
 
-You can also in top left corner see options to select or de-select services. Selecting specic services will let you filter the data by services, the current services available are roaming calls via sms, voice, data and mms.
+You can also in top left corner see options to select or deselect services. Selecting specific services will let you filter the data by services, the currently available services are roaming calls via sms, voice, data and mms.
 
 ![GeoMap services preview](images/GeoMap_Services_Preview.png)
 
@@ -34,12 +34,14 @@ To setup a data source, please refer to the [documentation](https://github.com/f
 When you have setup your Graphite data source, you'll need to go into the **Metrics** tab to alter the Graphite query, you'll need an admin account in order to see this tab.
 
 ##### The world map
-The plugin will retrieve a set of data points for each country, the amount depends on the time ranged specified within Grafana and how frequent Graphite retrieves data. As the plugin will summarize the value of each datapoint to its respective country. If you're supporting multiple services, you'll need to add a new template variable with a custom Type, then add all the services to the variable. In the metrics, you'll then need to add your template variable into the field pointing to the services. It's recommended to let Graphite summarize the data points, this is to take unecessary load off of the client. Currently we're achieving this by adding the **Summarize** function with a large span (etc. **24y**), you will also want to select the **sum** parameter. You also want to add the **groupByNode** pointing to the field cointaing the country code, this is to group all the services. And lastly, you want to add the function **aliasByMetric** in order to get the correct target.
+The plugin will retrieve a set of data points for each country, the amount depends on the time ranged specified within Grafana and how frequent Graphite retrieves data. As the plugin will summarize the value of each datapoint to its respective country. If you're supporting multiple services, you'll need to add a new template variable with a custom type, then add all the services to the variable. In the metrics, you'll then need to add your template variable into the field pointing to the services. It's recommended to let Graphite summarize the data points, this is to take unecessary load off of the client. Currently we're achieving this by adding the **Summarize** function with a large span (etc. **24y**), you will also want to select the **sum** parameter. You also want to add the **groupByNode** pointing to the field cointaing the country code, this is to group all the services. And lastly, you want to add the function **aliasByMetric** in order to get the correct target.
+
+![Metrics tab worldmap](images/Tab_Metrics_Worldmap.png)
 
 ##### The timeline graph
-To setup the timeline, you'll need to as before, add the path to the data. In the field pointing to the services, again put in your template variable. In the field pointing to the country, you'll need to add a **$countries**, as the world map plugin will use this variable to fill countries. You don't need to add the countries variable in your templates as the world map plugin will handle this dynamical. You will here again need to add the **groupByNode** and the **aliasByMetric** functions with parameters as explained above.
+To setup the timeline, you'll need to as before, add the path to the data. In the field pointing to the services, again put in your template variable. In the field pointing to the country, you'll need to add a **$countries**. You don't need to add the countries variable in your templates as the world map plugin will handle this dynamically. You will here again need to add the **groupByNode** and the **aliasByMetric** functions with the same parameters explained above.
 
-![Metrics tab](images/Tab_Metrics.png)
+![Metrics tab timeline](images/Tab_Metrics_Timeline.png)
 
 ### Options
 There are several options in order to manipulate the visualization of the map. These options can be accessed from the **Options** tab when editing the panel, you'll need an admin account in order to see this tab.
