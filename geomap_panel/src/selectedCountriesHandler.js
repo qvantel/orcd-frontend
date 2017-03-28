@@ -20,7 +20,7 @@ export default class SelectedCountriesHandler {
         region = region.toLowerCase();
         if (typeof this.ctrl.locations.countries[region.toUpperCase()] === 'undefined') return;
 
-        var regionIndex = this.ctrl.utilities.arrayIndexOf(this.selectedCountries, region);
+        var regionIndex = this.selectedCountries.indexOf(region);
         if (regionIndex === -1) {
             this.selectedCountries.push(region);
         } else {

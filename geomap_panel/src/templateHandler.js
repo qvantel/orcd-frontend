@@ -37,7 +37,7 @@ export default class TemplateHandler {
     }
 
     /**
-    * Updated a variable in the variable service
+    * Update a variable in the variable service
     *
     * @param {string} variableName - The name of the variable to be updated
     * @param {array} options - An array of options (see the option builder function)
