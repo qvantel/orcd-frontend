@@ -3,9 +3,12 @@ import * as d3 from './node_modules/d3/build/d3.min';
 export default class Circles {
   constructor (ctrl) {
     this.ctrl = ctrl;
-    this.circleWidth = ctrl.panel.circleWidth;
+    this.circleWidth = 100; // Change this programatically
     this.max = ctrl.panel.max;
     this.min = ctrl.panel.min;
+    this.colors = d3.schemeCategory20;
+    this.currentColorIndex = 0;
+    this.offset = 0;
 
     this.scale = d3.scaleLinear()
       .range([0, this.circleWidth])
@@ -23,9 +26,19 @@ export default class Circles {
     }
   }
 
+  getOffset () {
+    return this.offset;
+  }
+
+  getColor () {
+    var color = this.colors[this.currentColorIndex];
+    this.currentColorIndex++;
+
+    return color;
+  }
+
   drawCircles (dataList) {
     // Set controller this so that it's usable inside d3 function.
-    var ctrl = this.ctrl;
     var classContext = this;
     this.offset = this.updateOffset(dataList);
 
@@ -61,19 +74,7 @@ export default class Circles {
       .attr('r', this.circleWidth / 2)
       .attr('fill-opacity', 0)
       .attr('stroke-width', 2)
-      .attr('stroke', 'grey')
-      .select(function () { // Select parent
-          return this.parentNode;
-      })
-      .append('text')
-      .classed('service-name', true)
-      .attr('text-anchor', 'middle')
-      .text(function (d) {
-        return ctrl.parseName(d.target)
-      })
-      .attr('x', (this.circleWidth / 2) + 20)
-      .attr('y', this.circleWidth + 50)
-      .attr('fill', 'grey');
+      .attr('stroke', 'grey');
 
     // Update size (and color) of already existing circles.
     // Have to update color and size in the same function since d3 can't handle concurrent transitions!
@@ -95,6 +96,25 @@ export default class Circles {
       .attr('cx', (this.circleWidth / 2) + 20)
       .attr('r', function (d) {
         return classContext.scale(d.datapoints[d.datapoints.length - 1 - classContext.offset][0]) / 2;
+      });
+  }
+
+  setCircleColor (dataList, index, circleClass, color) {
+    var classContext = this;
+
+    d3.selectAll('.circle-svg')
+      .data(dataList)
+      .filter(function (d, i) {
+        return i === index;
+      })
+      .select(circleClass)
+      .attr('fill', function (d) {
+          if (color) {
+            classContext.currentColorIndex--;
+            return color;
+          } else {
+            return classContext.getColor();
+          }
       });
   }
 }

@@ -5,9 +5,22 @@
     <td>Value: {{ x.datapoints[x.datapoints.length - 1][0] }}</td>
   </tr>
 </table>
-<div class="relative-container">
-  <div class="center-flex-container layer-0" id="d3-circle-container">
+<div ng-show="ctrl.showTooltip" id="circle-tooltip" ng-class="center-flex-container">
+  <div id="tooltip-arrow"></div>
+  Name: {{ ctrl.tooltipName }}
+  <br>
+  Value: {{ ctrl.tooltipValue }}
+</div>
+<div class="center-flex-container layer-0">
+  <div class="center-flex-container layer-1">
+    <div ng-mousemove="ctrl.handleMouseOver($event)"
+      ng-mouseenter="ctrl.handleMouseEnter(x)"
+      ng-click="ctrl.handleCircleClick($index)" class="angular-container"
+      ng-repeat="x in ctrl.currentDataList"
+      ng-mouseleave="ctrl.showTooltip = false">
+      {{ ctrl.parseName(x.target) }}
+    </div>
   </div>
-  <div class="center-flex-container angular-container layer-1">
+  <div class="center-flex-container layer-0" id="d3-circle-container">
   </div>
 </div>
