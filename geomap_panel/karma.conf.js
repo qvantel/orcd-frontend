@@ -15,6 +15,8 @@ module.exports = function (config) {
       'src/zoomHandler.js',
       'src/dataGenerator.js',
       'src/panelDataHandler.js',
+      'src/selectedCountriesHandler.js',
+      'src/templateHandler.js',
       'test/*.js'
     ],
 
@@ -25,6 +27,8 @@ module.exports = function (config) {
       'src/zoomHandler.js': ['browserify'],
       'src/dataGenerator.js': ['browserify'],
       'src/panelDataHandler.js': ['browserify'],
+      'src/selectedCountriesHandler.js': ['browserify'],
+      'src/templateHandler.js': ['browserify'],
       'test/*.js': ['browserify']
     },
 
