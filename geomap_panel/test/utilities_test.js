@@ -23,6 +23,18 @@ describe('Utilities', () => {
         });
     });
 
+    describe('when arrayIndexOf is used', () => {
+        it('it should return the correct value', () => {
+            expect(utilities.arrayIndexOf([2, 0, 1], 2)).to.equal(0);
+            expect(utilities.arrayIndexOf([2, 0, 1], 0)).to.equal(1);
+            expect(utilities.arrayIndexOf([2, 0, 1], 1)).to.equal(2);
+        });
+
+        it('it should return -1 for not present indices', () => {
+            expect(utilities.arrayIndexOf([2, 0, 1], 5)).to.equal(-1);
+        });
+    });
+
     function setupUtilities () {
         utilities = new Utilities();
     }
