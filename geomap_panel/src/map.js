@@ -65,7 +65,7 @@ export default class Map {
         });
         /* istanbul ignore next */
         google.visualization.events.addListener(this.map, 'regionClick', (e) => {
-            if (this.ctrl.inputHandler.isCtrlDown()) {
+            if (this.ctrl.inputHandler.isCtrlDown() || this.ctrl.inputHandler.isShiftDown()) {
                 this.ctrl.selectedCountriesHandler.onCountryClicked(e.region);
             } else if (self.ctrl.panel.clickToZoomEnabled) {
                 self.ctrl.zoomHandler.zoomIn(e.region);

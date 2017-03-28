@@ -6,6 +6,7 @@ export default class Map {
     constructor (ctrl) {
         this.ctrl = ctrl;
         this.ctrlKeyDown = false;
+        this.shiftKeyDown = false;
         this.bindEvents();
     }
 
@@ -16,16 +17,21 @@ export default class Map {
         var self = this;
 
         $(window).keydown((e) => {
-            if (e.ctrlKey) {
-                self.ctrlKeyDown = true;
-            }
+            self.ctrlKeyDown = e.ctrlKey;
+            self.shiftKeyDown = e.shiftKey;
         });
 
         $(window).keyup((e) => {
-            if (e.ctrlKey) {
-                self.ctrlKeyDown = false;
-            }
+            self.ctrlKeyDown = e.ctrlKey;
+            self.shiftKeyDown = e.shiftKey;
         });
+    }
+
+    /**
+    * Check if the shift-key is pressed
+    */
+    isShiftDown () {
+        return this.shiftKeyDown;
     }
 
     /**
