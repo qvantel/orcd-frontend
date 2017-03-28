@@ -4,6 +4,10 @@ This plugin visualizes roaming calls for each country. This is achieved by using
 
 ![GeoMap dark preview](images/GeoMap_Preview_Dark.gif)
 
+There is also a graph representing a timeline, where you more specifically can see the amount calls for the selected countries.
+
+![GeoMap timeline preview](images/GeoMap_Timeline_Preview.png)
+
 ### How to use
 When loading up the plugin, you'll initially see a world map with colorized countries (if data is present). The color represents the frequency of a countrys roaming calls compared to the other countries currently displayed on the map. 
 
@@ -15,6 +19,19 @@ You can also zoom into the map by clicking on a region. The zooming will occur i
 
 In the top left corner, you can find a breadcrumb that displays your current zoom state. If you click an item in the breadcrumbs, you will be zoomed out to the clicked region.
 
+You can select or deselect countries by pressing the ctrl or shift key on your keyboard and then clicking on a country with your mouse. The selected countries will be display in the top left corner, but more important, the country will be present in the timeline graph showing the amount of calls.
+
+You can also in top left corner see options to select or deselect services. Selecting specific services will let you filter the data by services, the currently available services are roaming calls via sms, voice, data and mms.
+
+![GeoMap services preview](images/GeoMap_Services_Preview.png)
+
+### Templating
+In order to filter the metrics in a more userfriendly way, we're using templates. A template is a variable accessable by all the panels in a dashboard. For this plugin, we're going to use 2 of them, one for services and one for countries. The worldmap plugin will use the services variable and the timeline will use both. You will only need to add the service template, as the worldmap plugin will dynamically add the template variable for the countries.
+
+In order to setup the services template you'll first need to find the **cogwheel** in the top menu of the dashboard, clicking on this will reveal a menu which includes the option **Templating**, select this option. Find the green **New** button and press it, it will direct you to where you add a new template variable. For the **Name**, we're going to add **services** and for the **Label** we'll put **Services**. The name is a kind of ID for the template and the label is a more userfriendly name. As for the **Type**, we're going to select **Custom** as it will let you enter specific values. In the **Custom Options** section, we'll add: **sms, data, mms, voice**. In the **Selection Options** we're going to enable both **Multi-value** and **Include All option**. 
+
+![GeoMap templating](images/GeoMap_Templating.png)
+
 ### Metrics
 In order to retrieve data to the plugin you'll need to setup a data source. The data source will need to send a country code and a value for that specific country. The value will represent the frequency of the country. We currently only support a Graphite data source, other data sources may work, but we can't guarantee it.
 
@@ -23,11 +40,15 @@ To setup a data source, please refer to the [documentation](https://github.com/f
 #### Graphite query setup
 When you have setup your Graphite data source, you'll need to go into the **Metrics** tab to alter the Graphite query, you'll need an admin account in order to see this tab.
 
-The plugin will retrieve a set of data points for each country, the amount depends on the time ranged specified within Grafana and how frequent Graphite retrieves data. As the plugin will summarize the value of each datapoint to its respective country, it's recommended to let Graphite summarize the data points, this is to take unecessary load off of the client. There are several ways to achieve this, but one way is to let the option **Max data points** to be set to **1** and then adding the **consolidateBy** function with the **sum** as parameter. This basically means that the plugin only wants 1 data point per country, and the overflow of data points should be summarized. You can alter this setting to your own needs, if you for example instead would want the **average**, **min** or **max** value of the country frequency.
+##### The world map
+The plugin will retrieve a set of data points for each country, the amount depends on the time ranged specified within Grafana and how frequent Graphite retrieves data. As the plugin will summarize the value of each datapoint to its respective country. In the metrics, you'll then need to add your template variable into the field pointing to the services template variable created above by entering **$services**. It's recommended to let Graphite summarize the data points, this is to take unecessary load off of the client. Currently we're achieving this by adding the **Summarize** function with a large span (etc. **24y**), you will also want to select the **sum** parameter. You also want to add the **groupByNode** pointing to the field cointaing the country code, this is to group all the services. And lastly, you want to add the function **aliasByMetric** in order to get the correct target.
 
-For the plugin to work properly, you'll also need to use the **aliasByNode** function to point to the field containing the country code. This will let the plugin easily retrieve the country code.
+![Metrics tab worldmap](images/Tab_Metrics_Worldmap.png)
 
-![Metrics tab](images/Tab_Metrics.png)
+##### The timeline graph
+To setup the timeline, you'll need to as before, add the path to the data. In the field pointing to the services, again put in your template variable. In the field pointing to the country, you'll need to add a **$countries**. You don't need to add the countries variable in your templates as the world map plugin will handle this dynamically. You will here again need to add the **groupByNode** and the **aliasByMetric** functions with the same parameters explained above.
+
+![Metrics tab timeline](images/Tab_Metrics_Timeline.png)
 
 ### Options
 There are several options in order to manipulate the visualization of the map. These options can be accessed from the **Options** tab when editing the panel, you'll need an admin account in order to see this tab.

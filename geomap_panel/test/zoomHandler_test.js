@@ -1,4 +1,4 @@
-    import ZoomHandler from '../src/zoomHandler';
+import ZoomHandler from '../src/zoomHandler';
 
 describe('ZoomHandler', () => {
     let zoomHandler;

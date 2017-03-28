@@ -4,7 +4,10 @@ import DataFormatter from './dataFormatter';
 import DataGenerator from './dataGenerator';
 import ZoomHandler from './zoomHandler';
 import Utilities from './utilities';
+import InputHandler from './inputHandler';
 import PanelDataHandler from './panelDataHandler';
+import TemplateHandler from './templateHandler';
+import SelectedCountriesHandler from './selectedCountriesHandler';
 
 /** options */
 const options = {
@@ -23,7 +26,7 @@ export default class GeoMapPanelCtrl extends MetricsPanelCtrl {
     * @param $log
     * @param contectSrv
     */
-    constructor ($scope, $injector, $log, contextSrv) {
+    constructor ($scope, $injector, $log, contextSrv, templateSrv, variableSrv) {
         super($scope, $injector, $log);
 
         // Make sure that everyone with access to the controller also has access to the logging
@@ -42,9 +45,12 @@ export default class GeoMapPanelCtrl extends MetricsPanelCtrl {
         // Components
         this.panelDataHandler = new PanelDataHandler(this);
         this.utilities = new Utilities();
+        this.inputHandler = new InputHandler(this);
         this.dataGenerator = new DataGenerator(this);
         this.dataFormatter = new DataFormatter(this);
         this.zoomHandler = new ZoomHandler(this);
+        this.templateHandler = new TemplateHandler(this, templateSrv, variableSrv);
+        this.selectedCountriesHandler = new SelectedCountriesHandler(this);
 
         // Bind events
         this.events.on('init-edit-mode', this.onInitEditMode.bind(this));
