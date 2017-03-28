@@ -1,5 +1,6 @@
 import {MetricsPanelCtrl} from 'app/plugins/sdk';
 import LinearScale from './LinearScale';
+import Circles from './Circles';
 import './css/template-panel.css!';
 
 export class TemplateCtrl extends MetricsPanelCtrl {
@@ -8,6 +9,9 @@ export class TemplateCtrl extends MetricsPanelCtrl {
     this.$rootScope = $rootScope;
 
     var panelDefaults = {
+      circleWidth: 200,
+      min: 0,
+      max: 1000
     };
 
     for (var key in panelDefaults) {
@@ -16,6 +20,7 @@ export class TemplateCtrl extends MetricsPanelCtrl {
       }
     }
 
+    this.circles = new Circles(this);
     this.linearScale = new LinearScale();
 
     this.events.on('render', this.onRender.bind(this));
@@ -36,11 +41,7 @@ export class TemplateCtrl extends MetricsPanelCtrl {
 
     this.currentDataList = dataList;
 
-    if (document.getElementsByClassName('circle')[0]) {
-      document.getElementsByClassName('circle')[0].style.transition = 'all 2s';
-      document.getElementsByClassName('circle')[0].style.height = Math.floor((Math.random()) * 1000) + 'px';
-      document.getElementsByClassName('circle')[0].style.width = Math.floor((Math.random()) * 1000) + 'px';
-    }
+    this.circles.drawCircles(dataList);
   }
 
   onRender () {

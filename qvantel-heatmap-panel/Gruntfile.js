@@ -1,5 +1,4 @@
-module.exports = function(grunt) {
-
+module.exports = function (grunt) {
   require('load-grunt-tasks')(grunt);
 
   grunt.loadNpmTasks('grunt-execute');
@@ -8,7 +7,7 @@ module.exports = function(grunt) {
 
   grunt.initConfig({
 
-    clean: ["dist"],
+    clean: ['dist'],
 
     copy: {
       src_to_dist: {
@@ -20,7 +19,7 @@ module.exports = function(grunt) {
       pluginDef: {
         expand: true,
         src: [ 'plugin.json', 'README.md' ],
-        dest: 'dist',
+        dest: 'dist'
       }
     },
 
@@ -29,14 +28,14 @@ module.exports = function(grunt) {
         files: ['src/**/*', 'plugin.json'],
         tasks: ['default'],
         options: {spawn: false}
-      },
+      }
     },
 
     babel: {
       options: {
         sourceMap: true,
-        presets:  ["es2015"],
-        plugins: ['transform-es2015-modules-systemjs', "transform-es2015-for-of"],
+        presets: ['es2015'],
+        plugins: ['transform-es2015-modules-systemjs', 'transform-es2015-for-of']
       },
       dist: {
         files: [{
@@ -44,11 +43,25 @@ module.exports = function(grunt) {
           expand: true,
           src: ['*.js'],
           dest: 'dist',
-          ext:'.js'
+          ext: '.js'
         }]
-      },
+      }
+    },
+
+    auto_install: {
+      local: {},
+      src: {
+        options: {
+          cwd: 'src',
+          stdout: true,
+          stderr: true,
+          failOnError: true,
+          npm: '--production'
+        }
+      }
     }
   });
 
-  grunt.registerTask('default', ['clean', 'copy:src_to_dist', 'copy:pluginDef', 'babel']);
+  grunt.registerTask('default', ['clean', 'auto_install', 'copy:src_to_dist', 'copy:pluginDef', 'babel']);
+  grunt.registerTask('dev', ['clean', 'copy:src_to_dist', 'copy:pluginDef', 'babel']);
 };
