@@ -25,6 +25,13 @@ You can also in top left corner see options to select or deselect services. Sele
 
 ![GeoMap services preview](images/GeoMap_Services_Preview.png)
 
+### Templating
+In order to filter the metrics in a more userfriendly way, we're using templates. A template is a variable accessable by all the panels in a dashboard. For this plugin, we're going to use 2 of them, one for services and one for countries. The worldmap plugin will use the services variable and the timeline will use both. You will only need to add the service template, as the worldmap plugin will dynamically add the template variable for the countries.
+
+In order to setup the services template you'll first need to find the **cogwheel** in the top menu of the dashboard, clicking on this will reveal a menu which includes the option **Templating**, select this option. Find the green **New** button and press it, it will direct you to where you add a new template variable. For the **Name**, we're going to add **services** and for the **Label** we'll put **Services**. The name is a kind of ID for the template and the label is a more userfriendly name. As for the **Type**, we're going to select **Custom** as it will let you enter specific values. In the **Custom Options** section, we'll add: **sms, data, mms, voice**. In the **Selection Options** we're going to enable both **Multi-value** and **Include All option**. 
+
+![GeoMap templating](images/GeoMap_Templating.png)
+
 ### Metrics
 In order to retrieve data to the plugin you'll need to setup a data source. The data source will need to send a country code and a value for that specific country. The value will represent the frequency of the country. We currently only support a Graphite data source, other data sources may work, but we can't guarantee it.
 
@@ -34,7 +41,7 @@ To setup a data source, please refer to the [documentation](https://github.com/f
 When you have setup your Graphite data source, you'll need to go into the **Metrics** tab to alter the Graphite query, you'll need an admin account in order to see this tab.
 
 ##### The world map
-The plugin will retrieve a set of data points for each country, the amount depends on the time ranged specified within Grafana and how frequent Graphite retrieves data. As the plugin will summarize the value of each datapoint to its respective country. If you're supporting multiple services, you'll need to add a new template variable with a custom type, then add all the services to the variable. In the metrics, you'll then need to add your template variable into the field pointing to the services. It's recommended to let Graphite summarize the data points, this is to take unecessary load off of the client. Currently we're achieving this by adding the **Summarize** function with a large span (etc. **24y**), you will also want to select the **sum** parameter. You also want to add the **groupByNode** pointing to the field cointaing the country code, this is to group all the services. And lastly, you want to add the function **aliasByMetric** in order to get the correct target.
+The plugin will retrieve a set of data points for each country, the amount depends on the time ranged specified within Grafana and how frequent Graphite retrieves data. As the plugin will summarize the value of each datapoint to its respective country. In the metrics, you'll then need to add your template variable into the field pointing to the services template variable created above by entering **$services**. It's recommended to let Graphite summarize the data points, this is to take unecessary load off of the client. Currently we're achieving this by adding the **Summarize** function with a large span (etc. **24y**), you will also want to select the **sum** parameter. You also want to add the **groupByNode** pointing to the field cointaing the country code, this is to group all the services. And lastly, you want to add the function **aliasByMetric** in order to get the correct target.
 
 ![Metrics tab worldmap](images/Tab_Metrics_Worldmap.png)
 
