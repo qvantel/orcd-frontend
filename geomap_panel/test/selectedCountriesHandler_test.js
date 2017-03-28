@@ -45,6 +45,16 @@ describe('SelectedCountriesHandler', () => {
         });
     });
 
+    describe('when a country that doesnt exist has been clicked', () => {
+        beforeEach(() => {
+            selectedCountriesHandler.onCountryClicked('SE2');
+        });
+
+        it('it should not be addded', () => {
+            expect(selectedCountriesHandler.selectedCountries.length).to.equal(0);
+        });
+    });
+
     function setupHandler () {
         var utilities = new Utilities();
 
@@ -73,7 +83,15 @@ describe('SelectedCountriesHandler', () => {
 
         ctrl = {
             utilities: utilities,
-            templateHandler: new TemplateHandler(ctrl, templateSrv, variableSrv)
+            templateHandler: new TemplateHandler(ctrl, templateSrv, variableSrv),
+            locations: {
+                countries: {
+                    'SE': '150',
+                    'FI': '150',
+                    'NO': '150',
+                    'DE': '150'
+                }
+            }
         };
 
         selectedCountriesHandler = new SelectedCountriesHandler(ctrl);
