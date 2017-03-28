@@ -6,7 +6,7 @@ This plugin visualizes roaming calls for each country. This is achieved by using
 
 There is also a graph representing a timeline, where you more specifically can see the amount calls for the selected countries.
 
-![GeoMap dark preview](images/GeoMap_Timeline_Preview.png)
+![GeoMap timeline preview](images/GeoMap_Timeline_Preview.png)
 
 ### How to use
 When loading up the plugin, you'll initially see a world map with colorized countries (if data is present). The color represents the frequency of a countrys roaming calls compared to the other countries currently displayed on the map. 
@@ -23,7 +23,7 @@ You can select or de-select countries by pressing your ctrl och shift key and th
 
 You can also in top left corner see options to select or de-select services. Selecting specic services will let you filter the data by services, the current services available are roaming calls via sms, voice, data and mms.
 
-![GeoMap dark preview](images/GeoMap_Services_Preview.png)
+![GeoMap services preview](images/GeoMap_Services_Preview.png)
 
 ### Metrics
 In order to retrieve data to the plugin you'll need to setup a data source. The data source will need to send a country code and a value for that specific country. The value will represent the frequency of the country. We currently only support a Graphite data source, other data sources may work, but we can't guarantee it.
