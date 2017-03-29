@@ -3,7 +3,7 @@ import * as d3 from './node_modules/d3/build/d3.min';
 export default class Circles {
   constructor (ctrl) {
     this.ctrl = ctrl;
-    this.circleWidth = 100; // Change this programatically
+    this.circleWidth = ctrl.panel.circleWidth; // Change this programatically
     this.max = ctrl.panel.max;
     this.min = ctrl.panel.min;
     this.colors = d3.schemeCategory20;

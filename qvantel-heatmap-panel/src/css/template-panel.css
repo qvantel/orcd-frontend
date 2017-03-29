@@ -40,7 +40,8 @@ table, tr, td {
 /*Change this width and hight programatically!*/
 .angular-container {
   background-color: none;
-  border-radius: 6em;
+  border-top-right-radius: 6em;
+  border-top-left-radius: 6em;
   margin: 20px 20px 0px 20px;
   width: 100px;
   height: 140px;
@@ -48,6 +49,7 @@ table, tr, td {
   justify-content: center;
   color: grey;
   align-items: flex-end;
+  cursor: pointer;
 }
 
 /*------------- General stuff -------------*/
