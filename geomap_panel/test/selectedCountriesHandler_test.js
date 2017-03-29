@@ -83,7 +83,6 @@ describe('SelectedCountriesHandler', () => {
 
         ctrl = {
             utilities: utilities,
-            templateHandler: new TemplateHandler(ctrl, templateSrv, variableSrv),
             locations: {
                 countries: {
                     'SE': '150',
@@ -91,8 +90,12 @@ describe('SelectedCountriesHandler', () => {
                     'NO': '150',
                     'DE': '150'
                 }
+            },
+            dashboard: {
+                updateSubmenuVisibility: () => {}
             }
         };
+        ctrl.templateHandler = new TemplateHandler(ctrl, templateSrv, variableSrv);
 
         selectedCountriesHandler = new SelectedCountriesHandler(ctrl);
     }
