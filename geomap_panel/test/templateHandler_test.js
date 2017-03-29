@@ -17,6 +17,7 @@ describe('SelectedCountriesHandler', () => {
 
         it('it should add a variable to the variablesrv with the correct information', () => {
             expect(templateHandler.variableSrv.variables.length).to.equal(1);
+            expect(templateHandler.variableSrv.variables[0].options.length).to.equal(2);
         });
     });
 
@@ -28,6 +29,7 @@ describe('SelectedCountriesHandler', () => {
 
         it('it should add a variable to the variablesrv with the correct information', () => {
             expect(templateHandler.variableSrv.variables.length).to.equal(1);
+            expect(templateHandler.variableSrv.variables[0].options.length).to.equal(3);
         });
     });
 
@@ -308,7 +310,8 @@ describe('SelectedCountriesHandler', () => {
         variableSrv.addVariable = (data) => {
             variableSrv.variables.push({
                 name: data.name,
-                current: data.current
+                current: data.current,
+                options: data.options
             });
         };
 
