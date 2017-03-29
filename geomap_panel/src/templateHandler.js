@@ -10,6 +10,47 @@ export default class TemplateHandler {
     }
 
     /**
+    * Build a template variable more simplified
+    *
+    * @param {string} name - The name of the variable§
+    * @param {array<string>} values - An array of strings containting the options for the variable
+    */
+    buildSimple (name, values) {
+        var options = [];
+        var query = '';
+        for (var i = 0; i < values.length; i++) {
+            options.push(this.buildOption(values[i], values[i], true));
+            query += values[i] + (i < values.length - 1 ? ',' : '');
+        }
+        var currentText = query.split(',').join(' + ');
+        var current = this.buildCurrent(currentText, values);
+
+        if (this.variableExists(name)) {
+            if (values.length > 0) {
+                this.updateVariable(
+                    name,
+                    options,
+                    query,
+                    currentText,
+                    values
+                );
+            } else {
+                this.deleteVariable(name);
+            }
+        } else if (options.length > 0) {
+            this.addVariable(
+                'custom',
+                name,
+                name,
+                options,
+                current,
+                query,
+                true
+            );
+        }
+    }
+
+    /**
     * Add a new variable to the variable service
     *
     * @param {string} type - The variable type (Interval, Query, Custom etc.)
