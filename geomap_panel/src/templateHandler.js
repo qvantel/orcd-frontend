@@ -119,6 +119,7 @@ export default class TemplateHandler {
     variableUpdated () {
         this.variableSrv.$rootScope.$emit('template-variable-value-updated');
         this.variableSrv.$rootScope.$broadcast('refresh');
+        this.ctrl.dashboard.updateSubmenuVisibility();
         this.templateSrv.init(this.variableSrv.variables);
     }
 
