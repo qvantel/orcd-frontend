@@ -1,12 +1,16 @@
 import {MetricsPanelCtrl} from 'app/plugins/sdk';
 import Circles from './Circles';
 import TrendCalculator from './TrendCalculator';
+import TemplateHandler from './templateHandler';
 import './css/template-panel.css!';
 
 export class TemplateCtrl extends MetricsPanelCtrl {
-  constructor ($scope, $injector, $rootScope) {
+  constructor ($scope, $injector, $rootScope, templateSrv, variableSrv) {
     super($scope, $injector);
     this.$rootScope = $rootScope;
+
+    this.templateHandler = new TemplateHandler(this, templateSrv, variableSrv);
+    this.templateHandler.buildSimple('Select products', []);
 
     var panelDefaults = {
       circleWidth: 100,
@@ -70,6 +74,8 @@ export class TemplateCtrl extends MetricsPanelCtrl {
       this.selected.push(serviceName)
       this.circles.setCircleColor(this.currentDataList, index, '.circle'); // set random color
     }
+
+    this.templateHandler.buildSimple('Select products', this.selected);
   }
 
   handleMouseEnter (data, index) { // Change this
@@ -85,6 +91,24 @@ export class TemplateCtrl extends MetricsPanelCtrl {
 
     tooltip.style.top = mEvent.clientY + 'px';
     tooltip.style.left = mEvent.clientX - tooltip.offsetWidth / 2 - 10 + 'px';
+  }
+
+  tiltArrow (direction, index) {
+    if (this.currentTrend[index] === 0) {
+      return 'tilt-straight';
+    } else if (this.currentTrend[index] > 0) {
+      if (direction === 'left') {
+        return 'tilt-up';
+      } else {
+        return 'tilt-down';
+      }
+    } else {
+      if (direction === 'right') {
+        return 'tilt-down';
+      } else {
+        return 'tilt-up';
+      }
+    }
   }
 }
 

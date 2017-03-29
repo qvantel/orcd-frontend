@@ -50,19 +50,27 @@ table, tr, td {
   cursor: pointer;
 }
 
+.trend-arrow {
+  width: 28.28px;
+  height: 20px;
+  position: relative;
+  transform: scale(0.5);
+}
+
 .arrow-part {
   position: absolute;
-  opacity: 0.5;
   width: 20px;
   height: 5px;
 }
 
 .arrow-right {
-  background-color: blue; 
+  background-color: white;
+  left: calc(50% - 4px);
 }
 
 .arrow-left {
-  background-color: red;
+  background-color: white;
+  left: calc(50% - 7.7px - 7.7px);
 }
 
 /*------------- General stuff -------------*/
@@ -87,4 +95,16 @@ table, tr, td {
 .layer-1 {
   position: absolute;
   z-index: 1;
+}
+
+.tilt-down {
+  transform: rotate(-45deg);
+}
+
+.tilt-up {
+  transform: rotate(45deg);
+}
+
+.tilt-straight {
+  transform: rotate(0deg);
 }

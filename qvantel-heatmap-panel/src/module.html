@@ -7,8 +7,8 @@
 </table>
 <div class="center-flex-container">
   <div class="trend-arrow center-flex-container">
-    <div class="arrow-left arrow-part"></div>
-    <div class="arrow-right arrow-part"></div>
+    <div class="arrow-left arrow-part tilt-down"></div>
+    <div class="arrow-right arrow-part tilt-up"></div>
   </div>
 </div>
 <div ng-show="ctrl.showTooltip" id="circle-tooltip" ng-class="center-flex-container">
@@ -29,8 +29,8 @@
       <div class="center-flex-container">
         {{ ctrl.parseName(x.target) }}
         <div class="trend-arrow center-flex-container">
-          <div class="arrow-left arrow-part"></div>
-          <div class="arrow-right arrow-part"></div>
+          <div class="arrow-left arrow-part" ng-class="ctrl.tiltArrow('left', $index)"></div>
+          <div class="arrow-right arrow-part" ng-class="ctrl.tiltArrow('right', $index)"></div>
         </div>
       </div>
     </div>
