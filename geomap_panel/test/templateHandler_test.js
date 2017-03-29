@@ -315,7 +315,12 @@ describe('SelectedCountriesHandler', () => {
             });
         };
 
-        ctrl = {};
+        ctrl = {
+            dashboard: {
+                updateSubmenuVisibility: () => {
+                }
+            }
+        };
 
         templateHandler = new TemplateHandler(ctrl, templateSrv, variableSrv)
     }
