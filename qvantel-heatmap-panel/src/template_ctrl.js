@@ -1,5 +1,6 @@
 import {MetricsPanelCtrl} from 'app/plugins/sdk';
 import Circles from './Circles';
+import TrendCalculator from './TrendCalculator';
 import './css/template-panel.css!';
 
 export class TemplateCtrl extends MetricsPanelCtrl {
@@ -20,10 +21,13 @@ export class TemplateCtrl extends MetricsPanelCtrl {
     }
 
     this.circles = new Circles(this);
+    this.trendCalculator = new TrendCalculator();
+    this.currentTrend = [];
     this.selected = [];
     this.showTooltip = false;
     this.tooltipName = '';
     this.tooltipValue = 0;
+    this.tooltipTrend = 0;
 
     this.events.on('render', this.onRender.bind(this));
     this.events.on('data-received', this.onDataReceived.bind(this));
@@ -39,8 +43,11 @@ export class TemplateCtrl extends MetricsPanelCtrl {
 
   onDataReceived (dataList) {
     this.currentDataList = dataList;
-
     this.circles.drawCircles(dataList);
+
+    for (var i = 0; i < dataList.length; i++) {
+      this.currentTrend[i] = this.trendCalculator.getSimpleTrend(dataList[i].datapoints);
+    }
   }
 
   onRender () {
@@ -51,24 +58,24 @@ export class TemplateCtrl extends MetricsPanelCtrl {
     return target.replace(/.*[.]([\w])/i, '$1');
   }
 
-  handleCircleClick (index) {
-    if (this.selected[index]) {
-      if (this.selected[index] === true) {
-        this.selected[index] = false;
-        this.circles.setCircleColor(this.currentDataList, index, '.circle', 'white'); // set white
-      } else {
-        this.selected[index] = true;
-        this.circles.setCircleColor(this.currentDataList, index, '.circle'); // set random color
-      }
+  handleCircleClick (data, index) {
+    var serviceName = this.parseName(data.target);
+
+    if (this.selected.includes(serviceName)) { // If service is in selected
+      this.selected = this.selected.filter(function (name) {
+        return name !== serviceName;
+      })
+      this.circles.setCircleColor(this.currentDataList, index, '.circle', 'white'); // set white
     } else {
-      this.selected[index] = true;
+      this.selected.push(serviceName)
       this.circles.setCircleColor(this.currentDataList, index, '.circle'); // set random color
     }
   }
 
-  handleMouseEnter (data) {
+  handleMouseEnter (data, index) { // Change this
     this.tooltipName = this.parseName(data.target);
     this.tooltipValue = data.datapoints[data.datapoints.length - this.circles.getOffset() - 1][0];
+    this.tooltipTrend = this.currentTrend[index];
 
     this.showTooltip = true;
   }
