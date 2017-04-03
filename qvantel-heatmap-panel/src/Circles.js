@@ -6,7 +6,7 @@ export default class Circles {
     this.circleWidth = 100; // Change this programatically
     this.max = ctrl.panel.max;
     this.min = ctrl.panel.min;
-    this.colors = d3.schemeCategory20; // Fix colorbug.
+    this.colors = ctrl.panel.colors; // Fix colorbug.
     this.currentColorIndex = 0;
     this.offset = 0;
 

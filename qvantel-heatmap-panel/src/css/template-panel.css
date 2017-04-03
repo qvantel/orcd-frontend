@@ -51,40 +51,60 @@ table, tr, td {
 }
 
 .trend-arrow {
-  width: 28.28px;
-  height: 20px;
+  width: 15px;
+  height: 15px;
   position: relative;
-  transform: scale(0.5);
 }
 
 .arrow-part {
   position: absolute;
-  width: 20px;
-  height: 5px;
+  width: 10px;
+  height: 4px;
+  transition: all 1s;
 }
 
 .arrow-right {
   background-color: white;
-  left: calc(50% - 4px);
+  border-top-right-radius: 1em;
+  border-bottom-right-radius: 1em;
+  left: calc(50% - 3.5px);
+  top: calc(50%);
 }
 
 .arrow-left {
   background-color: white;
-  left: calc(50% - 7.7px - 7.7px);
+  border-top-left-radius: 1em;
+  border-bottom-left-radius: 1em;
+  left: calc(50% - 3.5px - 3.5px);
+  top: calc(50%);
 }
 
+@keyframes rotate-up-down {
+  0% {transform: rotate(45deg);}
+  100% {transform: rotate(-45deg);}
+}
+
+@keyframes rotate-up-middle {
+  0% {transform: rotate(45deg);}
+  100% {transform: rotate(0deg);}
+}
+
+@keyframes rotate-middle-down {
+  0% {transform: rotate(0deg);}
+  100% {transform: rotate(-45deg);}
+}
 /*------------- General stuff -------------*/
 
 .center-flex-container {
   display: flex;
   justify-content: center;
-  flex-wrap: wrap;
 }
 
 .relative-container {
   position: relative;
   height: auto;
   display: inline-block;
+  word-break: break-all;
 }
 
 .layer-0 {
@@ -97,14 +117,38 @@ table, tr, td {
   z-index: 1;
 }
 
-.tilt-down {
-  transform: rotate(-45deg);
+.tilt-up-down {
+  transform: rotate(45deg);
+  animation: rotate-up-down 1s linear reverse;
 }
 
-.tilt-up {
+.tilt-up-middle {
+  animation: rotate-up-middle 1s linear reverse;
+}
+
+.tilt-middle-up {
+  transform: rotate(-45deg);
+  animation: rotate-up-middle 1s linear;
+}
+
+.tilt-middle-down {
+  transform: rotate(45deg);
+  animation: rotate-middle-down 1s linear reverse;
+}
+
+.tilt-down-up {
+  transform: rotate(-45deg);
+  animation: rotate-up-down 1s linear;
+}
+
+.tilt-down-middle {
+  animation: rotate-middle-down 1s linear;
+}
+
+.tilt-down-down {
   transform: rotate(45deg);
 }
 
-.tilt-straight {
-  transform: rotate(0deg);
+.tilt-up-up {
+  transform: rotate(-45deg);
 }

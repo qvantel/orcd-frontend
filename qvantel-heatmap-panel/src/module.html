@@ -1,16 +1,3 @@
-<h2>{{ ctrl.header }}</h2>
-<table>
-  <tr ng-repeat="x in ctrl.currentDataList">
-    <td>Service: {{ ctrl.parseName(x.target) }}  </td>
-    <td>Value: {{ x.datapoints[x.datapoints.length - ctrl.circles.offset - 1][0] }}</td>
-  </tr>
-</table>
-<div class="center-flex-container">
-  <div class="trend-arrow center-flex-container">
-    <div class="arrow-left arrow-part tilt-down"></div>
-    <div class="arrow-right arrow-part tilt-up"></div>
-  </div>
-</div>
 <div ng-show="ctrl.showTooltip" id="circle-tooltip" ng-class="center-flex-container">
   <div id="tooltip-arrow"></div>
   Name: {{ ctrl.tooltipName }}
@@ -27,10 +14,18 @@
       ng-repeat="x in ctrl.currentDataList"
       ng-mouseleave="ctrl.showTooltip = false">
       <div class="center-flex-container">
-        {{ ctrl.parseName(x.target) }}
+        <div class="relative-container">
+          {{ ctrl.parseName(x.target) }}
+        </div>
         <div class="trend-arrow center-flex-container">
-          <div class="arrow-left arrow-part" ng-class="ctrl.tiltArrow('left', $index)"></div>
-          <div class="arrow-right arrow-part" ng-class="ctrl.tiltArrow('right', $index)"></div>
+          <div class="arrow-left arrow-part" ng-class="{'tilt-up-middle': ctrl.tiltArrow($index) === 'up-middle', 'tilt-up-down': ctrl.tiltArrow($index) === 'up-down',
+            'tilt-middle-up': ctrl.tiltArrow($index) === 'middle-up', 'tilt-middle-down': ctrl.tiltArrow($index) === 'middle-down',
+            'tilt-down-up': ctrl.tiltArrow($index) === 'down-up', 'tilt-down-middle': ctrl.tiltArrow($index) === 'down-middle',
+            'tilt-down-down': ctrl.tiltArrow($index) === 'down-down', 'tilt-up-up': ctrl.tiltArrow($index) === 'up-up'}"></div>
+          <div class="arrow-right arrow-part" ng-class="{'tilt-up-middle': ctrl.tiltArrow($index) === 'down-middle', 'tilt-up-down': ctrl.tiltArrow($index) === 'down-up',
+            'tilt-middle-up': ctrl.tiltArrow($index) === 'middle-down', 'tilt-middle-down': ctrl.tiltArrow($index) === 'middle-up',
+            'tilt-down-up': ctrl.tiltArrow($index) === 'up-down', 'tilt-down-middle': ctrl.tiltArrow($index) === 'up-middle',
+            'tilt-down-down': ctrl.tiltArrow($index) === 'up-up', 'tilt-up-up': ctrl.tiltArrow($index) === 'down-down'}"></div>
         </div>
       </div>
     </div>

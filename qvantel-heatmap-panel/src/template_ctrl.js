@@ -10,12 +10,13 @@ export class TemplateCtrl extends MetricsPanelCtrl {
     this.$rootScope = $rootScope;
 
     this.templateHandler = new TemplateHandler(this, templateSrv, variableSrv);
-    this.templateHandler.buildSimple('Select products', []);
+    this.templateHandler.buildSimple('products', []);
 
     var panelDefaults = {
       circleWidth: 100,
       min: 0,
-      max: 1000
+      max: 1000,
+      colors: ['#7EB26D', '#EAB839', '#6ED0E0', '#EF843C', '#E24D42', '#1F78C1', '#BA43A9', '#705DA0', '#508642', '#CCA300', '#447EBC', '#C15C17', '#890F02', '#0A437C', '#6D1F62']
     };
 
     for (var key in panelDefaults) {
@@ -32,6 +33,7 @@ export class TemplateCtrl extends MetricsPanelCtrl {
     this.tooltipName = '';
     this.tooltipValue = 0;
     this.tooltipTrend = 0;
+    this.selectedMap = [];
 
     this.events.on('render', this.onRender.bind(this));
     this.events.on('data-received', this.onDataReceived.bind(this));
@@ -48,9 +50,30 @@ export class TemplateCtrl extends MetricsPanelCtrl {
   onDataReceived (dataList) {
     this.currentDataList = dataList;
     this.circles.drawCircles(dataList);
+    this.calculateTrend(dataList);
+  }
 
+  calculateTrend (dataList) {
     for (var i = 0; i < dataList.length; i++) {
-      this.currentTrend[i] = this.trendCalculator.getSimpleTrend(dataList[i].datapoints);
+      var oldDir = 'middle';
+      if (this.currentTrend[i]) {
+        oldDir = this.currentTrend[i].arrowDir;
+      }
+      var trend = this.trendCalculator.getSimpleTrend(dataList[i].datapoints);
+      var arrowDir = '';
+      if (trend === 0) {
+        arrowDir = 'middle';
+      } else if (trend < 0) {
+        arrowDir = 'down';
+      } else {
+        arrowDir = 'up';
+      }
+
+      this.currentTrend[i] = {
+        'trend': trend,
+        'arrowDir': arrowDir,
+        'oldDir': oldDir
+      }
     }
   }
 
@@ -64,24 +87,40 @@ export class TemplateCtrl extends MetricsPanelCtrl {
 
   handleCircleClick (data, index) {
     var serviceName = this.parseName(data.target);
-
     if (this.selected.includes(serviceName)) { // If service is in selected
       this.selected = this.selected.filter(function (name) {
         return name !== serviceName;
       })
+      this.selectedMap = this.selectedMap.filter(function (k) {
+        return k !== index;
+      })
       this.circles.setCircleColor(this.currentDataList, index, '.circle', 'white'); // set white
+
+      for (var i = 0; i < this.selected.length; i++) {
+        this.circles.setCircleColor(this.currentDataList, this.selectedMap[i], '.circle', this.panel.colors[i]);
+      }
     } else {
-      this.selected.push(serviceName)
-      this.circles.setCircleColor(this.currentDataList, index, '.circle'); // set random color
+      var n = 0;
+      while (serviceName > this.selected[n]) {
+        n++;
+      }
+
+      this.selected = this.selected.slice(0, n).concat(serviceName).concat(this.selected.slice(n));
+      this.selectedMap = this.selectedMap.slice(0, n).concat(index).concat(this.selectedMap.slice(n));
+
+      // this.circles.setCircleColor(this.currentDataList, index, '.circle', this.panel.colors[n]); // set random color
+      for (var k = 0; k < this.selected.length; k++) {
+        this.circles.setCircleColor(this.currentDataList, this.selectedMap[k], '.circle', this.panel.colors[k]);
+      }
     }
 
-    this.templateHandler.buildSimple('Select products', this.selected);
+    this.templateHandler.buildSimple('products', this.selected);
   }
 
   handleMouseEnter (data, index) { // Change this
     this.tooltipName = this.parseName(data.target);
     this.tooltipValue = data.datapoints[data.datapoints.length - this.circles.getOffset() - 1][0];
-    this.tooltipTrend = this.currentTrend[index];
+    this.tooltipTrend = this.currentTrend[index].trend;
 
     this.showTooltip = true;
   }
@@ -93,22 +132,8 @@ export class TemplateCtrl extends MetricsPanelCtrl {
     tooltip.style.left = mEvent.clientX - tooltip.offsetWidth / 2 - 10 + 'px';
   }
 
-  tiltArrow (direction, index) {
-    if (this.currentTrend[index] === 0) {
-      return 'tilt-straight';
-    } else if (this.currentTrend[index] > 0) {
-      if (direction === 'left') {
-        return 'tilt-up';
-      } else {
-        return 'tilt-down';
-      }
-    } else {
-      if (direction === 'right') {
-        return 'tilt-down';
-      } else {
-        return 'tilt-up';
-      }
-    }
+  tiltArrow (index) {
+    return this.currentTrend[index].oldDir + '-' + this.currentTrend[index].arrowDir;
   }
 }
 
