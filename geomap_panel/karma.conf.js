@@ -8,11 +8,15 @@ module.exports = function (config) {
 
     files: [
       'https://www.gstatic.com/charts/loader.js',
+      'https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js',
       'src/map.js',
       'src/utilities.js',
       'src/dataFormatter.js',
       'src/zoomHandler.js',
       'src/dataGenerator.js',
+      'src/panelDataHandler.js',
+      'src/selectedCountriesHandler.js',
+      'src/templateHandler.js',
       'test/*.js'
     ],
 
@@ -22,6 +26,9 @@ module.exports = function (config) {
       'src/dataFormatter.js': ['browserify'],
       'src/zoomHandler.js': ['browserify'],
       'src/dataGenerator.js': ['browserify'],
+      'src/panelDataHandler.js': ['browserify'],
+      'src/selectedCountriesHandler.js': ['browserify'],
+      'src/templateHandler.js': ['browserify'],
       'test/*.js': ['browserify']
     },
 
@@ -29,9 +36,10 @@ module.exports = function (config) {
 
     coverageReporter: {
         reporters: [
-          { type: 'lcov'}
+          { type: 'html', subdir: 'html' },
+          { type: 'cobertura', subdir: 'cobertura' }
       ],
-      dir: 'test/coverage',
+      dir: 'test/coverage/',
       instrumenters: { isparta: isparta },
       instrumenter: { '**/*.js': 'isparta' }
     },
