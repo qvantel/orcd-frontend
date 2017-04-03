@@ -21,9 +21,14 @@ export default class DataFormatter {
     */
     generate (dataList) {
         var res = [['Country', 'Frequency']];
+        var trend = true;
 
         if (this.ctrl.locations) {
-            res = this.readData(dataList, res);
+            if (trend) {
+                res = this.readTrend(dataList, res);
+            } else {
+                res = this.readData(dataList, res);
+            }
         }
 
         return res;
@@ -44,6 +49,7 @@ export default class DataFormatter {
             }
         });
 
+        this.log(dataList);
         return res;
     }
 
@@ -71,5 +77,61 @@ export default class DataFormatter {
     */
     validateRegionCode (region) {
         return (typeof this.ctrl.locations.countries[region] !== 'undefined');
+    }
+
+    readTrend (dataList, res) {
+        dataList.forEach((data) => {
+            if (this.validateRegionCode(data.target.toUpperCase())) {
+                var trend = this.calcTrend(this.getFirstDatapointWithData(data.datapoints), this.getLastDatapointWithData(data.datapoints));
+                res.push([data.target, trend]);
+            }
+        });
+
+        return res;
+    }
+
+    getFirstDatapointWithData (datapoints) {
+        for (var i = 0; i < datapoints.length; i++) {
+            if (datapoints[i][0] !== null) {
+                return datapoints[i][0];
+            }
+        }
+
+        return 0;
+    }
+
+    getLastDatapointWithData (datapoints) {
+        for (var i = datapoints.length - 1; i >= 0; i--) {
+            if (datapoints[i][0] !== null) {
+                return datapoints[i][0];
+            }
+        }
+
+        return 0;
+    }
+
+    calcTrend (first, last) {
+        this.ctrl.log('first: ' + first);
+        this.ctrl.log('last: ' + last);
+        this.ctrl.log('--');
+
+        if (first === null) {
+            first = 0;
+        }
+
+        if (last === null) {
+            last = 0;
+        }
+
+        if (last > first && first !== 0) {
+            return last / first;
+        }
+
+        if (last < first && last !== 0) {
+            this.ctrl.log(first / last * -1);
+            return first / last * -1;
+        }
+
+        return 0;
     }
 }

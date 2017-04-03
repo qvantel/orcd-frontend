@@ -9,9 +9,10 @@ export default class Map {
         this.readyCallback = onReadyCallback;
         this.options = {
             colorAxis: {
-                // minValue: 0,
-                // maxValue: 100,
-                colors: [this.ctrl.lightTheme ? '#f5f5f3' : '#151515']
+                minValue: -100,
+                maxValue: 100,
+                // colors: [this.ctrl.lightTheme ? '#f5f5f3' : '#151515']
+                colors: ['#ff0000', '#151515', '#00ff00']
             },
             backgroundColor: {
                 'fill': this.ctrl.lightTheme ? '#fbfbfb' : '#1f1d1d'
@@ -24,7 +25,7 @@ export default class Map {
         };
 
         this.setRegion(this.ctrl.zoomHandler.getLastZoom());
-        this.setColors(this.ctrl.panel.colors);
+        //this.setColors(this.ctrl.panel.colors);
         this.loadGoogle();
     }
 
