@@ -1,1 +1,35 @@
-<d3 data="ctrl.datapoints"></d3>
+<div ng-show="ctrl.showTooltip" id="circle-tooltip" ng-class="center-flex-container">
+  <div id="tooltip-arrow"></div>
+  Name: {{ ctrl.tooltipName }}
+  <br>
+  Value: {{ ctrl.tooltipValue }} users
+  <br>
+  Trend: {{ ctrl.tooltipTrend }} users/second
+</div>
+<div class="center-flex-container layer-0">
+  <div class="center-flex-container layer-1">
+    <div ng-mousemove="ctrl.handleMouseOver($event)"
+      ng-mouseenter="ctrl.handleMouseEnter(x, $index)"
+      ng-click="ctrl.handleCircleClick(x, $index)" class="angular-container center-flex-container"
+      ng-repeat="x in ctrl.currentDataList"
+      ng-mouseleave="ctrl.showTooltip = false">
+      <div class="center-flex-container">
+        <div class="relative-container">
+          {{ ctrl.parseName(x.target) }}
+        </div>
+        <div class="trend-arrow center-flex-container">
+          <div class="arrow-left arrow-part" ng-class="{'tilt-up-middle': ctrl.tiltArrow($index) === 'up-middle', 'tilt-up-down': ctrl.tiltArrow($index) === 'up-down',
+            'tilt-middle-up': ctrl.tiltArrow($index) === 'middle-up', 'tilt-middle-down': ctrl.tiltArrow($index) === 'middle-down',
+            'tilt-down-up': ctrl.tiltArrow($index) === 'down-up', 'tilt-down-middle': ctrl.tiltArrow($index) === 'down-middle',
+            'tilt-down-down': ctrl.tiltArrow($index) === 'down-down', 'tilt-up-up': ctrl.tiltArrow($index) === 'up-up'}"></div>
+          <div class="arrow-right arrow-part" ng-class="{'tilt-up-middle': ctrl.tiltArrow($index) === 'down-middle', 'tilt-up-down': ctrl.tiltArrow($index) === 'down-up',
+            'tilt-middle-up': ctrl.tiltArrow($index) === 'middle-down', 'tilt-middle-down': ctrl.tiltArrow($index) === 'middle-up',
+            'tilt-down-up': ctrl.tiltArrow($index) === 'up-down', 'tilt-down-middle': ctrl.tiltArrow($index) === 'up-middle',
+            'tilt-down-down': ctrl.tiltArrow($index) === 'up-up', 'tilt-up-up': ctrl.tiltArrow($index) === 'down-down'}"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="center-flex-container layer-0" id="d3-circle-container">
+  </div>
+</div>

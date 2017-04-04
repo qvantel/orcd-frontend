@@ -1,9 +1,8 @@
 {
   "scripts": {
-    "build": "npm install && npm run grunt_geomap && npm run grunt_qvantel-heatmap;",
+    "build": "npm install && npm run grunt_geomap && npm run grunt_heatmap;",
     "grunt_geomap": "cd geomap_panel && npm install && npm run grunt && cd ..;",
     "grunt_heatmap": "cd heatmap_panel && npm install && npm run grunt && cd ..;",
-    "grunt_qvantel-heatmap": "cd qvantel-heatmap-panel && npm install && grunt && cd ..;",
     "testGeomap": "cd geomap_panel; npm install; npm test;",
     "testEslint": "eslint  templates/**/src/*.js geomap_panel/src/*.js",
     "testCsslint": "csslint templates/**/src/css/*.css geomap_panel/src/css/*.css",

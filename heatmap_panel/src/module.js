@@ -1,6 +1,5 @@
-import {HeatMapPanelCtrl} from './heatMapPanelCtrl';
-import './directive.js';
+import {TemplateCtrl} from './template_ctrl';
 
 export {
-    HeatMapPanelCtrl as PanelCtrl
+  TemplateCtrl as PanelCtrl
 };
