@@ -117,6 +117,6 @@ export default class DataFormatter {
         var deltaValue = lastValue - firstValue;
         var deltaTime = (lastTimestamp - firstTimestamp) / 1000;
 
-        return Math.atan(deltaValue / deltaTime) * (Math.PI * 0.5);
+        return Math.atan(deltaValue / deltaTime) / (Math.PI * 0.5);
     }
 }
