@@ -3,6 +3,7 @@ import Circles from './Circles';
 import TrendCalculator from './TrendCalculator';
 import TemplateHandler from './templateHandler';
 import './css/template-panel.css!';
+import angular from 'angular';
 
 export class TemplateCtrl extends MetricsPanelCtrl {
   constructor ($scope, $injector, $rootScope, templateSrv, variableSrv) {
@@ -20,7 +21,7 @@ export class TemplateCtrl extends MetricsPanelCtrl {
     };
 
     for (var key in panelDefaults) {
-      if (typeof this.panel[key] === 'undefined') {
+      if (angular.isUndefined(this.panel[key])) {
         this.panel[key] = panelDefaults[key];
       }
     }

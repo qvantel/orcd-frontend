@@ -24,6 +24,9 @@ module.exports = function (grunt) {
     },
 
     watch: {
+      options: {
+         livereload: true
+      },
       rebuild_all: {
         files: ['src/**/*', 'plugin.json'],
         tasks: ['default'],
