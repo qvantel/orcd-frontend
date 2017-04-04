@@ -39,6 +39,9 @@ describe('DataGenerator', () => {
                     'NO': '150',
                     'DK': '150'
                 }
+            },
+            panel: {
+                showTrends: false
             }
         };
 
