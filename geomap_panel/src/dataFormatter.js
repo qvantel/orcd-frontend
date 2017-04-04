@@ -20,11 +20,10 @@ export default class DataFormatter {
     * @return {dictionary} returns a dictionary where the key is the country and the value is the frequency
     */
     generate (dataList) {
-        var res = [['Country', 'Frequency']];
-        var trend = true;
+        var res = [['Country', (this.ctrl.panel.showTrends ? 'Trend' : 'Roaming calls')]];
 
         if (this.ctrl.locations) {
-            if (trend) {
+            if (this.ctrl.panel.showTrends) {
                 res = this.readTrend(dataList, res);
             } else {
                 res = this.readData(dataList, res);
@@ -49,7 +48,6 @@ export default class DataFormatter {
             }
         });
 
-        this.log(dataList);
         return res;
     }
 
@@ -82,7 +80,7 @@ export default class DataFormatter {
     readTrend (dataList, res) {
         dataList.forEach((data) => {
             if (this.validateRegionCode(data.target.toUpperCase())) {
-                var trend = this.calcTrend(this.getFirstDatapointWithData(data.datapoints), this.getLastDatapointWithData(data.datapoints));
+                var trend = this.calcTrend(data.datapoints[this.getFirstDatapointWithData(data.datapoints)], data.datapoints[this.getLastDatapointWithData(data.datapoints)]);
                 res.push([data.target, trend]);
             }
         });
@@ -93,7 +91,7 @@ export default class DataFormatter {
     getFirstDatapointWithData (datapoints) {
         for (var i = 0; i < datapoints.length; i++) {
             if (datapoints[i][0] !== null) {
-                return datapoints[i][0];
+                return i;
             }
         }
 
@@ -103,35 +101,22 @@ export default class DataFormatter {
     getLastDatapointWithData (datapoints) {
         for (var i = datapoints.length - 1; i >= 0; i--) {
             if (datapoints[i][0] !== null) {
-                return datapoints[i][0];
+                return i;
             }
         }
 
-        return 0;
+        return datapoints.length - 1;
     }
 
     calcTrend (first, last) {
-        this.ctrl.log('first: ' + first);
-        this.ctrl.log('last: ' + last);
-        this.ctrl.log('--');
+        var firstValue = first[0];
+        var firstTimestamp = first[1];
+        var lastValue = last[0];
+        var lastTimestamp = last[1];
 
-        if (first === null) {
-            first = 0;
-        }
+        var deltaValue = lastValue - firstValue;
+        var deltaTime = (lastTimestamp - firstTimestamp) / 1000;
 
-        if (last === null) {
-            last = 0;
-        }
-
-        if (last > first && first !== 0) {
-            return last / first;
-        }
-
-        if (last < first && last !== 0) {
-            this.ctrl.log(first / last * -1);
-            return first / last * -1;
-        }
-
-        return 0;
+        return Math.atan(deltaValue / deltaTime) * (Math.PI * 0.5);
     }
 }
