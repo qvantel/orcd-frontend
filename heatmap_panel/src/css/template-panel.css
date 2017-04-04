@@ -1,0 +1,154 @@
+table, tr, td {
+  border: 1px white;
+  padding: 10px;
+}
+
+#circle-tooltip {
+  background-color: black;
+  border: 1px solid grey;
+  position: absolute;
+  padding: 5px;
+  border-radius: 0.4em;
+  z-index: 2;
+}
+
+#tooltip-arrow {
+  position: absolute;
+  background-color: black;
+  width: 16px;
+  height: 16px;
+  transform: rotate(45deg);
+  top: -8px;
+  left: calc(50% - 8px);
+  border-bottom-right-radius: 100%;
+  border-top: 1px solid grey;
+  border-left: 1px solid grey;
+}
+
+.circle {
+  background-color: white;
+}
+
+.circle-container {
+}
+
+.item {
+  margin: 0px 20px 20px 0px;
+  text-align: center;
+}
+
+/*Change this width and hight programatically!*/
+.angular-container {
+  background-color: none;
+  border-top-right-radius: 6em;
+  border-top-left-radius: 6em;
+  margin: 20px 20px 0px 20px;
+  width: 100px;
+  height: 140px;
+  color: grey;
+  align-items: flex-end;
+  cursor: pointer;
+}
+
+.trend-arrow {
+  width: 15px;
+  height: 15px;
+  position: relative;
+}
+
+.arrow-part {
+  position: absolute;
+  width: 10px;
+  height: 4px;
+  transition: all 1s;
+}
+
+.arrow-right {
+  background-color: white;
+  border-top-right-radius: 1em;
+  border-bottom-right-radius: 1em;
+  left: calc(50% - 3.5px);
+  top: calc(50%);
+}
+
+.arrow-left {
+  background-color: white;
+  border-top-left-radius: 1em;
+  border-bottom-left-radius: 1em;
+  left: calc(50% - 3.5px - 3.5px);
+  top: calc(50%);
+}
+
+@keyframes rotate-up-down {
+  0% {transform: rotate(-45deg);}
+  100% {transform: rotate(45deg);}
+}
+
+@keyframes rotate-up-middle {
+  0% {transform: rotate(-45deg);}
+  100% {transform: rotate(0deg);}
+}
+
+@keyframes rotate-middle-down {
+  0% {transform: rotate(0deg);}
+  100% {transform: rotate(45deg);}
+}
+/*------------- General stuff -------------*/
+
+.center-flex-container {
+  display: flex;
+  justify-content: center;
+}
+
+.relative-container {
+  position: relative;
+  height: auto;
+  display: inline-block;
+  word-break: break-all;
+}
+
+.layer-0 {
+  position: relative;
+  z-index: 0;
+}
+
+.layer-1 {
+  position: absolute;
+  z-index: 1;
+}
+
+.tilt-up-down {
+  transform: rotate(45deg);
+  animation: rotate-up-down 1s linear;
+}
+
+.tilt-up-middle {
+  animation: rotate-up-middle 1s linear;
+}
+
+.tilt-middle-up {
+  transform: rotate(-45deg);
+  animation: rotate-up-middle 1s linear reverse;
+}
+
+.tilt-middle-down {
+  transform: rotate(45deg);
+  animation: rotate-middle-down 1s linear;
+}
+
+.tilt-down-up {
+  transform: rotate(-45deg);
+  animation: rotate-up-down 1s linear reverse;
+}
+
+.tilt-down-middle {
+  animation: rotate-middle-down 1s linear reverse;
+}
+
+.tilt-down-down {
+  transform: rotate(45deg);
+}
+
+.tilt-up-up {
+  transform: rotate(-45deg);
+}
