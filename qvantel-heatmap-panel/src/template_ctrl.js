@@ -60,8 +60,9 @@ export class TemplateCtrl extends MetricsPanelCtrl {
         oldDir = this.currentTrend[i].arrowDir;
       }
       var trend = this.trendCalculator.getSimpleTrend(dataList[i].datapoints);
+      console.log(trend);
       var arrowDir = '';
-      if (trend === 0) {
+      if (trend < 0.5 && trend > -0.5) {
         arrowDir = 'middle';
       } else if (trend < 0) {
         arrowDir = 'down';

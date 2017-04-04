@@ -80,18 +80,18 @@ table, tr, td {
 }
 
 @keyframes rotate-up-down {
-  0% {transform: rotate(45deg);}
-  100% {transform: rotate(-45deg);}
+  0% {transform: rotate(-45deg);}
+  100% {transform: rotate(45deg);}
 }
 
 @keyframes rotate-up-middle {
-  0% {transform: rotate(45deg);}
+  0% {transform: rotate(-45deg);}
   100% {transform: rotate(0deg);}
 }
 
 @keyframes rotate-middle-down {
   0% {transform: rotate(0deg);}
-  100% {transform: rotate(-45deg);}
+  100% {transform: rotate(45deg);}
 }
 /*------------- General stuff -------------*/
 
@@ -119,30 +119,30 @@ table, tr, td {
 
 .tilt-up-down {
   transform: rotate(45deg);
-  animation: rotate-up-down 1s linear reverse;
+  animation: rotate-up-down 1s linear;
 }
 
 .tilt-up-middle {
-  animation: rotate-up-middle 1s linear reverse;
+  animation: rotate-up-middle 1s linear;
 }
 
 .tilt-middle-up {
   transform: rotate(-45deg);
-  animation: rotate-up-middle 1s linear;
+  animation: rotate-up-middle 1s linear reverse;
 }
 
 .tilt-middle-down {
   transform: rotate(45deg);
-  animation: rotate-middle-down 1s linear reverse;
+  animation: rotate-middle-down 1s linear;
 }
 
 .tilt-down-up {
   transform: rotate(-45deg);
-  animation: rotate-up-down 1s linear;
+  animation: rotate-up-down 1s linear reverse;
 }
 
 .tilt-down-middle {
-  animation: rotate-middle-down 1s linear;
+  animation: rotate-middle-down 1s linear reverse;
 }
 
 .tilt-down-down {
