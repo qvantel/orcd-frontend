@@ -109,9 +109,9 @@ export default class DataFormatter {
     }
 
     calcTrend (first, last) {
-        var firstValue = first[0];
+        var firstValue = (first[0] !== null ? first[0] : 0);
         var firstTimestamp = first[1];
-        var lastValue = last[0];
+        var lastValue = (last[0] !== null ? last[0] : 0);
         var lastTimestamp = last[1];
 
         var deltaValue = lastValue - firstValue;
