@@ -34,6 +34,10 @@ export class TemplateCtrl extends MetricsPanelCtrl {
     this.tooltipName = '';
     this.tooltipValue = 0;
     this.tooltipTrend = 0;
+    this.tooltipOffset = {
+      'top': 0,
+      'left': 0
+    };
     this.selectedMap = [];
 
     this.events.on('render', this.onRender.bind(this));
@@ -61,7 +65,6 @@ export class TemplateCtrl extends MetricsPanelCtrl {
         oldDir = this.currentTrend[i].arrowDir;
       }
       var trend = this.trendCalculator.getSimpleTrend(dataList[i].datapoints);
-      console.log(trend);
       var arrowDir = '';
       if (trend < 0.5 && trend > -0.5) {
         arrowDir = 'middle';
@@ -119,10 +122,29 @@ export class TemplateCtrl extends MetricsPanelCtrl {
     this.templateHandler.buildSimple('products', this.selected);
   }
 
-  handleMouseEnter (data, index) { // Change this
+  handleMouseEnter (data, index, mEvent) { // Change this
+    var panelRows = document.getElementsByClassName('panels-wrapper');
+
     this.tooltipName = this.parseName(data.target);
     this.tooltipValue = data.datapoints[data.datapoints.length - this.circles.getOffset() - 1][0];
     this.tooltipTrend = this.currentTrend[index].trend;
+
+    this.tooltipOffset.left = 0;
+    this.tooltipOffset.top = 0;
+
+    var i = 0;
+    while (i < panelRows.length && this.tooltipOffset.top + panelRows[i].clientHeight < mEvent.clientY) {
+      this.tooltipOffset.top += panelRows[i].clientHeight;
+      i++;
+    }
+
+    var panelContainers = panelRows[i].getElementsByClassName('panel-container');
+    var k = 0;
+
+    while (k < panelContainers.length && this.tooltipOffset.left + panelContainers[k].clientWidth < mEvent.clientX) {
+      this.tooltipOffset.left += panelContainers[i].clientWidth;
+      k++;
+    }
 
     this.showTooltip = true;
   }
@@ -130,8 +152,8 @@ export class TemplateCtrl extends MetricsPanelCtrl {
   handleMouseOver (mEvent) {
     var tooltip = document.getElementById('circle-tooltip');
 
-    tooltip.style.top = mEvent.clientY + 'px';
-    tooltip.style.left = mEvent.clientX - tooltip.offsetWidth / 2 - 10 + 'px';
+    tooltip.style.top = mEvent.clientY - this.tooltipOffset.top + 'px';
+    tooltip.style.left = mEvent.clientX - this.tooltipOffset.left - tooltip.offsetWidth / 2 - 10 + 'px';
   }
 
   tiltArrow (index) {
