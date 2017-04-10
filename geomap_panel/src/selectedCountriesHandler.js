@@ -63,6 +63,11 @@ export default class SelectedCountriesHandler {
         }
     }
 
+    isCountrySelected (country) {
+        this.ctrl.log(this.selectedCountries);
+        return this.selectedCountries.indexOf(country.toLowerCase());
+    }
+
     /**
     * Format the query to be more readable
     */

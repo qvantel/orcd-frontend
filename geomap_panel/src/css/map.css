@@ -2,7 +2,7 @@
 
 /* Styling for GeoChart country borders */
 .map path {
-    stroke-width: 1;
+    transition: fill 1s ease;
 }
 
 /* Make sure the holder is relative so absolute children get its bounds*/
@@ -20,4 +20,43 @@
 /* Make sure the elements inside the breadcrumbs are inline so they don't stack under each other*/
 .breadcrumbs div {
     display: inline;
+}
+
+.stroke-selected {
+    stroke-width: 3px;
+}
+
+.stroke-zoom {
+    transition: scale 1s;
+    stroke-width: 0.3px !important;
+}
+
+#legend {
+    padding: 1.5em 0 0 1.5em;
+}
+
+li.key {
+    border-top-width: 15px;
+    border-top-style: solid;
+    font-size: .75em;
+    width: 10%;
+    padding-left: 0;
+    padding-right: 0;
+}
+.tooltip {
+    position: absolute;
+    text-align: center;
+    width: 60px;
+    height: 28px;
+    padding: 2px;
+    font: 12px sans-serif;
+    background: white;
+    color:black;
+    border: 0px;
+    border-radius: 8px;
+    pointer-events: none;
+}
+
+.background {
+    fill: #1f1d1d;
 }
