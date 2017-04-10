@@ -1,10 +1,12 @@
 <div ng-show="ctrl.showTooltip" id="circle-tooltip" ng-class="center-flex-container">
   <div id="tooltip-arrow"></div>
-  Name: {{ ctrl.tooltipName }}
+  Name: {{ ctrl.tooltip.name }}
   <br>
-  Value: {{ ctrl.tooltipValue }} users
+  Value: {{ ctrl.tooltip.value }} users
   <br>
-  Trend: {{ ctrl.tooltipTrend }} users/second
+  Max value: {{ ctrl.tooltip.max }} users
+  <br>
+  Trend: {{ ctrl.tooltip.trend }} users/second
 </div>
 <div class="center-flex-container layer-0">
   <div class="center-flex-container layer-1">

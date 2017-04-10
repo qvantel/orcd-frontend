@@ -30,14 +30,18 @@ export class TemplateCtrl extends MetricsPanelCtrl {
     this.trendCalculator = new TrendCalculator();
     this.currentTrend = [];
     this.selected = [];
+    this.currentMax = [];
     this.showTooltip = false;
-    this.tooltipName = '';
-    this.tooltipValue = 0;
-    this.tooltipTrend = 0;
-    this.tooltipOffset = {
-      'top': 0,
-      'left': 0
-    };
+    this.tooltip = {
+      'name': '',
+      'value': 0,
+      'trend': 0,
+      'max': 6000,
+      'offset': {
+        'top': 0,
+        'left': 0
+      }
+    }
     this.selectedMap = [];
 
     this.events.on('render', this.onRender.bind(this));
@@ -125,24 +129,25 @@ export class TemplateCtrl extends MetricsPanelCtrl {
   handleMouseEnter (data, index, mEvent) { // Change this
     var panelRows = document.getElementsByClassName('panels-wrapper');
 
-    this.tooltipName = this.parseName(data.target);
-    this.tooltipValue = data.datapoints[data.datapoints.length - this.circles.getOffset() - 1][0];
-    this.tooltipTrend = this.currentTrend[index].trend;
+    this.tooltip.name = this.parseName(data.target);
+    this.tooltip.value = data.datapoints[data.datapoints.length - this.circles.getOffset() - 1][0];
+    this.tooltip.trend = this.currentTrend[index].trend;
+    this.tooltip.max = this.currentMax[index];
 
-    this.tooltipOffset.left = 0;
-    this.tooltipOffset.top = 0;
+    this.tooltip.offset.left = 0;
+    this.tooltip.offset.top = 0;
 
     var i = 0;
-    while (i < panelRows.length && this.tooltipOffset.top + panelRows[i].clientHeight < mEvent.clientY) {
-      this.tooltipOffset.top += panelRows[i].clientHeight;
+    while (i < panelRows.length && this.tooltip.offset.top + panelRows[i].clientHeight < mEvent.clientY) {
+      this.tooltip.offset.top += panelRows[i].clientHeight;
       i++;
     }
 
     var panelContainers = panelRows[i].getElementsByClassName('panel-container');
     var k = 0;
 
-    while (k < panelContainers.length && this.tooltipOffset.left + panelContainers[k].clientWidth < mEvent.clientX) {
-      this.tooltipOffset.left += panelContainers[i].clientWidth;
+    while (k < panelContainers.length && this.tooltip.offset.left + panelContainers[k].clientWidth < mEvent.clientX) {
+      this.tooltip.offset.left += panelContainers[i].clientWidth;
       k++;
     }
 
@@ -152,8 +157,8 @@ export class TemplateCtrl extends MetricsPanelCtrl {
   handleMouseOver (mEvent) {
     var tooltip = document.getElementById('circle-tooltip');
 
-    tooltip.style.top = mEvent.clientY - this.tooltipOffset.top + 'px';
-    tooltip.style.left = mEvent.clientX - this.tooltipOffset.left - tooltip.offsetWidth / 2 - 10 + 'px';
+    tooltip.style.top = mEvent.clientY - this.tooltip.offset.top + 'px';
+    tooltip.style.left = mEvent.clientX - this.tooltip.offset.left - tooltip.offsetWidth / 2 - 10 + 'px';
   }
 
   tiltArrow (index) {

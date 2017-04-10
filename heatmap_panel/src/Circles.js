@@ -33,7 +33,13 @@ export default class Circles {
     return color;
   }
 
-  getScale (d) {
+  getScale (d, i) {
+    var max = d3.max(d.datapoints.map(function (datapoint) {
+      return datapoint[0];
+    }));
+
+    this.ctrl.currentMax[i] = max;
+
     var scale = d3.scaleLinear()
       .range([0, this.circleWidth])
       .domain([0, d3.max(d.datapoints.map(function (datapoint) {
@@ -67,8 +73,8 @@ export default class Circles {
       .attr('fill', 'white')
       .attr('cy', (this.circleWidth / 2) + 20)
       .attr('cx', (this.circleWidth / 2) + 20)
-      .attr('r', function (d) {
-        var scale = classContext.getScale(d);
+      .attr('r', function (d, i) {
+        var scale = classContext.getScale(d, i);
         return scale(d.datapoints[d.datapoints.length - 1 - classContext.offset][0]) / 2;
       })
       .select(function () { // Select parent
@@ -101,8 +107,9 @@ export default class Circles {
       .duration(1000)
       .attr('cy', (this.circleWidth / 2) + 20)
       .attr('cx', (this.circleWidth / 2) + 20)
-      .attr('r', function (d) {
-        return classContext.getScale(d)(d.datapoints[d.datapoints.length - 1 - classContext.offset][0]) / 2;
+      .attr('r', function (d, i) {
+        var scale = classContext.getScale(d, i);
+        return scale(d.datapoints[d.datapoints.length - 1 - classContext.offset][0]) / 2;
       });
   }
 
