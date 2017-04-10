@@ -9,10 +9,6 @@ export default class Circles {
     this.colors = ctrl.panel.colors; // Fix colorbug.
     this.currentColorIndex = 0;
     this.offset = 0;
-
-    this.scale = d3.scaleLinear()
-      .range([0, this.circleWidth])
-      .domain([this.min, this.max]);
   }
 
   updateOffset (dataList) {
@@ -35,6 +31,16 @@ export default class Circles {
     this.currentColorIndex++;
 
     return color;
+  }
+
+  getScale (d) {
+    var scale = d3.scaleLinear()
+      .range([0, this.circleWidth])
+      .domain([0, d3.max(d.datapoints.map(function (datapoint) {
+        return datapoint[0];
+      }))]);
+
+    return scale;
   }
 
   drawCircles (dataList) {
@@ -62,7 +68,8 @@ export default class Circles {
       .attr('cy', (this.circleWidth / 2) + 20)
       .attr('cx', (this.circleWidth / 2) + 20)
       .attr('r', function (d) {
-        return classContext.scale(d.datapoints[d.datapoints.length - 1 - classContext.offset][0]) / 2;
+        var scale = classContext.getScale(d);
+        return scale(d.datapoints[d.datapoints.length - 1 - classContext.offset][0]) / 2;
       })
       .select(function () { // Select parent
           return this.parentNode;
@@ -95,7 +102,7 @@ export default class Circles {
       .attr('cy', (this.circleWidth / 2) + 20)
       .attr('cx', (this.circleWidth / 2) + 20)
       .attr('r', function (d) {
-        return classContext.scale(d.datapoints[d.datapoints.length - 1 - classContext.offset][0]) / 2;
+        return classContext.getScale(d)(d.datapoints[d.datapoints.length - 1 - classContext.offset][0]) / 2;
       });
   }
 
