@@ -33,7 +33,7 @@ export default class D3map {
         .domain(colorDomain)
         .range(['#adfcad', '#ffcb40', '#ffba00', '#ff7d73', '#ff4e40', '#ff1300']);
 
-        var extentColorDomain = [0, 100, 1000, 10000, 100000, 500000];
+        let extentColorDomain = [0, 100, 1000, 10000, 100000, 500000];
 
         this.path = d3.geoPath()
         .projection(this.projection);
@@ -50,7 +50,7 @@ export default class D3map {
         .attr('height', this.height);
 
         // Define the div for the tooltip
-        var tooltip = d3.select('#map').append('g')
+        let tooltip = d3.select('#map').append('g')
         .attr('class', 'tooltip')
         .style('opacity', 0);
 
@@ -87,8 +87,8 @@ export default class D3map {
             })
         });
         /*
-        var legendLabels = ['< 100', '100+', '1000+', '10000+', '100000+', '> 5000000'];
-        var legend = this.svg.selectAll('g.legend')
+        let legendLabels = ['< 100', '100+', '1000+', '10000+', '100000+', '> 5000000'];
+        let legend = this.svg.selectAll('g.legend')
         .data(extentColorDomain)
         .enter().append('g')
         .attr('class', 'legend');
@@ -112,40 +112,43 @@ export default class D3map {
         let legendWidth = 200;
         let legendHeight = 20;
 
-        var gradient = this.svg.append("defs")
-          .append("linearGradient")
-            .attr("id", "gradient")
-            .attr("x1", "0%")
-            .attr("y1", "0%")
-            .attr("x2", "100%")
-            .attr("y2", "100%")
-            .attr("spreadMethod", "pad");
+        let gradient = this.svg.append('defs')
+          .append('linearGradient')
+            .attr('id', 'gradient')
+            .attr('x1', '0%')
+            .attr('y1', '0%')
+            .attr('x2', '100%')
+            .attr('y2', '100%')
+            .attr('spreadMethod', 'pad');
 
-        gradient.append("stop")
-            .attr("offset", "0%")
-            .attr("stop-color", "#0c0")
-            .attr("stop-opacity", 1);
+        gradient.append('stop')
+            .attr('offset', '0%')
+            .attr('stop-color', '#0c0')
+            .attr('stop-opacity', 1);
 
-        gradient.append("stop")
-            .attr("offset", "100%")
-            .attr("stop-color", "#c00")
-            .attr("stop-opacity", 1);
+        gradient.append('stop')
+            .attr('offset', '100%')
+            .attr('stop-color', '#c00')
+            .attr('stop-opacity', 1);
 
-        this.svg.append("rect")
+        this.svg.append('rect')
             .attr('x', 20)
             .attr('y', function (d, i) { return self.height - (i * legendHeight) - 2 * legendHeight; })
             .attr('width', legendWidth)
             .attr('height', legendHeight)
-            .style("fill", "url(#gradient)");
+            .style('fill', 'url(#gradient)');
     }
 
     getXyz (d) {
-        var bounds = this.path.bounds(d);
-        var wScale = (bounds[1][0] - bounds[0][0]) / this.width;
-        var hScale = (bounds[1][1] - bounds[0][1]) / this.height;
-        var z = 0.96 / Math.max(wScale, hScale);
-        var x = (bounds[1][0] + bounds[0][0]) / 2;
-        var y = (bounds[1][1] + bounds[0][1]) / 2 + (this.height / z / 6);
+        let bounds = this.path.bounds(d);
+        let wScale = (bounds[1][0] - bounds[0][0]) / this.width;
+        let hScale = (bounds[1][1] - bounds[0][1]) / this.height;
+        let z = 0.96 / Math.max(wScale, hScale);
+        let x = (bounds[1][0] + bounds[0][0]) / 2;
+        let y = (bounds[1][1] + bounds[0][1]) / 2 + (this.height / z / 6);
+        if (z > 3) {
+            z = 3
+        }
         return [x, y, z];
     }
 
@@ -172,7 +175,7 @@ export default class D3map {
                 }
             } else if (this.ctrl.panel.clickToZoomEnabled) {
                 if (d && this.country !== d) {
-                    var xyz = this.getXyz(d);
+                    let xyz = this.getXyz(d);
                     this.country = d;
                     this.zoom(xyz);
                 } else {
