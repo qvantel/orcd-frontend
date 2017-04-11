@@ -9,7 +9,7 @@
 <div class="center-flex-container layer-0">
   <div class="center-flex-container layer-1">
     <div ng-mousemove="ctrl.handleMouseOver($event)"
-      ng-mouseenter="ctrl.handleMouseEnter(x, $index)"
+      ng-mouseenter="ctrl.handleMouseEnter(x, $index, $event)"
       ng-click="ctrl.handleCircleClick(x, $index)" class="angular-container center-flex-container"
       ng-repeat="x in ctrl.currentDataList"
       ng-mouseleave="ctrl.showTooltip = false">
