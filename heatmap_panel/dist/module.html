@@ -1,3 +1,7 @@
+<div class="center-flex-container">
+  <i class="fa fa-play" id="play-icon" ng-click="ctrl.playTimelapse()" ng-class="{'fa-pause': ctrl.playing }"></i>
+  <i class="fa fa-stop" id="stop-icon"></i>
+</div>
 <div ng-show="ctrl.showTooltip" id="circle-tooltip" ng-class="center-flex-container">
   <div id="tooltip-arrow"></div>
   Name: {{ ctrl.tooltip.name }}

@@ -6,9 +6,10 @@ import './css/template-panel.css!';
 import angular from 'angular';
 
 export class TemplateCtrl extends MetricsPanelCtrl {
-  constructor ($scope, $injector, $rootScope, templateSrv, variableSrv) {
+  constructor ($scope, $injector, $rootScope, templateSrv, variableSrv, $timeout) {
     super($scope, $injector);
     this.$rootScope = $rootScope;
+    this.$timeout = $timeout;
 
     this.templateHandler = new TemplateHandler(this, templateSrv, variableSrv);
     this.templateHandler.buildSimple('products', []);
@@ -31,6 +32,7 @@ export class TemplateCtrl extends MetricsPanelCtrl {
     this.currentTrend = [];
     this.selected = [];
     this.currentMax = [];
+    this.playing = false;
     this.showTooltip = false;
     this.tooltip = {
       'name': '',
@@ -127,6 +129,7 @@ export class TemplateCtrl extends MetricsPanelCtrl {
   }
 
   handleMouseEnter (data, index, mEvent) { // Change this
+    var submenus = document.getElementsByClassName('submenu-controls');
     var panelRows = document.getElementsByClassName('panels-wrapper');
 
     this.tooltip.name = this.parseName(data.target);
@@ -137,17 +140,21 @@ export class TemplateCtrl extends MetricsPanelCtrl {
     this.tooltip.offset.left = 0;
     this.tooltip.offset.top = 0;
 
+    for (let i = 0; i < submenus.length; i++) {
+      this.tooltip.offset.top += submenus[i].offsetHeight;
+    }
+
     var i = 0;
-    while (i < panelRows.length && this.tooltip.offset.top + panelRows[i].clientHeight < mEvent.clientY) {
-      this.tooltip.offset.top += panelRows[i].clientHeight;
+    while (i < panelRows.length && (this.tooltip.offset.top + panelRows[i].offsetHeight + 100) < mEvent.clientY) {
+      this.tooltip.offset.top += panelRows[i].offsetHeight;
       i++;
     }
 
     var panelContainers = panelRows[i].getElementsByClassName('panel-container');
     var k = 0;
 
-    while (k < panelContainers.length && this.tooltip.offset.left + panelContainers[k].clientWidth < mEvent.clientX) {
-      this.tooltip.offset.left += panelContainers[i].clientWidth;
+    while (k < panelContainers.length && (this.tooltip.offset.left + panelContainers[k].offsetWidth + 100) < mEvent.clientX) {
+      this.tooltip.offset.left += panelContainers[k].offsetWidth;
       k++;
     }
 
@@ -163,6 +170,28 @@ export class TemplateCtrl extends MetricsPanelCtrl {
 
   tiltArrow (index) {
     return this.currentTrend[index].oldDir + '-' + this.currentTrend[index].arrowDir;
+  }
+
+  playTimelapse () {
+    this.playing = true;
+    console.log('PLAY MEEE!');
+    var dataList = this.currentDataList.slice();
+
+    var i = 0;
+    var ctrl = this;
+    var interval = setInterval(play, 1500);
+
+    function play () {
+      if (i >= dataList[0].datapoints.length) {
+        clearInterval(interval);
+        ctrl.playing = false;
+        console.log("I'm done! And at the right place osv.");
+      } else {
+        console.log('Runnin runnin and runnin runnin ' + i);
+        ctrl.circles.drawCircles(dataList, i);
+        i++;
+      }
+    }
   }
 }
 

@@ -3,13 +3,27 @@ table, tr, td {
   padding: 10px;
 }
 
+#stop-icon {
+  cursor: pointer;
+  font-size: 2em;
+  color: white;
+  margin: 5px;
+}
+
+#play-icon {
+  cursor: pointer;
+  font-size: 2em;
+  color: white;
+  margin: 5px;
+}
+
 #circle-tooltip {
   background-color: black;
   border: 1px solid grey;
   position: absolute;
   padding: 5px;
   border-radius: 0.4em;
-  z-index: 2;
+  z-index: 5;
 }
 
 #tooltip-arrow {
