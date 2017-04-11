@@ -52,6 +52,51 @@ table, tr, td {
   text-align: center;
 }
 
+input[type=range] {
+  -webkit-appearance: none;
+  margin: 10px 0;
+  width: 500px;
+}
+
+input[type=range]:focus {
+  outline: none;
+}
+
+input[type=range]::-webkit-slider-runnable-track {
+  width: 100%;
+  height: 5px;
+  cursor: pointer;
+  background: #EEE;
+}
+
+input[type=range]::-webkit-slider-thumb {
+ border: 2px solid #000;
+ height: 20px;
+ width: 20px;
+ border-radius: 20px;
+ background: #FFF;
+ cursor: pointer;
+ -webkit-appearance: none;
+ margin-top: -8px;
+}
+
+input[type=range]::-moz-range-track {
+  width: 100%;
+  height: 5px;
+  cursor: pointer;
+  background: #EEE;
+  border-radius:2.5px;
+}
+input[type=range]::-moz-range-thumb {
+  border: 2px solid #000;
+  height: 20px;
+  width: 20px;
+  border-radius: 20px;
+  background: #FFF;
+  cursor: pointer;
+  outline: none;
+}
+
 /*Change this width and hight programatically!*/
 .angular-container {
   background-color: none;
