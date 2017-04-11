@@ -82,6 +82,12 @@
 
 			<!-- Input to determine the amount of colors -->
 			<div class="gf-form">
+				<label class="gf-form-label width-10">Timespan</label>
+				<input type="text" class="input-small gf-form-input width-10" ng-model="ctrl.panel.timespan" ng-blur="ctrl.optionChanged('timespan')" placeholder="1h" />
+			</div>
+
+			<!-- Input to determine the amount of colors -->
+			<div class="gf-form">
 				<label class="gf-form-label width-10">Color Amount</label>
 				<input type="text" class="input-small gf-form-input width-10" ng-model="ctrl.panel.colorAmount" ng-blur="ctrl.optionChanged('colorAmount')" placeholder="1" />
 			</div>

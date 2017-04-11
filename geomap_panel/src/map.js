@@ -77,6 +77,11 @@ export default class Map {
     * This function will draw the map with available data
     */
     draw () {
+        if (typeof this.ctrl.data === 'undefined') {
+            this.ctrl.log('undefiend');
+            return;
+        }
+
         this.ready = false;
 
         // Get data from the controller

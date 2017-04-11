@@ -12,7 +12,8 @@ const panelDefaults = {
     zoomContinent: 'World',
     zoomSubContinent: 'None',
     zoomCountry: 'None',
-    useFakeData: false
+    useFakeData: false,
+    timespan: '1h'
 };
 
 // This class is responsible for callbacks to subcribers for the panel data
