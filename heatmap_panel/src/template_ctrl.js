@@ -34,7 +34,9 @@ export class TemplateCtrl extends MetricsPanelCtrl {
     this.currentMax = [];
     this.timelapse = {
       'state': 'stop',
-      'index': 0
+      'index': 0,
+      'range': 0,
+      'step': 1
     }
 
     this.showTooltip = false;
@@ -180,9 +182,12 @@ export class TemplateCtrl extends MetricsPanelCtrl {
   }
 
   playTimelapse () {
-    this.timelapse.state = 'play';
     console.log('PLAY MEEE!');
     var dataList = this.currentDataList.slice();
+    this.timelapse.step = 100 / dataList[0].datapoints.length;
+    this.circles.drawCircles(dataList, this.timelapse.index);
+    this.timelapse.index++;
+
     var ctrl = this;
     var interval = ctrl.$interval(play, 1500);
 
@@ -190,22 +195,49 @@ export class TemplateCtrl extends MetricsPanelCtrl {
       if (ctrl.timelapse.state !== 'play') {
         ctrl.$interval.cancel(interval);
         if (ctrl.timelapse.state === 'pause') {
+          ctrl.timelapse.index--;
           console.log('Pausing');
         } else {
           console.log("I'm done! And at the right place osv.");
           ctrl.timelapse.index = 0;
+          ctrl.timelapse.range = 0;
           ctrl.onDataReceived(ctrl.currentDataList);
         }
       } else {
         console.log('Runnin runnin and runnin runnin ' + ctrl.timelapse.index);
         ctrl.circles.drawCircles(dataList, ctrl.timelapse.index);
         if (ctrl.timelapse.index < dataList[0].datapoints.length - 1) {
+          ctrl.timelapse.range = ctrl.timelapse.index * ctrl.timelapse.step;
           ctrl.timelapse.index++;
         } else {
-          ctrl.timelapse.state = 'stop';
+          ctrl.timelapse.range = 100;
+          ctrl.timelapse.state = 'pause';
         }
       }
     }
+  }
+
+  stopTimelapse () {
+    this.timelapse.state = 'stop';
+    this.timelapse.index = 0;
+    this.timelapse.range = 0;
+  }
+
+  setTimelapseRange () {
+    let i = 0;
+    while (((this.timelapse.step / 2) * i) < this.timelapse.range) {
+      i++;
+    }
+
+    if (i % 2 === 0) {
+      this.timelapse.index = i / 2
+      this.timelapse.range = this.timelapse.index * this.timelapse.step;
+    } else {
+      this.timelapse.index = Math.floor(i / 2);
+      this.timelapse.range = this.timelapse.index * this.timelapse.step;
+    }
+
+    this.playTimelapse();
   }
 }
 
