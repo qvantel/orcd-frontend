@@ -3,14 +3,7 @@ table, tr, td {
   padding: 10px;
 }
 
-#stop-icon {
-  cursor: pointer;
-  font-size: 2em;
-  color: white;
-  margin: 5px;
-}
-
-#play-icon {
+.icon {
   cursor: pointer;
   font-size: 2em;
   color: white;

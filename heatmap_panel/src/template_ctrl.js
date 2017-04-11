@@ -32,7 +32,11 @@ export class TemplateCtrl extends MetricsPanelCtrl {
     this.currentTrend = [];
     this.selected = [];
     this.currentMax = [];
-    this.playing = false;
+    this.timelapse = {
+      'state': 'stop',
+      'index': 0
+    }
+
     this.showTooltip = false;
     this.tooltip = {
       'name': '',
@@ -62,7 +66,7 @@ export class TemplateCtrl extends MetricsPanelCtrl {
     this.currentDataList = dataList;
     this.calculateTrend(dataList);
 
-    if (!this.playing) {
+    if (this.timelapse.state !== 'play') {
       this.circles.drawCircles(dataList);
     }
   }
@@ -176,24 +180,30 @@ export class TemplateCtrl extends MetricsPanelCtrl {
   }
 
   playTimelapse () {
-    this.playing = true;
+    this.timelapse.state = 'play';
     console.log('PLAY MEEE!');
     var dataList = this.currentDataList.slice();
-
-    var i = 0;
     var ctrl = this;
     var interval = ctrl.$interval(play, 1500);
 
     function play () {
-      if (i >= dataList[0].datapoints.length || !ctrl.playing) {
+      if (ctrl.timelapse.state !== 'play') {
         ctrl.$interval.cancel(interval);
-        ctrl.playing = false;
-        console.log("I'm done! And at the right place osv.");
-        ctrl.onDataReceived(ctrl.currentDataList);
+        if (ctrl.timelapse.state === 'pause') {
+          console.log('Pausing');
+        } else {
+          console.log("I'm done! And at the right place osv.");
+          ctrl.timelapse.index = 0;
+          ctrl.onDataReceived(ctrl.currentDataList);
+        }
       } else {
-        console.log('Runnin runnin and runnin runnin ' + i);
-        ctrl.circles.drawCircles(dataList, i);
-        i++;
+        console.log('Runnin runnin and runnin runnin ' + ctrl.timelapse.index);
+        ctrl.circles.drawCircles(dataList, ctrl.timelapse.index);
+        if (ctrl.timelapse.index < dataList[0].datapoints.length - 1) {
+          ctrl.timelapse.index++;
+        } else {
+          ctrl.timelapse.state = 'stop';
+        }
       }
     }
   }

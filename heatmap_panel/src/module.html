@@ -1,6 +1,7 @@
 <div class="center-flex-container">
-  <i class="fa fa-play" id="play-icon" ng-click="ctrl.playTimelapse()" ng-class="{'fa-pause': ctrl.playing }"></i>
-  <i class="fa fa-stop" id="stop-icon" ng-click="ctrl.playing = false"></i>
+  <i class="fa fa-play icon" ng-click="ctrl.playTimelapse()" ng-if="ctrl.timelapse.state !== 'play'"></i>
+  <i class="fa fa-pause icon" ng-click="ctrl.timelapse.state = 'pause'" ng-if="ctrl.timelapse.state === 'play'"></i>
+  <i class="fa fa-stop icon" ng-click="ctrl.timelapse.state = 'stop'"></i>
 </div>
 <div ng-show="ctrl.showTooltip" id="circle-tooltip" ng-class="center-flex-container">
   <div id="tooltip-arrow"></div>
