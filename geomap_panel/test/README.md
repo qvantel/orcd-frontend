@@ -21,3 +21,9 @@
 * Breadcrumbs
   * Press on some country
   * Test go back to world by press "World" in the breadcrum
+  
+##Compare data between grafana and graphite
+
+* Compare data that you get from the DevTools in the browser with the data from graphite, with the same query and time interval.
+  * In this state, the data is the same.
+
