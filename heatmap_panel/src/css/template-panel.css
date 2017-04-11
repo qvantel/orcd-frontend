@@ -19,6 +19,14 @@ table, tr, td {
   z-index: 5;
 }
 
+#timelapse-range {
+  width: 500px;
+  height: 0px;
+  color: white;
+  margin-bottom: 50px;
+  margin-top: 10px;
+}
+
 #tooltip-arrow {
   position: absolute;
   background-color: black;

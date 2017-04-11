@@ -3,6 +3,9 @@
   <i class="fa fa-pause icon" ng-click="ctrl.timelapse.state = 'pause'" ng-if="ctrl.timelapse.state === 'play'"></i>
   <i class="fa fa-stop icon" ng-click="ctrl.timelapse.state = 'stop'"></i>
 </div>
+<div class="center-flex-container">
+  <input id="timelapse-range" type="range" name="" value="">
+</div>
 <div ng-show="ctrl.showTooltip" id="circle-tooltip" ng-class="center-flex-container">
   <div id="tooltip-arrow"></div>
   Name: {{ ctrl.tooltip.name }}
