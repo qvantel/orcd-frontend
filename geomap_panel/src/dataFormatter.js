@@ -43,17 +43,39 @@ export default class DataFormatter {
     readData (dataList, res, alt) {
         dataList.forEach((data) => {
             if (this.validateRegionCode(data.target.toUpperCase())) {
-                var sum = this.sumDatapointValues(data.datapoints);
+                var countryData = this.getCountryCurMinMax(data.datapoints);
 
                 if (!alt) {
-                    res.push([data.target, sum]);
+                    res.push([data.target, countryData]);
                 } else {
-                    res[data.target] = sum;
+                    res[data.target] = countryData;
                 }
             }
         });
 
         return res;
+    }
+
+    getCountryCurMinMax (datapoints) {
+        if (datapoints.length > 0) {
+            var min = 0;
+            var max = 0;
+            var current = datapoints[datapoints.length - 1][datapointDef.value];
+
+            for (var point in datapoints) {
+                if (datapoints[point][datapointDef.value] !== null && (min === 0 || datapoints[point][datapointDef.value] < min)) {
+                    min = datapoints[point][datapointDef.value];
+                }
+
+                if (datapoints[point][datapointDef.value] > max) {
+                    max = datapoints[point][datapointDef.value];
+                }
+            }
+
+            return {min: min, max: max, cur: current};
+        }
+
+        return undefined;
     }
 
     /**
