@@ -6,10 +6,10 @@ import './css/template-panel.css!';
 import angular from 'angular';
 
 export class TemplateCtrl extends MetricsPanelCtrl {
-  constructor ($scope, $injector, $rootScope, templateSrv, variableSrv, $timeout) {
+  constructor ($scope, $injector, $rootScope, templateSrv, variableSrv, $interval) {
     super($scope, $injector);
     this.$rootScope = $rootScope;
-    this.$timeout = $timeout;
+    this.$interval = $interval;
 
     this.templateHandler = new TemplateHandler(this, templateSrv, variableSrv);
     this.templateHandler.buildSimple('products', []);
@@ -60,8 +60,11 @@ export class TemplateCtrl extends MetricsPanelCtrl {
 
   onDataReceived (dataList) {
     this.currentDataList = dataList;
-    this.circles.drawCircles(dataList);
     this.calculateTrend(dataList);
+
+    if (!this.playing) {
+      this.circles.drawCircles(dataList);
+    }
   }
 
   calculateTrend (dataList) {
@@ -179,13 +182,14 @@ export class TemplateCtrl extends MetricsPanelCtrl {
 
     var i = 0;
     var ctrl = this;
-    var interval = setInterval(play, 1500);
+    var interval = ctrl.$interval(play, 1500);
 
     function play () {
-      if (i >= dataList[0].datapoints.length) {
-        clearInterval(interval);
+      if (i >= dataList[0].datapoints.length || !ctrl.playing) {
+        ctrl.$interval.cancel(interval);
         ctrl.playing = false;
         console.log("I'm done! And at the right place osv.");
+        ctrl.onDataReceived(ctrl.currentDataList);
       } else {
         console.log('Runnin runnin and runnin runnin ' + i);
         ctrl.circles.drawCircles(dataList, i);
