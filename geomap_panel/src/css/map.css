@@ -60,3 +60,11 @@ li.key {
 .background {
     fill: #1f1d1d;
 }
+
+.stop-left {
+               stop-color: #3f51b5;  /* Indigo */
+           }
+
+           .stop-right {
+               stop-color: #009688;  /* Teal */
+           }

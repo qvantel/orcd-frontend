@@ -86,15 +86,14 @@ export default class D3map {
                 .style('opacity', 0);
             })
         });
-
+        /*
         var legendLabels = ['< 100', '100+', '1000+', '10000+', '100000+', '> 5000000'];
         var legend = this.svg.selectAll('g.legend')
         .data(extentColorDomain)
         .enter().append('g')
         .attr('class', 'legend');
 
-        let legendWidth = 20;
-        let legendHeight = 20;
+
 
         legend.append('rect')
         .attr('x', 20)
@@ -108,6 +107,36 @@ export default class D3map {
         .attr('x', 50)
         .attr('y', function (d, i) { return self.height - (i * legendHeight) - legendHeight - 4; })
         .text(function (d, i) { return legendLabels[i]; });
+        */
+
+        let legendWidth = 200;
+        let legendHeight = 20;
+
+        var gradient = this.svg.append("defs")
+          .append("linearGradient")
+            .attr("id", "gradient")
+            .attr("x1", "0%")
+            .attr("y1", "0%")
+            .attr("x2", "100%")
+            .attr("y2", "100%")
+            .attr("spreadMethod", "pad");
+
+        gradient.append("stop")
+            .attr("offset", "0%")
+            .attr("stop-color", "#0c0")
+            .attr("stop-opacity", 1);
+
+        gradient.append("stop")
+            .attr("offset", "100%")
+            .attr("stop-color", "#c00")
+            .attr("stop-opacity", 1);
+
+        this.svg.append("rect")
+            .attr('x', 20)
+            .attr('y', function (d, i) { return self.height - (i * legendHeight) - 2 * legendHeight; })
+            .attr('width', legendWidth)
+            .attr('height', legendHeight)
+            .style("fill", "url(#gradient)");
     }
 
     getXyz (d) {
