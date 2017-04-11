@@ -1,7 +1,7 @@
 # Annotations
 
 ## Add annotations with curl
-  curl -X POST http://188.212.108.169:2000/events/ -d '{"what": "Title", "tags": ["tag"], "data" : "data"}'
+  curl -X POST http://<ip>:<port>/events/ -d '{"what": "Title", "tags": ["tag"], "data" : "data"}'
   - what: title
   - tags: add tags
   - data: data
