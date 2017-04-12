@@ -1,27 +1,6 @@
 /* Default stylesheet which will be used for any Grafana theme */
 
 /* Styling for GeoChart country borders */
-.map path {
-    transition: fill 1s ease;
-}
-
-/* Make sure the holder is relative so absolute children get its bounds*/
-.map-holder {
-    position: relative;
-}
-
-/* Position the breadcrumbs in the top left corner*/
-.breadcrumbs {
-    position: absolute;
-    top: 10px;
-    left: 10px;
-}
-
-/* Make sure the elements inside the breadcrumbs are inline so they don't stack under each other*/
-.breadcrumbs div {
-    display: inline;
-}
-
 .stroke-selected {
     stroke-width: 3px;
 }
@@ -29,10 +8,6 @@
 .stroke-zoom {
     transition: scale 1s;
     stroke-width: 0.3px !important;
-}
-
-#legend {
-    padding: 1.5em 0 0 1.5em;
 }
 
 li.key {

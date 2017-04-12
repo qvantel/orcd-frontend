@@ -1,16 +1,1 @@
 /* Stylesheet which will be used for the dark Grafana theme */
-
-/* Styling for GeoChart legend */
-.map text {
-    stroke: #000;
-}
-
-/* Styling for the breadcrumbs */
-.breadcrumbs {
-    color: #fff;
-    text-shadow:
-    -1px -1px 0 #000,
-    1px -1px 0 #000,
-    -1px 1px 0 #000,
-    1px 1px 0 #000;
-}
