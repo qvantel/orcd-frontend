@@ -14,18 +14,18 @@
     Value: {{ ctrl.tooltip.value }} users
     <br>
   </div>
-  <div ng-if="ctrl.tooltip.max">
-    Max value: {{ ctrl.tooltip.max }} users
-    <br>
-  </div>
   <div ng-if="!ctrl.tooltip.value">
     Value: null
+    <br>
+  </div>
+  <div ng-if="ctrl.tooltip.max">
+    Max value: {{ ctrl.tooltip.max }} users
     <br>
   </div>
   <div ng-if="!ctrl.tooltip.max">
     Max: null
   </div>
-  Trend: {{ ctrl.tooltip.trend }} users/second
+  Trend: {{ ctrl.tooltip.trend }} users/{{ ctrl.timeType }}
 </div>
 <div class="center-flex-container layer-0">
   <div class="center-flex-container layer-1">

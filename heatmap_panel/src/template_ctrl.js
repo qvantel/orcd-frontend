@@ -31,6 +31,7 @@ export class TemplateCtrl extends MetricsPanelCtrl {
     this.trendCalculator = new TrendCalculator();
     this.currentTrend = [];
     this.selected = [];
+    this.timeType = 's';
     this.currentMax = [];
     this.timelapse = {
       'state': 'stop',
@@ -74,12 +75,13 @@ export class TemplateCtrl extends MetricsPanelCtrl {
   }
 
   calculateTrend (dataList) {
+    this.timeType = this.parseTimeType(dataList[0].target);
     for (var i = 0; i < dataList.length; i++) {
       var oldDir = 'middle';
       if (this.currentTrend[i]) {
         oldDir = this.currentTrend[i].arrowDir;
       }
-      var trend = this.trendCalculator.getSimpleTrend(dataList[i].datapoints);
+      var trend = this.trendCalculator.getSimpleTrend(dataList[i].datapoints, this.timeType);
       var arrowDir = '';
       if (trend < 0.5 && trend > -0.5) {
         arrowDir = 'middle';
@@ -102,7 +104,11 @@ export class TemplateCtrl extends MetricsPanelCtrl {
   }
 
   parseName (target) {
-    return target.replace(/.*[.]([\w])/i, '$1');
+    return target.replace(/.*[.]([\w]*:?[\w]*),.*/i, '$1');
+  }
+
+  parseTimeType (target) {
+    return target.replace(/.*,\s"\d(\w+)",.*/, '$1')
   }
 
   handleCircleClick (data, index) {

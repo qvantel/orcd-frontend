@@ -14,7 +14,7 @@ export default class Circles {
   updateOffset (dataList) {
     if (dataList[0]) {
       var tmpOffset = 0;
-      while (!dataList[0].datapoints[dataList[0].datapoints.length - 1 - tmpOffset][0] && tmpOffset < dataList[0].length) {
+      while (!dataList[0].datapoints[dataList[0].datapoints.length - 1 - tmpOffset][0] && tmpOffset < dataList[0].datapoints.length) {
         tmpOffset++;
       }
 
