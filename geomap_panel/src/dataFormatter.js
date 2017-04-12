@@ -62,13 +62,23 @@ export default class DataFormatter {
             var max = 0;
             var current = datapoints[datapoints.length - 1][datapointDef.value];
 
+            if (current === null) {
+                current = 0;
+            }
+
             for (var point in datapoints) {
-                if (datapoints[point][datapointDef.value] !== null && (min === 0 || datapoints[point][datapointDef.value] < min)) {
-                    min = datapoints[point][datapointDef.value];
+                var val = datapoints[point][datapointDef.value];
+
+                if (val === null) {
+                    val = 0;
+                }
+
+                if ((min === 0 || val < min)) {
+                    min = val;
                 }
 
                 if (datapoints[point][datapointDef.value] > max) {
-                    max = datapoints[point][datapointDef.value];
+                    max = val;
                 }
             }
 
