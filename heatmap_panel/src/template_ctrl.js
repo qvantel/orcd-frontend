@@ -188,11 +188,18 @@ export class TemplateCtrl extends MetricsPanelCtrl {
   }
 
   handlePlayPress () {
-    if (this.timelapse.state === 'end' && this.timelapse.range >= 100) {
+    if (this.timelapse.state === 'pause' && this.timelapse.range >= 100) {
       this.timelapse.range = 0;
       this.timelapse.index = 0;
     }
     this.timelapse.state = 'play';
+  }
+
+  handlePausePress () {
+    this.$interval.cancel(this.interval);
+    this.timelapse.state = 'pause';
+    this.timelapse.index--;
+    console.log('Pausing');
   }
 
   playTimelapse () {
@@ -203,16 +210,12 @@ export class TemplateCtrl extends MetricsPanelCtrl {
     this.timelapse.index++;
 
     var ctrl = this;
-    var interval = ctrl.$interval(play, 1500);
+    this.interval = ctrl.$interval(play, 1500);
 
     function play () {
       if (ctrl.timelapse.state !== 'play') {
-        ctrl.$interval.cancel(interval);
-        if (ctrl.timelapse.state === 'pause') {
-          console.log(ctrl.timelapse.index);
-          console.log(dataList[0].datapoints.length);
-          console.log('Pausing');
-        } else if (ctrl.timelapse.state === 'end') {
+        ctrl.$interval.cancel(ctrl.interval);
+        if (ctrl.timelapse.state === 'end') {
           ctrl.circles.drawCircles(dataList, ctrl.timelapse.index);
           ctrl.timelapse.range = 100;
           ctrl.timelapse.state = 'pause';
