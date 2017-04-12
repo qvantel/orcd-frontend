@@ -220,11 +220,13 @@ export class TemplateCtrl extends MetricsPanelCtrl {
           ctrl.timelapse.range = 100;
           ctrl.timelapse.state = 'pause';
           console.log('Ending');
-        } else {
+        } else if (ctrl.timelapse.state === 'stop') {
           console.log("I'm done! And at the right place osv.");
           ctrl.timelapse.index = 0;
           ctrl.timelapse.range = 0;
           ctrl.onDataReceived(ctrl.currentDataList);
+        } else if (ctrl.timelapse.state === 'pause') {
+          ctrl.timelapse.index--;
         }
       } else {
         console.log('Runnin runnin and runnin runnin ' + ctrl.timelapse.index);
@@ -254,7 +256,7 @@ export class TemplateCtrl extends MetricsPanelCtrl {
     }
 
     if (i % 2 === 0) {
-      this.timelapse.index = i / 2
+      this.timelapse.index = (i / 2);
       this.timelapse.range = this.timelapse.index * this.timelapse.step;
     } else {
       this.timelapse.index = Math.floor(i / 2);
