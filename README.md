@@ -60,3 +60,6 @@ To setup the Graphite query for the plugin, please see the documentation for the
 Grafana also supports different themes, the standard is the dark theme. If you'd rather want a lighter theme you can change it. 
 
 To achieve this, press the Grafan icon to the top left corner, hover your profile and navigate to **Preferences**. Here you can see several sections, but in the **Preferences** section, there is an option called **UI Theme**. Select the theme you prefer and press the **Update** button. The plugin should respond to which theme that is being used by changing it's default color scheme. 
+
+## Annotations
+Documentation for annotations can be found [here](geomap_panel/annotations.md).
