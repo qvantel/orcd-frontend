@@ -1,7 +1,7 @@
 # Annotations
 
 ## Add annotations to Graphite with curl
-  curl -X POST http://\<ip>:\<port>/events/ -d '{"what": "Title", "tags": ["tag"], "data" : "data"}'
+  curl -X POST http://\<ip>:\<port>/events/ -d '{"what": "Title", "tags": "tag1, tag2", "data" : "data"}'
   - what: title
   - tags: add tags
   - data: data
