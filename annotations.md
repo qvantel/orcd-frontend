@@ -1,6 +1,6 @@
 # Annotations
 
-## Add annotations with curl
+## Add annotations to Graphite with curl
   curl -X POST http://\<ip>:\<port>/events/ -d '{"what": "Title", "tags": ["tag"], "data" : "data"}'
   - what: title
   - tags: add tags
@@ -9,7 +9,7 @@
   
   Source: http://graphite.readthedocs.io/en/latest/events.html
 
-## Add annotations in grafana
+## Show annotations in grafana
   1. To open the annotations panel, click the settings icon in the top bar and select Annotations.
   2. Set the datasource to ‘you source’ and use the ‘Graphite event tags’ input box to filter by tags.
   - Individual wildcards also work to display all events.
@@ -17,6 +17,6 @@
  Source: https://www.hostedgraphite.com/docs/advanced/annotations-and-events.html#grafana-annotations
   
 ## Update and remove events
-  Use the admin page to update or remove event.
+  Use the Graphite admin page to update or remove events.
   
   Link: http://\<ip>:\<port>/admin/events/event/
