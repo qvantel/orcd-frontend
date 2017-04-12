@@ -1,18 +1,3 @@
 <!-- Get the GeoChart map service -->
 
-<!-- This div will hold the content of the GeoChart map -->
-<div class = "map-holder">
-    <div id = "map" class = "map"></div>
-
-    <!-- Render breadcrumbs -->
-    <div id = "breadcrumbs" class = "breadcrumbs" ng-if="ctrl.panel.showBreadcrumbs">
-        <div ng-repeat = "n in ctrl.breadcrumbs track by $index">
-            <div ng-if="!$last">
-                <a href = "#" ng-click = "ctrl.breadcrumbClicked($index)">{{n}}</a>&nbsp;>&nbsp;
-            </div>
-            <div ng-if="$last">
-                {{n}}
-            </div>
-        </div>
-    </div>
-</div>
+<div id = "map" class = "map"></div>

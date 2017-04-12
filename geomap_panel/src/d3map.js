@@ -65,7 +65,7 @@ export default class D3map {
                 .duration(200)
                 .style('opacity', 0.9);
 
-                var minMaxCur = self.ctrl.data[d.id.toLowerCase()];
+                var minMaxCur = self.ctrl.data[d.id];
                 var percent = 0;
                 if (typeof minMaxCur !== 'undefined') {
                     percent = (minMaxCur.cur - minMaxCur.min) / (minMaxCur.max - minMaxCur.min) * 100;
@@ -170,7 +170,7 @@ export default class D3map {
     }
 
     getCountryPercentage (countryCode) {
-        var minMaxCur = this.ctrl.data[countryCode.toLowerCase()];
+        var minMaxCur = this.ctrl.data[countryCode];
 
         if (typeof minMaxCur !== 'undefined') {
             var percent = (minMaxCur.cur - minMaxCur.min) / (minMaxCur.max - minMaxCur.min) * 100;

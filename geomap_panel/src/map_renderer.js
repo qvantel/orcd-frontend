@@ -1,5 +1,4 @@
 import './css/map.css!';
-import Map from './map';
 import D3map from './d3map';
 
 /**

@@ -19,15 +19,11 @@ export default class DataFormatter {
     * @param {array} inputData the data from Graphite
     * @return {dictionary} returns a dictionary where the key is the country and the value is the frequency
     */
-    generate (dataList, alt) {
+    generate (dataList) {
         var res = [];
 
-        if (!alt) {
-            res = [['Country', 'Frequency']];
-        }
-
         if (this.ctrl.locations) {
-            res = this.readData(dataList, res, alt);
+            res = this.readData(dataList, res);
         }
 
         return res;
@@ -40,16 +36,11 @@ export default class DataFormatter {
     * @param {array} res where the read data should be stored
     * @return {array} the read data
     */
-    readData (dataList, res, alt) {
+    readData (dataList, res) {
         dataList.forEach((data) => {
             if (this.validateRegionCode(data.target.toUpperCase())) {
                 var countryData = this.getCountryCurMinMax(data.datapoints);
-
-                if (!alt) {
-                    res.push([data.target, countryData]);
-                } else {
-                    res[data.target] = countryData;
-                }
+                res[data.target] = countryData;
             }
         });
 
