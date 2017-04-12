@@ -5,7 +5,7 @@ table, tr, td {
 
 .icon {
   cursor: pointer;
-  font-size: 2em;
+  font-size: 1.5em;
   color: white;
   margin: 5px;
 }
@@ -64,34 +64,34 @@ input[type=range]:focus {
 
 input[type=range]::-webkit-slider-runnable-track {
   width: 100%;
-  height: 5px;
+  height: 4px;
   cursor: pointer;
-  background: #EEE;
+  background: grey;
 }
 
 input[type=range]::-webkit-slider-thumb {
- border: 2px solid #000;
- height: 20px;
- width: 20px;
- border-radius: 20px;
- background: #FFF;
+ border: 1px solid black;
+ height: 15px;
+ width: 15px;
+ border-radius: 50%;
  cursor: pointer;
  -webkit-appearance: none;
- margin-top: -8px;
+ background: #FFF;
+ margin-top: -6px;
 }
 
 input[type=range]::-moz-range-track {
   width: 100%;
   height: 5px;
   cursor: pointer;
-  background: #EEE;
+  background: grey;
   border-radius:2.5px;
 }
 input[type=range]::-moz-range-thumb {
-  border: 2px solid #000;
-  height: 20px;
-  width: 20px;
-  border-radius: 20px;
+  border: 1px solid black;
+  height: 15px;
+  width: 15px;
+  border-radius: 50%;
   background: #FFF;
   cursor: pointer;
   outline: none;

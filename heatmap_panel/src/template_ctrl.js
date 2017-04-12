@@ -199,11 +199,9 @@ export class TemplateCtrl extends MetricsPanelCtrl {
     this.$interval.cancel(this.interval);
     this.timelapse.state = 'pause';
     this.timelapse.index--;
-    console.log('Pausing');
   }
 
   playTimelapse () {
-    console.log('PLAY MEEE!');
     var dataList = this.currentDataList.slice();
     this.timelapse.step = 100 / (dataList[0].datapoints.length - 1);
     this.circles.drawCircles(dataList, this.timelapse.index);
@@ -219,17 +217,10 @@ export class TemplateCtrl extends MetricsPanelCtrl {
           ctrl.circles.drawCircles(dataList, ctrl.timelapse.index);
           ctrl.timelapse.range = 100;
           ctrl.timelapse.state = 'pause';
-          console.log('Ending');
-        } else if (ctrl.timelapse.state === 'stop') {
-          console.log("I'm done! And at the right place osv.");
-          ctrl.timelapse.index = 0;
-          ctrl.timelapse.range = 0;
-          ctrl.onDataReceived(ctrl.currentDataList);
         } else if (ctrl.timelapse.state === 'pause') {
           ctrl.timelapse.index--;
         }
       } else {
-        console.log('Runnin runnin and runnin runnin ' + ctrl.timelapse.index);
         ctrl.circles.drawCircles(dataList, ctrl.timelapse.index);
         if (ctrl.timelapse.index < dataList[0].datapoints.length - 2) {
           ctrl.timelapse.range = ctrl.timelapse.index * ctrl.timelapse.step;
@@ -247,6 +238,7 @@ export class TemplateCtrl extends MetricsPanelCtrl {
     this.timelapse.state = 'stop';
     this.timelapse.index = 0;
     this.timelapse.range = 0;
+    this.onDataReceived(this.currentDataList);
   }
 
   setTimelapseRange () {

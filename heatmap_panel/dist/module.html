@@ -1,7 +1,7 @@
 <div class="center-flex-container">
   <i class="fa fa-play icon" ng-click="ctrl.handlePlayPress(); ctrl.playTimelapse()" ng-if="ctrl.timelapse.state !== 'play' && ctrl.timelapse.state !== 'end'"></i>
   <i class="fa fa-pause icon" ng-click="ctrl.handlePausePress()" ng-if="ctrl.timelapse.state === 'play'|| ctrl.timelapse.state === 'end'"></i>
-  <i class="fa fa-stop icon" ng-click="ctrl.stopTimelapse()"></i>
+  <i class="fa fa-stop icon" ng-click="ctrl.stopTimelapse()" ng-if="ctrl.timelapse.state !== 'stop'"></i>
 </div>
 <div class="center-flex-container">
   <input id="timelapse-range" type="range" ng-model="ctrl.timelapse.range" ng-click="ctrl.timelapse.state='pause'; ctrl.setTimelapseRange()" ng-if="ctrl.timelapse.state !== 'stop' || ctrl.timelapse.range > 0">
