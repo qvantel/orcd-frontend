@@ -14,7 +14,7 @@ export default class Circles {
   updateOffset (dataList) {
     if (dataList[0]) {
       var tmpOffset = 0;
-      while (!dataList[0].datapoints[dataList[0].datapoints.length - 1 - tmpOffset][0]) {
+      while (!dataList[0].datapoints[dataList[0].datapoints.length - 1 - tmpOffset][0] && tmpOffset < dataList[0].length) {
         tmpOffset++;
       }
 
@@ -78,7 +78,11 @@ export default class Circles {
         .attr('cx', (this.circleWidth / 2) + 20)
         .attr('r', function (d, i) {
           var scale = classContext.getScale(d, i);
-          return scale(d.datapoints[pointIndex][0]) / 2;
+          if (d.datapoints[pointIndex][0]) {
+            return scale(d.datapoints[pointIndex][0]) / 2;
+          } else {
+            return 0;
+          }
         })
         .select(function () { // Select parent
             return this.parentNode;
@@ -117,7 +121,11 @@ export default class Circles {
         .attr('cx', (this.circleWidth / 2) + 20)
         .attr('r', function (d, i) {
           var scale = classContext.getScale(d, i);
-          return scale(d.datapoints[pointIndex][0]) / 2;
+          if (d.datapoints[pointIndex][0]) {
+            return scale(d.datapoints[pointIndex][0]) / 2;
+          } else {
+            return 0;
+          }
         });
     }
   }

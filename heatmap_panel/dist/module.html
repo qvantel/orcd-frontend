@@ -10,10 +10,21 @@
   <div id="tooltip-arrow"></div>
   Name: {{ ctrl.tooltip.name }}
   <br>
-  Value: {{ ctrl.tooltip.value }} users
-  <br>
-  Max value: {{ ctrl.tooltip.max }} users
-  <br>
+  <div id="tooltip-value-text" ng-if="ctrl.tooltip.value">
+    Value: {{ ctrl.tooltip.value }} users
+    <br>
+  </div>
+  <div ng-if="ctrl.tooltip.max">
+    Max value: {{ ctrl.tooltip.max }} users
+    <br>
+  </div>
+  <div ng-if="!ctrl.tooltip.value">
+    Value: null
+    <br>
+  </div>
+  <div ng-if="!ctrl.tooltip.max">
+    Max: null
+  </div>
   Trend: {{ ctrl.tooltip.trend }} users/second
 </div>
 <div class="center-flex-container layer-0">
