@@ -11,9 +11,8 @@
 
 ## Show annotations in grafana
   1. To open the annotations panel, click the settings icon in the top bar and select Annotations.
-  2. Set the datasource to ‘you source’ and use the ‘Graphite event tags’ input box to filter by tags.
-  - Individual wildcards also work to display all events.
-  - When you have added an annotation, a checkbox will appear in the top of grafana. With this checkbox you can turn the annotation on and off. 
+  2. Set the datasource to ‘you source’ and use the ‘Graphite event tags’ input box to filter annotiations by tags. Leave empty to find all annotations.
+  - When you have added an annotation, a checkbox will appear in the top of grafana. With this checkbox you can turn the annotation s on and off.
  
  Source: https://www.hostedgraphite.com/docs/advanced/annotations-and-events.html#grafana-annotations
   
