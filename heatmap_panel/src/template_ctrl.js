@@ -187,10 +187,18 @@ export class TemplateCtrl extends MetricsPanelCtrl {
     return this.currentTrend[index].oldDir + '-' + this.currentTrend[index].arrowDir;
   }
 
+  handlePlayPress () {
+    if (this.timelapse.state === 'end' && this.timelapse.range >= 100) {
+      this.timelapse.range = 0;
+      this.timelapse.index = 0;
+    }
+    this.timelapse.state = 'play';
+  }
+
   playTimelapse () {
     console.log('PLAY MEEE!');
     var dataList = this.currentDataList.slice();
-    this.timelapse.step = 100 / dataList[0].datapoints.length;
+    this.timelapse.step = 100 / (dataList[0].datapoints.length - 1);
     this.circles.drawCircles(dataList, this.timelapse.index);
     this.timelapse.index++;
 
@@ -201,8 +209,14 @@ export class TemplateCtrl extends MetricsPanelCtrl {
       if (ctrl.timelapse.state !== 'play') {
         ctrl.$interval.cancel(interval);
         if (ctrl.timelapse.state === 'pause') {
-          ctrl.timelapse.index--;
+          console.log(ctrl.timelapse.index);
+          console.log(dataList[0].datapoints.length);
           console.log('Pausing');
+        } else if (ctrl.timelapse.state === 'end') {
+          ctrl.circles.drawCircles(dataList, ctrl.timelapse.index);
+          ctrl.timelapse.range = 100;
+          ctrl.timelapse.state = 'pause';
+          console.log('Ending');
         } else {
           console.log("I'm done! And at the right place osv.");
           ctrl.timelapse.index = 0;
@@ -212,12 +226,13 @@ export class TemplateCtrl extends MetricsPanelCtrl {
       } else {
         console.log('Runnin runnin and runnin runnin ' + ctrl.timelapse.index);
         ctrl.circles.drawCircles(dataList, ctrl.timelapse.index);
-        if (ctrl.timelapse.index < dataList[0].datapoints.length - 1) {
+        if (ctrl.timelapse.index < dataList[0].datapoints.length - 2) {
           ctrl.timelapse.range = ctrl.timelapse.index * ctrl.timelapse.step;
           ctrl.timelapse.index++;
         } else {
-          ctrl.timelapse.range = 100;
-          ctrl.timelapse.state = 'pause';
+          ctrl.timelapse.range = ctrl.timelapse.index * ctrl.timelapse.step;
+          ctrl.timelapse.index++;
+          ctrl.timelapse.state = 'end';
         }
       }
     }
