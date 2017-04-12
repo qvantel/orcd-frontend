@@ -26,14 +26,9 @@ export default class D3map {
         .scale(this.width / 395 * 60)
         .translate([this.width / 2, this.height / 1.5]);
 
-        let colorDomain = [100, 1000, 10000, 100000, 500000];
-        this.colors = ['green', 'red', 'blue', 'white', 'pink'];
-
-        this.color = d3.scaleThreshold()
-        .domain(colorDomain)
-        .range(['#adfcad', '#ffcb40', '#ffba00', '#ff7d73', '#ff4e40', '#ff1300']);
-
-        let extentColorDomain = [0, 100, 1000, 10000, 100000, 500000];
+        var colorScale = d3.scaleLinear()
+        .domain([0, 100])
+        .range([this.ctrl.lightTheme ? '#f5f5f3' : '#151515', '#6699cc']);
 
         this.path = d3.geoPath()
         .projection(this.projection);
@@ -64,8 +59,16 @@ export default class D3map {
             .append('path')
             .attr('class', 'country')
             .attr('id', function (d) { return d.id; })
-            .attr('value', function (d) { return self.ctrl.data[d.id.toLowerCase()]; })
-            .attr('fill', function (d) { return self.color(self.ctrl.data[d.id.toLowerCase()]) })
+            .attr('fill', function (d) {
+                var minMaxCur = self.ctrl.data[d.id.toLowerCase()];
+
+                if (typeof minMaxCur !== 'undefined') {
+                    var percent = (minMaxCur.cur - minMaxCur.min) / (minMaxCur.max - minMaxCur.min) * 100;
+                    return colorScale(percent);
+                }
+
+                return 0;
+            })
             .attr('d', self.path)
             .on('click', (d) => {
                 self.countryClicked(d);
@@ -74,11 +77,19 @@ export default class D3map {
                 tooltip.transition()
                 .duration(200)
                 .style('opacity', 0.9);
-                tooltip.html(d.id + '<br/>' + self.ctrl.data[d.id.toLowerCase()]);
+
+                var minMaxCur = self.ctrl.data[d.id.toLowerCase()];
+                var percent = 0;
+                if (typeof minMaxCur !== 'undefined') {
+                    percent = (minMaxCur.cur - minMaxCur.min) / (minMaxCur.max - minMaxCur.min) * 100;
+                }
+
+                tooltip.html(d.id + '<br/>' + percent + '%');
             })
             .on('mousemove', function (d) {
-                tooltip.style('left', (event.clientX - 80) + 'px')
-                .style('top', (event.clientY - 170) + 'px');
+                self.ctrl.log(d3.event)
+                tooltip.style('left', (d3.event.pageX - 80) + 'px')
+                .style('top', (d3.event.pageY - 170) + 'px');
             })
             .on('mouseout', function (d) {
                 tooltip.transition()
@@ -86,31 +97,9 @@ export default class D3map {
                 .style('opacity', 0);
             })
         });
-        /*
-        let legendLabels = ['< 100', '100+', '1000+', '10000+', '100000+', '> 5000000'];
-        let legend = this.svg.selectAll('g.legend')
-        .data(extentColorDomain)
-        .enter().append('g')
-        .attr('class', 'legend');
 
-
-
-        legend.append('rect')
-        .attr('x', 20)
-        .attr('y', function (d, i) { return self.height - (i * legendHeight) - 2 * legendHeight; })
-        .attr('width', legendWidth)
-        .attr('height', legendHeight)
-        .style('fill', function (d, i) { return self.color(d); })
-        .style('opacity', 1);
-
-        legend.append('text')
-        .attr('x', 50)
-        .attr('y', function (d, i) { return self.height - (i * legendHeight) - legendHeight - 4; })
-        .text(function (d, i) { return legendLabels[i]; });
-        */
-
-        let legendWidth = 200;
-        let legendHeight = 20;
+        let legendWidth = this.width * 0.4;
+        let legendHeight = 10;
 
         let gradient = this.svg.append('defs')
           .append('linearGradient')
@@ -118,22 +107,22 @@ export default class D3map {
             .attr('x1', '0%')
             .attr('y1', '0%')
             .attr('x2', '100%')
-            .attr('y2', '100%')
+            .attr('y2', '0%')
             .attr('spreadMethod', 'pad');
 
         gradient.append('stop')
             .attr('offset', '0%')
-            .attr('stop-color', '#0c0')
+            .attr('stop-color', colorScale(0))
             .attr('stop-opacity', 1);
 
         gradient.append('stop')
             .attr('offset', '100%')
-            .attr('stop-color', '#c00')
+            .attr('stop-color', colorScale(100))
             .attr('stop-opacity', 1);
 
         this.svg.append('rect')
             .attr('x', 20)
-            .attr('y', function (d, i) { return self.height - (i * legendHeight) - 2 * legendHeight; })
+            .attr('y', self.height - 2 * legendHeight)
             .attr('width', legendWidth)
             .attr('height', legendHeight)
             .style('fill', 'url(#gradient)');
@@ -179,7 +168,7 @@ export default class D3map {
                     this.country = d;
                     this.zoom(xyz);
                 } else {
-                    xyz = [this.width / 2, this.height / 1.5, 1];
+                    let xyz = [this.width / 2, this.height / 1.5, 1];
                     this.country = null;
                     this.zoom(xyz);
                 }
