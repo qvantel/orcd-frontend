@@ -62,4 +62,5 @@ Grafana also supports different themes, the standard is the dark theme. If you'd
 To achieve this, press the Grafan icon to the top left corner, hover your profile and navigate to **Preferences**. Here you can see several sections, but in the **Preferences** section, there is an option called **UI Theme**. Select the theme you prefer and press the **Update** button. The plugin should respond to which theme that is being used by changing it's default color scheme. 
 
 ## Annotations
-Documentation for annotations can be found [here](annotations.md).
+Annotations are used to display events on the timelines for the heat and worldmap.
+Documentation on how to use annotations can be found [here](annotations.md).
