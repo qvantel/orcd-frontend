@@ -102,7 +102,6 @@ export class TemplateCtrl extends MetricsPanelCtrl {
   }
 
   onRender () {
-    console.log(this.testCounter);
     this.testCounter++;
     this.circles.drawCircles(this.currentDataList);
     this.timelapse.dataList = this.currentDataList.slice();
