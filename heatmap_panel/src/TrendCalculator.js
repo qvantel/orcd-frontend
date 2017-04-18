@@ -39,20 +39,32 @@ export default class TrendCalculator {
   }
 
   getSimpleTrend (datapoints, timeType) {
+    console.log(datapoints);
     var latestIndexNotNull = this.getLatestPointIndex(datapoints);
-
+    var firstIndexNotNull = this.getFirstPointIndex(datapoints);
+    console.log(firstIndexNotNull + ' | ' + latestIndexNotNull);
     // var x1 = datapoints[0][1] / this.timeTypeMap[timeType];
     // var x2 = datapoints[latestIndexNotNull][1] / this.timeTypeMap[timeType];
-    var y1 = datapoints[0][0];
+    var y1 = datapoints[firstIndexNotNull][0];
     var y2 = datapoints[latestIndexNotNull][0];
+    console.log('first: ' + y1 + '\nlast: ' + y2);
 
     // return Math.round(((y2 - y1) / (x2 - x1)) * 100) / 100;
     return this.getPercentageTrend(y1, y2);
   }
 
+  getFirstPointIndex (datapoints) {
+    var index = 0;
+    while (datapoints[index + 1] && !datapoints[index][0]) {
+      index++;
+    }
+
+    return index;
+  }
+
   getLatestPointIndex (datapoints) {
     var index = datapoints.length - 1;
-    while (!datapoints[index]) {
+    while (datapoints[index - 1] && !datapoints[index][0]) {
       index--;
     }
 
