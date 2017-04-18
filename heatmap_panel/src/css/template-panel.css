@@ -164,7 +164,6 @@ input[type=range]::-moz-range-thumb {
   position: relative;
   height: auto;
   display: inline-block;
-  word-break: break-all;
 }
 
 .layer-0 {

@@ -29,14 +29,14 @@
 </div>
 <div class="center-flex-container layer-0">
   <div class="center-flex-container layer-1">
-    <div ng-mousemove="ctrl.handleMouseOver($event)"
+    <div ng-repeat="x in ctrl.currentDataList" 
+      ng-mousemove="ctrl.handleMouseOver($event)"
       ng-mouseenter="ctrl.handleMouseEnter(x, $index, $event)"
       ng-click="ctrl.handleCircleClick(x, $index)" class="angular-container center-flex-container"
-      ng-repeat="x in ctrl.currentDataList"
       ng-mouseleave="ctrl.showTooltip = false">
       <div class="center-flex-container">
         <div class="relative-container">
-          {{ ctrl.parseName(x.target) }}
+          {{ ctrl.splitName(ctrl.parseName(x.target)) }}
         </div>
         <div class="trend-arrow center-flex-container">
           <div class="arrow-left arrow-part" ng-class="{'tilt-up-middle': ctrl.tiltArrow($index) === 'up-middle', 'tilt-up-down': ctrl.tiltArrow($index) === 'up-down',
