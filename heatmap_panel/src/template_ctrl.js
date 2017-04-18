@@ -53,6 +53,7 @@ export class TemplateCtrl extends MetricsPanelCtrl {
       }
     }
     this.selectedMap = [];
+    this.testCounter = 0;
 
     this.events.on('render', this.onRender.bind(this));
     this.events.on('data-received', this.onDataReceived.bind(this));
@@ -71,9 +72,7 @@ export class TemplateCtrl extends MetricsPanelCtrl {
     this.calculateTrend(dataList);
 
     if (this.timelapse.state === 'stop') {
-      this.circles.drawCircles(dataList);
-      this.timelapse.dataList = this.currentDataList.slice();
-      this.timelapse.step = 100 / (this.timelapse.dataList[0].datapoints.length - 1);
+      this.render();
     }
   }
 
@@ -103,7 +102,11 @@ export class TemplateCtrl extends MetricsPanelCtrl {
   }
 
   onRender () {
-    // When is this used?
+    console.log(this.testCounter);
+    this.testCounter++;
+    this.circles.drawCircles(this.currentDataList);
+    this.timelapse.dataList = this.currentDataList.slice();
+    this.timelapse.step = 100 / (this.timelapse.dataList[0].datapoints.length - 1);
   }
 
   parseName (target) {
@@ -200,7 +203,7 @@ export class TemplateCtrl extends MetricsPanelCtrl {
   }
 
   handlePausePress () {
-    this.$interval.cancel(this.interval);
+    this.cancelTimelapse();
     this.timelapse.state = 'pause';
     this.timelapse.index--;
   }
@@ -210,12 +213,15 @@ export class TemplateCtrl extends MetricsPanelCtrl {
     this.timelapse.index++;
 
     var ctrl = this;
-    this.interval = ctrl.$interval(play, 1500);
+
+    if (angular.isDefined(this.mInterval)) { // Don't start new interval if it's already started.
+      return;
+    }
+    this.mInterval = ctrl.$interval(play, 1500);
 
     function play () {
       if (ctrl.timelapse.state !== 'play') {
-        ctrl.$interval.cancel(ctrl.interval);
-
+        ctrl.cancelTimelapse();
         if (ctrl.timelapse.state === 'end') {
           ctrl.circles.drawCircles(ctrl.timelapse.dataList, ctrl.timelapse.index);
           ctrl.timelapse.range = 100;
@@ -237,8 +243,13 @@ export class TemplateCtrl extends MetricsPanelCtrl {
     }
   }
 
+  cancelTimelapse () {
+    this.$interval.cancel(this.mInterval);
+    this.mInterval = undefined;
+  }
+
   stopTimelapse () {
-    this.$interval.cancel(this.interval);
+    this.cancelTimelapse();
     this.timelapse.state = 'stop';
     this.timelapse.index = 0;
     this.timelapse.range = 0;
@@ -246,7 +257,7 @@ export class TemplateCtrl extends MetricsPanelCtrl {
   }
 
   handleRangePress () {
-    this.$interval.cancel(this.interval);
+    this.cancelTimelapse();
   }
 
   setTimelapseRange () {
