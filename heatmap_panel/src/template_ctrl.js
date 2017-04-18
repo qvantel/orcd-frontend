@@ -37,7 +37,8 @@ export class TemplateCtrl extends MetricsPanelCtrl {
       'state': 'stop',
       'index': 0,
       'range': 0,
-      'step': 1
+      'step': 1,
+      'dataList': []
     }
 
     this.showTooltip = false;
@@ -71,6 +72,8 @@ export class TemplateCtrl extends MetricsPanelCtrl {
 
     if (this.timelapse.state === 'stop') {
       this.circles.drawCircles(dataList);
+      this.timelapse.dataList = this.currentDataList.slice();
+      this.timelapse.step = 100 / (this.timelapse.dataList[0].datapoints.length - 1);
     }
   }
 
@@ -203,9 +206,7 @@ export class TemplateCtrl extends MetricsPanelCtrl {
   }
 
   playTimelapse () {
-    var dataList = this.currentDataList.slice();
-    this.timelapse.step = 100 / (dataList[0].datapoints.length - 1);
-    this.circles.drawCircles(dataList, this.timelapse.index);
+    this.circles.drawCircles(this.timelapse.dataList, this.timelapse.index);
     this.timelapse.index++;
 
     var ctrl = this;
@@ -216,15 +217,15 @@ export class TemplateCtrl extends MetricsPanelCtrl {
         ctrl.$interval.cancel(ctrl.interval);
 
         if (ctrl.timelapse.state === 'end') {
-          ctrl.circles.drawCircles(dataList, ctrl.timelapse.index);
+          ctrl.circles.drawCircles(ctrl.timelapse.dataList, ctrl.timelapse.index);
           ctrl.timelapse.range = 100;
           ctrl.timelapse.state = 'pause';
         } else if (ctrl.timelapse.state === 'pause') {
           ctrl.timelapse.index--;
         }
       } else {
-        ctrl.circles.drawCircles(dataList, ctrl.timelapse.index);
-        if (ctrl.timelapse.index < dataList[0].datapoints.length - 2) {
+        ctrl.circles.drawCircles(ctrl.timelapse.dataList, ctrl.timelapse.index);
+        if (ctrl.timelapse.index < ctrl.timelapse.dataList[0].datapoints.length - 2) {
           ctrl.timelapse.range = ctrl.timelapse.index * ctrl.timelapse.step;
           ctrl.timelapse.index++;
         } else {
@@ -237,6 +238,7 @@ export class TemplateCtrl extends MetricsPanelCtrl {
   }
 
   stopTimelapse () {
+    this.$interval.cancel(this.interval);
     this.timelapse.state = 'stop';
     this.timelapse.index = 0;
     this.timelapse.range = 0;
@@ -263,6 +265,8 @@ export class TemplateCtrl extends MetricsPanelCtrl {
 
     if (this.timelapse.state === 'play') {
       this.playTimelapse();
+    } else {
+      this.circles.drawCircles(this.timelapse.dataList, this.timelapse.index);
     }
   }
 }

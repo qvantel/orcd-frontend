@@ -4,7 +4,7 @@
   <i class="fa fa-stop icon" ng-click="ctrl.stopTimelapse()" ng-if="ctrl.timelapse.state !== 'stop'"></i>
 </div>
 <div class="center-flex-container">
-  <input id="timelapse-range" type="range" ng-model="ctrl.timelapse.range" ng-mousedown="ctrl.handleRangePress()" ng-click="ctrl.setTimelapseRange()" ng-if="ctrl.timelapse.state !== 'stop' || ctrl.timelapse.range > 0">
+  <input id="timelapse-range" type="range" ng-model="ctrl.timelapse.range" ng-mousedown="ctrl.handleRangePress()" ng-mouseup="ctrl.setTimelapseRange()" ng-click="ctrl.setTimelapseRange()" ng-if="ctrl.timelapse.state !== 'stop' || ctrl.timelapse.range > 0">
 </div>
 <div ng-show="ctrl.showTooltip" id="circle-tooltip" ng-class="center-flex-container">
   <div id="tooltip-arrow"></div>
@@ -25,7 +25,7 @@
   <div ng-if="!ctrl.tooltip.max">
     Max: null
   </div>
-  Trend: {{ ctrl.tooltip.trend }} users/{{ ctrl.timeType }}
+  Trend: {{ ctrl.tooltip.trend }}%
 </div>
 <div class="center-flex-container layer-0">
   <div class="center-flex-container layer-1">
