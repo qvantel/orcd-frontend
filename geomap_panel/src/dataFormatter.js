@@ -11,6 +11,8 @@ export default class DataFormatter {
     */
     constructor (ctrl) {
         this.ctrl = ctrl;
+        this.firstTimestamp = undefined;
+        this.lastTimestamp = undefined;
     }
 
     /**
@@ -44,6 +46,9 @@ export default class DataFormatter {
             }
         });
 
+        this.firstTimestamp = dataList[0].datapoints[0][1];
+        this.lastTimestamp = dataList[0].datapoints[dataList[0].datapoints.length - 1][1];
+
         return res;
     }
 
@@ -52,6 +57,7 @@ export default class DataFormatter {
             var min = 0;
             var max = 0;
             var current = datapoints[datapoints.length - 1][datapointDef.value];
+            var all = [];
 
             if (current === null) {
                 current = 0;
@@ -71,9 +77,11 @@ export default class DataFormatter {
                 if (datapoints[point][datapointDef.value] > max) {
                     max = val;
                 }
+
+                all.push(datapoints[point][datapointDef.value]);
             }
 
-            return {min: min, max: max, cur: current};
+            return {min: min, max: max, cur: current, all: all};
         }
 
         return undefined;
@@ -150,5 +158,9 @@ export default class DataFormatter {
         }
 
         return Math.atan(deltaValue / deltaTime) / (Math.PI * 0.5);
+    }
+
+    getDataLength () {
+        return this.dataLength;
     }
 }

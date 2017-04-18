@@ -31,10 +31,5 @@ export default function link (scope, elem, attrs, ctrl) {
         } else if (typeof ctrl.data !== 'undefined') {
             ctrl.map.updateData();
         }
-        /*if (!ctrl.map) {
-            initializeMap();
-        } else if (ctrl.map.ready) {
-            ctrl.map.draw();
-        }*/
     }
 }

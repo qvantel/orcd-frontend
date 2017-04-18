@@ -14,7 +14,7 @@ export default class DataGenerator {
     generate () {
         var data = [];
 
-        var timestampEnd = Math.ceil(new Date().getTime() / 1000) * 1000;
+        var timestampEnd = Math.floor(new Date().getTime() / 1000) * 1000;
         var timestampStart = timestampEnd - (60 * 60 * 1000);
 
         for (var key in this.ctrl.locations.countries) {
@@ -34,7 +34,7 @@ export default class DataGenerator {
         for (var i = 0; i < steps; i++) {
             datapoints.push([
                 this.ctrl.utilities.rand(0, 100),
-                timestampStart + (steps * 10 * 1000)
+                timestampStart + (i * 10 * 1000)
             ]);
         }
 

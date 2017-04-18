@@ -4,7 +4,7 @@ const panelDefaults = {
     showBreadcrumbs: true,
     clickToZoomEnabled: true,
     animate: true,
-    animationDuration: 2,
+    animationDuration: 0,
     showTrends: false,
     colorAmount: 1,
     colors: ['#6699cc'],

@@ -7,6 +7,7 @@ import InputHandler from './inputHandler';
 import PanelDataHandler from './panelDataHandler';
 import TemplateHandler from './templateHandler';
 import SelectedCountriesHandler from './selectedCountriesHandler';
+import TimelapseHandler from './timelapseHandler';
 
 /** options */
 const options = {
@@ -48,6 +49,7 @@ export default class GeoMapPanelCtrl extends MetricsPanelCtrl {
         this.dataFormatter = new DataFormatter(this);
         this.templateHandler = new TemplateHandler(this, templateSrv, variableSrv);
         this.selectedCountriesHandler = new SelectedCountriesHandler(this);
+        this.timelapseHandler = new TimelapseHandler(this);
 
         // Bind events
         this.events.on('init-edit-mode', this.onInitEditMode.bind(this));
@@ -88,6 +90,11 @@ export default class GeoMapPanelCtrl extends MetricsPanelCtrl {
         } else {
             this.data = this.dataFormatter.generate(dataList);
         }
+
+        this.timelapseHandler.setTimestampInterval(
+            this.dataFormatter.firstTimestamp,
+            this.dataFormatter.lastTimestamp
+        );
 
         this.render();
         this.disableRefresh = false;
@@ -248,6 +255,11 @@ export default class GeoMapPanelCtrl extends MetricsPanelCtrl {
 
         sheet += '}';
         this.dynamicSheet.innerHTML = sheet;
+    }
+
+    timelapseStart () {
+        this.log('start')
+        this.timelapseHandler.start();
     }
 }
 

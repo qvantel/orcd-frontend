@@ -173,7 +173,15 @@ export default class D3map {
         var minMaxCur = this.ctrl.data[countryCode];
 
         if (typeof minMaxCur !== 'undefined') {
-            var percent = (minMaxCur.cur - minMaxCur.min) / (minMaxCur.max - minMaxCur.min) * 100;
+            var min = minMaxCur.min;
+            var max = minMaxCur.max;
+            var curr = minMaxCur.cur;
+
+            if (this.ctrl.timelapseHandler.isAnimating) {
+                curr = minMaxCur.all[this.ctrl.timelapseHandler.getCurrent()];
+            }
+
+            var percent = (curr - min) / (max - min) * 100;
             return this.colorScale(percent);
         }
 

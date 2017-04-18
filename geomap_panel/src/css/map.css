@@ -40,12 +40,70 @@ li.key {
     position: relative;
 }
 
-.timelaps-player {
-    width: 200px;
-    height: 20px;
-    background: red;
+.timelapse {
+    width: 250px;
 
     position: absolute;
     top: 0;
     left: 0;
+}
+
+.timelapse-title {
+    width: 100%;
+    font-size: 12px;
+    font-weight: bold;
+    text-align: center;
+    padding-top: 4px;
+}
+
+.timelapse-timestamp {
+    width: 100%;
+    font-size: 12px;
+    text-align: center;
+    padding-bottom: 4px;
+}
+
+.timelapse-player {
+    height: 30px;
+    background: #383a37;
+    border: 1px solid #1f1c25;
+    border-radius: 4px;
+}
+
+.timelapse-action {
+    line-height: 30px;
+    float: left;
+    width: 10%;
+    text-align: center;
+}
+
+.timelapse-live {
+    color: red;
+}
+
+.timelapse-progress-wrapper {
+    float: left;
+    width: 90%;
+    line-height: 30px;
+    padding: 0 10px 0 0;
+}
+
+.timelapse-progress-wrapper.small {
+    width: 80%;
+}
+
+.timelapse-progress {
+    text-align: center;
+    height: 10px;
+    display: inline-block;
+    background: #222222;
+    width: 100%;
+    border: 1px solid #141414;
+    border-radius: 3px;
+}
+
+.timelapse-progress-bar {
+    width: 100%;
+    height: 100%;
+    background: #2dbeaa;
 }
