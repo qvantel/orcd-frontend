@@ -69,7 +69,7 @@ export class TemplateCtrl extends MetricsPanelCtrl {
     this.currentDataList = dataList;
     this.calculateTrend(dataList);
 
-    if (this.timelapse.state !== 'play') {
+    if (this.timelapse.state === 'stop') {
       this.circles.drawCircles(dataList);
     }
   }
@@ -83,7 +83,7 @@ export class TemplateCtrl extends MetricsPanelCtrl {
       }
       var trend = this.trendCalculator.getSimpleTrend(dataList[i].datapoints, this.timeType);
       var arrowDir = '';
-      if (trend < 0.5 && trend > -0.5) {
+      if (trend < 0.5 && trend > -0.5 || isNaN(trend)) {
         arrowDir = 'middle';
       } else if (trend < 0) {
         arrowDir = 'down';
@@ -193,6 +193,7 @@ export class TemplateCtrl extends MetricsPanelCtrl {
       this.timelapse.index = 0;
     }
     this.timelapse.state = 'play';
+    this.playTimelapse();
   }
 
   handlePausePress () {
@@ -213,6 +214,7 @@ export class TemplateCtrl extends MetricsPanelCtrl {
     function play () {
       if (ctrl.timelapse.state !== 'play') {
         ctrl.$interval.cancel(ctrl.interval);
+
         if (ctrl.timelapse.state === 'end') {
           ctrl.circles.drawCircles(dataList, ctrl.timelapse.index);
           ctrl.timelapse.range = 100;
@@ -241,6 +243,10 @@ export class TemplateCtrl extends MetricsPanelCtrl {
     this.onDataReceived(this.currentDataList);
   }
 
+  handleRangePress () {
+    this.$interval.cancel(this.interval);
+  }
+
   setTimelapseRange () {
     let i = 0;
     while (((this.timelapse.step / 2) * i) < this.timelapse.range) {
@@ -255,7 +261,9 @@ export class TemplateCtrl extends MetricsPanelCtrl {
       this.timelapse.range = this.timelapse.index * this.timelapse.step;
     }
 
-    this.playTimelapse();
+    if (this.timelapse.state === 'play') {
+      this.playTimelapse();
+    }
   }
 }
 
