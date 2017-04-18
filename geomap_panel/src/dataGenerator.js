@@ -14,22 +14,30 @@ export default class DataGenerator {
     generate () {
         var data = [];
 
-        for (var key in this.ctrl.locations.countries) {
-            if (this.ctrl.panel.showTrends) {
-                data.push([key, Math.random() * 2 - 1]);
-            } else {
-                var min = Math.floor(Math.random() * 100) + 1;
-                var max = min + Math.floor(Math.random() * 100) + 1;
-                var cur = Math.floor(Math.random() * (max - min + 1) + min);
+        var timestampEnd = Math.ceil(new Date().getTime() / 1000) * 1000;
+        var timestampStart = timestampEnd - (60 * 60 * 1000);
 
-                data[key] = {
-                    min: min,
-                    max: max,
-                    cur: cur
-                };
-            }
+        for (var key in this.ctrl.locations.countries) {
+            data.push({
+                datapoints: this.generateDatapoints(timestampStart, timestampEnd),
+                target: key
+            });
         }
 
         return data;
+    }
+
+    generateDatapoints (timestampStart, timestampEnd) {
+        var datapoints = [];
+
+        var steps = (timestampEnd - timestampStart) / (10 * 1000);
+        for (var i = 0; i < steps; i++) {
+            datapoints.push([
+                this.ctrl.utilities.rand(0, 100),
+                timestampStart + (steps * 10 * 1000)
+            ]);
+        }
+
+        return datapoints;
     }
 }

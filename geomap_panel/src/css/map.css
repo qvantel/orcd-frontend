@@ -35,3 +35,17 @@ li.key {
 .background {
     fill: #1f1d1d;
 }
+
+.map {
+    position: relative;
+}
+
+.timelaps-player {
+    width: 200px;
+    height: 20px;
+    background: red;
+
+    position: absolute;
+    top: 0;
+    left: 0;
+}

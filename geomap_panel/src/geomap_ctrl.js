@@ -82,9 +82,11 @@ export default class GeoMapPanelCtrl extends MetricsPanelCtrl {
     */
     onDataReceived (dataList) {
         if (this.panel.useFakeData) {
-            this.data = this.dataGenerator.generate(true);
+            this.data = this.dataFormatter.generate(
+                this.dataGenerator.generate()
+            );
         } else {
-            this.data = this.dataFormatter.generate(dataList, true);
+            this.data = this.dataFormatter.generate(dataList);
         }
 
         this.render();

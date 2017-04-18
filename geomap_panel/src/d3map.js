@@ -71,7 +71,7 @@ export default class D3map {
                     percent = (minMaxCur.cur - minMaxCur.min) / (minMaxCur.max - minMaxCur.min) * 100;
                 }
 
-                tooltip.html(d.id + '<br/>' + percent + '%');
+                tooltip.html(d.id + '<br/>' + Math.ceil(percent) + '%');
             })
             .on('mousemove', function (d) {
                 tooltip.style('left', (d3.event.pageX - 80) + 'px')
