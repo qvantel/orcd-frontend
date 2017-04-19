@@ -7,7 +7,8 @@ export default class D3map {
         this.container = container;
         this.readyCallback = onReadyCallback;
         this.colorScale = null;
-
+        this.strokeColors = ['#7EB26D', '#EAB839', '#6ED0E0', '#EF843C', '#E24D42', '#1F78C1', '#BA43A9', '#705DA0', '#508642', '#CCA300', '#447EBC', '#C15C17', '#890F02', '#0A437C', '#6D1F62'];
+        this.currentColorIndex = 0;
         this.createMap();
     }
 
@@ -139,12 +140,14 @@ export default class D3map {
                     self.ctrl.selectedCountriesHandler.onCountryClicked(d.id);
                     if (self.ctrl.selectedCountriesHandler.isCountrySelected(d.id) !== -1) {
                         //  Set random color on selected border
-                        d3.selectAll('#' + d.id).classed('stroke-selected', true)
-                        .style('stroke', self.colors[Math.floor(Math.random() * self.colors.length)]);
+                        d3.selectAll('#' + d.id).classed('stroke-selected', true);
+                        self.updateStrokeColor();
                     } else {
                         // remove color when unselect country
                         d3.selectAll('#' + d.id).classed('stroke-selected', false)
                         .attr('style', null);
+                        self.currentColorIndex--;
+                        self.updateStrokeColor();
                     }
                 } else if (self.ctrl.panel.clickToZoomEnabled) {
                     if (d && self.country !== d) {
@@ -159,6 +162,27 @@ export default class D3map {
                 }
             }
         }
+    }
+
+    updateStrokeColor () {
+        let self = this;
+        let countries = this.ctrl.selectedCountriesHandler.selectedCountries;
+        for (var i = 0; i < countries.length; i++) {
+            if (i !== countries.length) {
+                d3.select('#' + countries[i].toUpperCase())
+                .style('stroke', self.strokeColors[i]);
+            } else {
+                d3.select('#' + countries[i].toUpperCase())
+                .style('stroke', self.getColor());
+            }
+        };
+    }
+
+    getColor () {
+      var color = this.strokeColors[this.currentColorIndex];
+      this.currentColorIndex++;
+
+      return color;
     }
 
     updateData () {

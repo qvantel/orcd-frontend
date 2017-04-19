@@ -26,7 +26,7 @@ export default class SelectedCountriesHandler {
         } else {
             this.selectedCountries.splice(regionIndex, 1);
         }
-
+        this.selectedCountries = this.selectedCountries.sort();
         this.updateTemplateVariable();
     }
 
