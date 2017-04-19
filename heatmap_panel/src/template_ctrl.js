@@ -91,10 +91,14 @@ export class TemplateCtrl extends MetricsPanelCtrl {
       var arrowDir = '';
       if (trend < 0.5 && trend > -0.5 || isNaN(trend)) {
         arrowDir = 'middle';
-      } else if (trend < 0) {
-        arrowDir = 'down';
+      } else if (trend < 0 && trend > -25) {
+        arrowDir = 'downSmall';
+      } else if (trend < -25) {
+        arrowDir = 'downBig';
+      } else if (trend > 0 && trend < 25) {
+        arrowDir = 'upSmall';
       } else {
-        arrowDir = 'up';
+        arrowDir = 'upBig';
       }
 
       this.currentTrend[i] = {
@@ -196,7 +200,8 @@ export class TemplateCtrl extends MetricsPanelCtrl {
   }
 
   tiltArrow (index) {
-    return this.currentTrend[index].oldDir + '-' + this.currentTrend[index].arrowDir;
+      // return this.currentTrend[index].oldDir + '-' + this.currentTrend[index].arrowDir;
+      return 'arrow-' + this.currentTrend[index].arrowDir;
   }
 
   handlePlayPress () {
