@@ -70,11 +70,13 @@ export class TemplateCtrl extends MetricsPanelCtrl {
   }
 
   onDataReceived (dataList) {
-    this.currentDataList = dataList;
-    this.calculateTrend(dataList);
+    if (dataList[0]) {
+      this.currentDataList = dataList;
+      this.calculateTrend(dataList);
 
-    if (this.timelapse.state === 'stop') {
-      this.render();
+      if (this.timelapse.state === 'stop') {
+        this.render();
+      }
     }
   }
 

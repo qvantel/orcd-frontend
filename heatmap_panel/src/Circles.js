@@ -9,7 +9,7 @@ export default class Circles {
     this.min = ctrl.panel.min;
     this.colors = ctrl.panel.colors; // Fix colorbug.
     this.currentColorIndex = 0;
-    this.offset = 0;
+    // this.offset = 0;
     this.indexCalculator = new IndexCalculator();
   }
 
@@ -42,9 +42,7 @@ export default class Circles {
 
     var scale = d3.scaleLinear()
       .range([0, this.circleWidth])
-      .domain([0, d3.max(d.datapoints.map(function (datapoint) {
-        return datapoint[0];
-      }))]);
+      .domain([0, this.ctrl.currentMax[i]]);
 
     return scale;
   }
@@ -82,7 +80,7 @@ export default class Circles {
         }
 
         if (d.datapoints[index][0]) {
-          return scale(d.datapoints[index][0]);
+          return scale(d.datapoints[index][0]) / 2;
         } else {
           return 0;
         }
@@ -124,7 +122,7 @@ export default class Circles {
         }
 
         if (d.datapoints[index][0]) {
-          return scale(d.datapoints[index][0]);
+          return scale(d.datapoints[index][0]) / 2;
         } else {
           return 0;
         }
