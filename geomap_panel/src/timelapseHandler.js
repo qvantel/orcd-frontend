@@ -34,9 +34,9 @@ export default class TimelapseHandler {
     stopDrag (e) {
         if (!this.isDragging) return;
 
-        this.isDragging = false;
         $('body').unbind('mousemove');
         this.doDrag(e);
+        this.isDragging = false;
     }
 
     doDrag (e) {
@@ -63,19 +63,19 @@ export default class TimelapseHandler {
         }
     }
 
-    start (animate) {
-        if (!this.isAnimatingPaused) {
+    start () {
+        if (!this.isAnimatingPaused && !this.isDragging) {
             this.current = 0;
         }
 
         this.isAnimating = true;
         this.isAnimatingPaused = false;
 
-        this.ctrl.refresh();
+        this.ctrl.log('Animating: ' + this.isAnimating + ' Paused: ' + this.isAnimatingPaused);
 
-        if (typeof animate === 'undefined' || animate) {
-            this.animate();
-        }
+        // this.ctrl.render();
+        // this.ctrl.scope.$apply();
+        this.animate();
     }
 
     pause () {
@@ -90,18 +90,18 @@ export default class TimelapseHandler {
         this.setPercentUI(100);
         this.setTimestampUI(this.lastTimestamp);
         this.ctrl.map.updateData();
-        this.ctrl.refresh();
     }
 
     setPercent (percent) {
-        this.start(false);
         this.current = Math.floor(((this.lastTimestamp - this.firstTimestamp) / timestampLength) * percent);
+
+        this.start();
         this.pause();
-        this.animate(true);
+        this.ctrl.scope.$apply();
     }
 
-    animate (force) {
-        if (!force && (!this.isAnimating || this.isAnimatingPaused)) return;
+    animate () {
+        if (!this.isAnimating || this.isAnimatingPaused) return;
 
         this.current += 1;
 
