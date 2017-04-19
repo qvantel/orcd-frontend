@@ -50,15 +50,6 @@ export default class TrendCalculator {
     return this.getPercentageTrend(y1, y2);
   }
 
-  getLatestPointIndex (datapoints) {
-    var index = datapoints.length - 1;
-    while (!datapoints[index]) {
-      index--;
-    }
-
-    return index;
-  }
-
   getPercentageTrend (first, last) {
     if (first > 0) {
       return Math.round(((last - first) / first) * 1000) / 10;
