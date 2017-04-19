@@ -112,7 +112,7 @@ export class TemplateCtrl extends MetricsPanelCtrl {
   }
 
   parseName (target) {
-    return target.replace(/.*[.]([\w]*:?[\w]*),.*/i, '$1');
+    return target.replace(/.*[.]([\w]*[-:]?[\w]*),.*/i, '$1');
   }
 
   splitName (name) {
