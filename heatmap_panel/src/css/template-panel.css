@@ -100,7 +100,6 @@ input[type=range]::-moz-range-thumb {
 /*Change this width and hight programatically!*/
 .angular-container {
   background-color: none;
-  border: 2px solid red;
   border-top-right-radius: 6em;
   border-top-left-radius: 6em;
   margin: 20px 20px 0px 20px;
@@ -234,7 +233,6 @@ input[type=range]::-moz-range-thumb {
 }*/
 
 .arrow-icon{
-  background-color: red;
   color:white;
   font-size: 1.2em;
   width:1.2em;
