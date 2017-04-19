@@ -108,6 +108,7 @@ input[type=range]::-moz-range-thumb {
   height: 140px;
   color: grey;
   cursor: pointer;
+  font-size: 0.9em;
 }
 
 /*.trend-arrow {
@@ -171,13 +172,17 @@ input[type=range]::-moz-range-thumb {
   justify-content: center;
 }
 
+.flex-wrap-item {
+  flex-wrap: wrap;
+}
+
 .relative-container {
   position: relative;
   height: auto;
   display: inline-block;
 }
 
-.targetName{
+.targetName {
   position: relative;
   margin-top: 100px;
 }

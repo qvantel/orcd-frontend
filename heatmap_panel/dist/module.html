@@ -27,8 +27,8 @@
   </div>
   Trend: {{ ctrl.tooltip.trend }}%
 </div>
-<div class="center-flex-container wrap-flex-container layer-0">
-  <div class="center-flex-container layer-1">
+<div class="center-flex-container layer-0">
+  <div class="center-flex-container flex-wrap-item layer-1">
     <div ng-repeat="x in ctrl.currentDataList"
       ng-mousemove="ctrl.handleMouseOver($event)"
       ng-mouseenter="ctrl.handleMouseEnter(x, $index, $event)"
@@ -45,6 +45,6 @@
       </div>
     </div>
   </div>
-  <div class="center-flex-container layer-0" id="d3-circle-container">
+  <div class="center-flex-container flex-wrap-item layer-0" id="d3-circle-container">
   </div>
 </div>
