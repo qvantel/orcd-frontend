@@ -2,6 +2,7 @@ import {MetricsPanelCtrl} from 'app/plugins/sdk';
 import Circles from './Circles';
 import TrendCalculator from './TrendCalculator';
 import TemplateHandler from './templateHandler';
+import IndexCalculator from './IndexCalculator';
 import './css/template-panel.css!';
 import angular from 'angular';
 
@@ -53,6 +54,8 @@ export class TemplateCtrl extends MetricsPanelCtrl {
       }
     }
     this.selectedMap = [];
+    this.testCounter = 0;
+    this.indexCalculator = new IndexCalculator();
 
     this.events.on('render', this.onRender.bind(this));
     this.events.on('data-received', this.onDataReceived.bind(this));
@@ -67,13 +70,13 @@ export class TemplateCtrl extends MetricsPanelCtrl {
   }
 
   onDataReceived (dataList) {
-    this.currentDataList = dataList;
-    this.calculateTrend(dataList);
+    if (dataList[0]) {
+      this.currentDataList = dataList;
+      this.calculateTrend(dataList);
 
-    if (this.timelapse.state === 'stop') {
-      this.circles.drawCircles(dataList);
-      this.timelapse.dataList = this.currentDataList.slice();
-      this.timelapse.step = 100 / (this.timelapse.dataList[0].datapoints.length - 1);
+      if (this.timelapse.state === 'stop') {
+        this.render();
+      }
     }
   }
 
@@ -107,11 +110,17 @@ export class TemplateCtrl extends MetricsPanelCtrl {
   }
 
   onRender () {
-    // When is this used?
+    this.circles.drawCircles(this.currentDataList);
+    this.timelapse.dataList = this.currentDataList.slice();
+    this.timelapse.step = 100 / (this.timelapse.dataList[0].datapoints.length - 1);
   }
 
   parseName (target) {
-    return target.replace(/.*[.]([\w]*:?[\w]*),.*/i, '$1');
+    return target.replace(/.*[.]([\w]*[-:]?[\w]*),.*/i, '$1');
+  }
+
+  splitName (name) {
+    return name.replace(/([a-z])([A-Z])/g, '$1 $2').replace(/([A-Z])([A-Z])([a-z])/g, '$1 $2$3').replace(/([a-z])([0-9])/g, '$1 $2');
   }
 
   parseTimeType (target) {
@@ -154,8 +163,8 @@ export class TemplateCtrl extends MetricsPanelCtrl {
     var submenus = document.getElementsByClassName('submenu-controls');
     var panelRows = document.getElementsByClassName('panels-wrapper');
 
-    this.tooltip.name = this.parseName(data.target);
-    this.tooltip.value = data.datapoints[data.datapoints.length - this.circles.getOffset() - 1][0];
+    this.tooltip.name = this.splitName(this.parseName(data.target));
+    this.tooltip.value = data.datapoints[this.indexCalculator.getLatestPointIndex(data.datapoints)][0];
     this.tooltip.trend = this.currentTrend[index].trend;
     this.tooltip.max = this.currentMax[index];
 
@@ -205,7 +214,7 @@ export class TemplateCtrl extends MetricsPanelCtrl {
   }
 
   handlePausePress () {
-    this.$interval.cancel(this.interval);
+    this.cancelTimelapse();
     this.timelapse.state = 'pause';
     this.timelapse.index--;
   }
@@ -215,12 +224,15 @@ export class TemplateCtrl extends MetricsPanelCtrl {
     this.timelapse.index++;
 
     var ctrl = this;
-    this.interval = ctrl.$interval(play, 1500);
+
+    if (angular.isDefined(this.mInterval)) { // Don't start new interval if it's already started.
+      return;
+    }
+    this.mInterval = ctrl.$interval(play, 1500);
 
     function play () {
       if (ctrl.timelapse.state !== 'play') {
-        ctrl.$interval.cancel(ctrl.interval);
-
+        ctrl.cancelTimelapse();
         if (ctrl.timelapse.state === 'end') {
           ctrl.circles.drawCircles(ctrl.timelapse.dataList, ctrl.timelapse.index);
           ctrl.timelapse.range = 100;
@@ -242,8 +254,13 @@ export class TemplateCtrl extends MetricsPanelCtrl {
     }
   }
 
+  cancelTimelapse () {
+    this.$interval.cancel(this.mInterval);
+    this.mInterval = undefined;
+  }
+
   stopTimelapse () {
-    this.$interval.cancel(this.interval);
+    this.cancelTimelapse();
     this.timelapse.state = 'stop';
     this.timelapse.index = 0;
     this.timelapse.range = 0;
@@ -251,7 +268,7 @@ export class TemplateCtrl extends MetricsPanelCtrl {
   }
 
   handleRangePress () {
-    this.$interval.cancel(this.interval);
+    this.cancelTimelapse();
   }
 
   setTimelapseRange () {

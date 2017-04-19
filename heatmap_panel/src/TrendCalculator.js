@@ -1,6 +1,8 @@
+import IndexCalculator from './IndexCalculator';
 export default class TrendCalculator {
   constructor () {
     this.timeTypeMap = this.initTimeTypeMap();
+    this.indexCalculator = new IndexCalculator();
   }
 
   initTimeTypeMap () {
@@ -39,30 +41,12 @@ export default class TrendCalculator {
   }
 
   getSimpleTrend (datapoints, timeType) {
-    var latestIndexNotNull = this.getLatestPointIndex(datapoints);
-    var firstIndexNotNull = this.getFirstPointIndex(datapoints);
+    var latestIndexNotNull = this.indexCalculator.getLatestPointIndex(datapoints);
+    var firstIndexNotNull = this.indexCalculator.getFirstPointIndex(datapoints);
     var y1 = datapoints[firstIndexNotNull][0];
     var y2 = datapoints[latestIndexNotNull][0];
 
     return this.getPercentageTrend(y1, y2);
-  }
-
-  getFirstPointIndex (datapoints) {
-    var index = 0;
-    while (datapoints[index + 1] && !datapoints[index][0]) {
-      index++;
-    }
-
-    return index;
-  }
-
-  getLatestPointIndex (datapoints) {
-    var index = datapoints.length - 1;
-    while (datapoints[index - 1] && !datapoints[index][0]) {
-      index--;
-    }
-
-    return index;
   }
 
   getPercentageTrend (first, last) {
