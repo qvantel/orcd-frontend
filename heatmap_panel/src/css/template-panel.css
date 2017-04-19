@@ -100,6 +100,7 @@ input[type=range]::-moz-range-thumb {
 /*Change this width and hight programatically!*/
 .angular-container {
   background-color: none;
+  border: 2px solid red;
   border-top-right-radius: 6em;
   border-top-left-radius: 6em;
   margin: 20px 20px 0px 20px;
@@ -168,7 +169,6 @@ input[type=range]::-moz-range-thumb {
 .center-flex-container {
   display: flex;
   justify-content: center;
-  flex-wrap: wrap;
 }
 
 .relative-container {
@@ -179,7 +179,7 @@ input[type=range]::-moz-range-thumb {
 
 .targetName{
   position: relative;
-  top:100px;
+  margin-top: 100px;
 }
 
 .layer-0 {
