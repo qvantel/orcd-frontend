@@ -91,10 +91,14 @@ export class TemplateCtrl extends MetricsPanelCtrl {
       var arrowDir = '';
       if (trend < 0.5 && trend > -0.5 || isNaN(trend)) {
         arrowDir = 'middle';
-      } else if (trend < 0) {
-        arrowDir = 'down';
+      } else if (trend < 0 && trend > -25) {
+        arrowDir = 'downSmall';
+      } else if (trend < -25) {
+        arrowDir = 'downBig';
+      } else if (trend > 0 && trend < 25) {
+        arrowDir = 'upSmall';
       } else {
-        arrowDir = 'up';
+        arrowDir = 'upBig';
       }
 
       this.currentTrend[i] = {
@@ -158,6 +162,7 @@ export class TemplateCtrl extends MetricsPanelCtrl {
   handleMouseEnter (data, index, mEvent) { // Change this
     var submenus = document.getElementsByClassName('submenu-controls');
     var panelRows = document.getElementsByClassName('panels-wrapper');
+    var navbar = document.getElementsByClassName('navbar')[0];
 
     this.tooltip.name = this.splitName(this.parseName(data.target));
     this.tooltip.value = data.datapoints[this.indexCalculator.getLatestPointIndex(data.datapoints)][0];
@@ -172,7 +177,7 @@ export class TemplateCtrl extends MetricsPanelCtrl {
     }
 
     var i = 0;
-    while (i < panelRows.length && (this.tooltip.offset.top + panelRows[i].offsetHeight + 100) < mEvent.clientY) {
+    while (i < panelRows.length && (this.tooltip.offset.top + panelRows[i].offsetHeight + navbar.offsetHeight + 50) < mEvent.clientY) {
       this.tooltip.offset.top += panelRows[i].offsetHeight;
       i++;
     }
@@ -180,7 +185,7 @@ export class TemplateCtrl extends MetricsPanelCtrl {
     var panelContainers = panelRows[i].getElementsByClassName('panel-container');
     var k = 0;
 
-    while (k < panelContainers.length && (this.tooltip.offset.left + panelContainers[k].offsetWidth + 100) < mEvent.clientX) {
+    while (k < panelContainers.length && (this.tooltip.offset.left + panelContainers[k].offsetWidth + navbar.offsetWidth + 50) < mEvent.clientX) {
       this.tooltip.offset.left += panelContainers[k].offsetWidth;
       k++;
     }
@@ -196,7 +201,8 @@ export class TemplateCtrl extends MetricsPanelCtrl {
   }
 
   tiltArrow (index) {
-    return this.currentTrend[index].oldDir + '-' + this.currentTrend[index].arrowDir;
+      // return this.currentTrend[index].oldDir + '-' + this.currentTrend[index].arrowDir;
+      return 'arrow-' + this.currentTrend[index].arrowDir;
   }
 
   handlePlayPress () {

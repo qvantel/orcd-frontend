@@ -106,14 +106,15 @@ input[type=range]::-moz-range-thumb {
   width: 100px;
   height: 140px;
   color: grey;
-  align-items: flex-end;
   cursor: pointer;
+  font-size: 0.9em;
 }
 
-.trend-arrow {
+/*.trend-arrow {
   width: 15px;
   height: 15px;
   position: relative;
+
 }
 
 .arrow-part {
@@ -137,9 +138,12 @@ input[type=range]::-moz-range-thumb {
   border-bottom-left-radius: 1em;
   left: calc(50% - 3.5px - 3.5px);
   top: calc(50%);
+}*/
+.trend-arrow{
+  background-color:black;
 }
 
-@keyframes rotate-up-down {
+/*@keyframes rotate-up-down {
   0% {transform: rotate(-45deg);}
   100% {transform: rotate(45deg);}
 }
@@ -152,6 +156,13 @@ input[type=range]::-moz-range-thumb {
 @keyframes rotate-middle-down {
   0% {transform: rotate(0deg);}
   100% {transform: rotate(45deg);}
+}*/
+@keyframes rotate-arrow {
+  0% {transform: rotate(90deg);}
+  25% {transform: rotate(45deg);}
+  50% {transform: rotate(0deg);}
+  75% {transform: rotate(-45deg);}
+  100% {transform: rotate(-90deg);}
 }
 /*------------- General stuff -------------*/
 
@@ -160,10 +171,19 @@ input[type=range]::-moz-range-thumb {
   justify-content: center;
 }
 
+.flex-wrap-item {
+  flex-wrap: wrap;
+}
+
 .relative-container {
   position: relative;
   height: auto;
   display: inline-block;
+}
+
+.targetName {
+  position: relative;
+  margin-top: 100px;
 }
 
 .layer-0 {
@@ -176,7 +196,7 @@ input[type=range]::-moz-range-thumb {
   z-index: 1;
 }
 
-.tilt-up-down {
+/*.tilt-up-down {
   transform: rotate(45deg);
   animation: rotate-up-down 1s linear;
 }
@@ -210,4 +230,29 @@ input[type=range]::-moz-range-thumb {
 
 .tilt-up-up {
   transform: rotate(-45deg);
+}*/
+
+.arrow-icon{
+  color:white;
+  font-size: 1.2em;
+  width:1.2em;
+  height:1.2em;
+  text-align:center;
+  margin: 0 auto;
+}
+
+.arrow-upBig{
+  transform: rotate(-90deg);
+}
+
+.arrow-upSmall{
+  transform: rotate(-45deg);
+}
+
+.arrow-downSmall{
+  transform: rotate(45deg);
+}
+
+.arrow-downBig{
+  transform: rotate(90deg);
 }
