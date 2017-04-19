@@ -158,6 +158,7 @@ input[type=range]::-moz-range-thumb {
 .center-flex-container {
   display: flex;
   justify-content: center;
+  flex-wrap: wrap;
 }
 
 .relative-container {
