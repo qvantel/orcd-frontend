@@ -239,12 +239,12 @@ input[type=range]::-moz-range-thumb {
 }
 
 .middle-downsmall{
-  animation: upBigToDownSmall 2s -1.33s linear reverse;
+  animation: upBigToDownSmall 2s -1.33s linear;
   animation-fill-mode:forwards;
 }
 
 .upsmall-downsmall{
-  animation: upBigToDownSmall 2s -0.66s linear reverse;
+  animation: upBigToDownSmall 2s -0.66s linear;
   animation-fill-mode:forwards;
 }
 
