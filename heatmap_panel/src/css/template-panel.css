@@ -139,7 +139,6 @@ input[type=range]::-moz-range-thumb {
   top: calc(50%);
 }*/
 .trend-arrow{
-  background-color:black;
 }
 
 /*@keyframes rotate-up-down {
@@ -156,13 +155,7 @@ input[type=range]::-moz-range-thumb {
   0% {transform: rotate(0deg);}
   100% {transform: rotate(45deg);}
 }*/
-@keyframes rotate-arrow {
-  0% {transform: rotate(90deg);}
-  25% {transform: rotate(45deg);}
-  50% {transform: rotate(0deg);}
-  75% {transform: rotate(-45deg);}
-  100% {transform: rotate(-90deg);}
-}
+
 /*------------- General stuff -------------*/
 
 .center-flex-container {
@@ -227,28 +220,167 @@ input[type=range]::-moz-range-thumb {
   transform: rotate(-45deg);
 }*/
 
-.arrow-icon{
-  background-color: red;
-  color:white;
-  font-size: 1.2em;
-  width:1.2em;
-  height:1.2em;
-  text-align:center;
-  margin: 0 auto;
+@keyframes downbigToUpBig {
+  0% {transform: rotate(90deg);}
+  25% {transform: rotate(45deg);}
+  50% {transform: rotate(0deg);}
+  75% {transform: rotate(-45deg);}
+  100% {transform: rotate(-90deg);}
 }
 
-.arrow-upBig{
+@keyframes downBigToMiddle {
+  0% {transform: rotate(90deg);}
+  50% {transform: rotate(45deg);}
+  100% {transform: rotate(0deg);}
+}
+
+@keyframes upBigToMiddle {
+  0% {transform: rotate(-90deg);}
+  50% {transform: rotate(-45deg);}
+  100% {transform: rotate(0deg);}
+}
+
+@keyframes downBigToDownSmall {
+  0% {transform: rotate(90deg);}
+  100% {transform: rotate(45deg);}
+}
+
+@keyframes downBigToUpSmall {
+  0% {transform: rotate(90deg);}
+  33% {transform: rotate(45deg);}
+  66% {transform: rotate(0deg);}
+  100% {transform: rotate(-45deg);}
+}
+
+@keyframes upBigToDownSmall{
+  0% {transform: rotate(-90deg);}
+  100% {transform: rotate(45deg);}
+}
+
+@keyframes upBigToUpSmall{
+  0% {transform: rotate(-90deg);}
+  100% {transform: rotate(-45deg);}
+}
+
+.arrow-icon{
+  width:20px;
+  height:30px;
+  background-color:red;
+}
+
+.upbig-downbig{
+  animation: downbigToUpBig 2s linear reverse;
+  animation-fill-mode:forwards;
+}
+
+.downbig-upbig{
+  animation: downbigToUpBig 2s linear;
+  animation-fill-mode:forwards;
+}
+
+.middle-upbig{
+  animation: downbigToUpBig 2s -1s linear;
+  animation-fill-mode:forwards;
+}
+
+.middle-downbig{
+  animation: downbigToUpBig 2s -1s linear reverse;
+  animation-fill-mode:forwards;
+}
+
+.upsmall-upbig{
+  animation: downbigToUpBig 2s -1.5s linear;
+  animation-fill-mode:forwards;
+}
+
+.downsmall-upbig{
+  animation: downbigToUpBig 2s -0.5s linear;
+  animation-fill-mode:forwards;
+}
+
+.upsmall-downbig{
+  animation: downbigToUpBig 2s -0.5s linear reverse;
+  animation-fill-mode:forwards;
+}
+
+.downsmall-downbig{
+  animation: downbigToUpBig 2s -1.5s linear reverse;
+  animation-fill-mode:forwards;
+}
+
+.middle-downsmall{
+  animation: upBigToDownSmall 2s -1.33s linear reverse;
+  animation-fill-mode:forwards;
+}
+
+.upsmall-downsmall{
+  animation: upBigToDownSmall 2s -0.66s linear reverse;
+  animation-fill-mode:forwards;
+}
+
+.upbig-downsmall{
+  animation: upBigToDownSmall 2s linear reverse;
+  animation-fill-mode:forwards;
+}
+
+.middle-upsmall{
+  animation: downBigToUpSmall 2s -1.33s linear reverse;
+  animation-fill-mode:forwards;
+}
+
+.downsmall-upsmall{
+  animation: downBigToUpSmall 2s -0.66s linear reverse;
+  animation-fill-mode:forwards;
+}
+
+.downbig-upsmall{
+  animation: downBigToUpSmall 2s linear reverse;
+  animation-fill-mode:forwards;
+}
+
+.upsmall-middle{
+  animation: upBigToMiddle 2s -1s linear reverse;
+  animation-fill-mode:forwards;
+}
+
+.upbig-middle{
+  animation: upBigToMiddle 2s linear reverse;
+  animation-fill-mode:forwards;
+}
+
+.downsmall-middle{
+  animation: downBigToMiddle 2s -1s linear reverse;
+  animation-fill-mode:forwards;
+}
+
+.downbig-middle{
+  animation: downBigToMiddle 2s linear reverse;
+  animation-fill-mode:forwards;
+}
+
+.downbig-downsmall{
+  animation: downBigToDownSmall 2s linear reverse;
+  animation-fill-mode:forwards;
+}
+
+.upbig-upsmall{
+  animation: upBigToUpSmall 2s linear reverse;
+  animation-fill-mode:forwards;
+}
+
+.upbig-upbig{
   transform: rotate(-90deg);
 }
 
-.arrow-upSmall{
+.upsmall-upsmall{
   transform: rotate(-45deg);
 }
 
-.arrow-downSmall{
+
+.downsmall-downsmall{
   transform: rotate(45deg);
 }
 
-.arrow-downBig{
+.downbig-downbig{
   transform: rotate(90deg);
 }

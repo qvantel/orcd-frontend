@@ -4,6 +4,7 @@ import TrendCalculator from './TrendCalculator';
 import TemplateHandler from './templateHandler';
 import IndexCalculator from './IndexCalculator';
 import './css/template-panel.css!';
+import './css/keyframes.css!';
 import angular from 'angular';
 
 export class TemplateCtrl extends MetricsPanelCtrl {
@@ -92,13 +93,13 @@ export class TemplateCtrl extends MetricsPanelCtrl {
       if (trend < 0.5 && trend > -0.5 || isNaN(trend)) {
         arrowDir = 'middle';
       } else if (trend < 0 && trend > -25) {
-        arrowDir = 'downSmall';
+        arrowDir = 'downsmall';
       } else if (trend < -25) {
-        arrowDir = 'downBig';
+        arrowDir = 'downbig';
       } else if (trend > 0 && trend < 25) {
-        arrowDir = 'upSmall';
+        arrowDir = 'upsmall';
       } else {
-        arrowDir = 'upBig';
+        arrowDir = 'upbig';
       }
 
       this.currentTrend[i] = {
@@ -200,8 +201,7 @@ export class TemplateCtrl extends MetricsPanelCtrl {
   }
 
   tiltArrow (index) {
-      // return this.currentTrend[index].oldDir + '-' + this.currentTrend[index].arrowDir;
-      return 'arrow-' + this.currentTrend[index].arrowDir;
+      return this.currentTrend[index].oldDir + '-' + this.currentTrend[index].arrowDir;
   }
 
   handlePlayPress () {
