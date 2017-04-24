@@ -15,7 +15,7 @@ export default class DataGenerator {
         var data = [];
 
         var timestampEnd = Math.floor(new Date().getTime() / 1000) * 1000;
-        var timestampStart = timestampEnd - (60 * 60 * 1000);
+        var timestampStart = timestampEnd - (24 * 60 * 60 * 1000);
 
         for (var key in this.ctrl.locations.countries) {
             data.push({

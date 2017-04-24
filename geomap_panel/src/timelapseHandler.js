@@ -1,7 +1,6 @@
 import moment from 'moment';
 
 const animationStep = 500;
-const timestampLength = 10000;
 
 export default class TimelapseHandler {
     constructor (ctrl) {
@@ -13,6 +12,7 @@ export default class TimelapseHandler {
         this.timeout = undefined;
         this.current = 0;
         this.isDragging = false;
+        this.timestampLength = 10000;
 
         var self = this;
         $('document').ready(function () {
@@ -48,8 +48,17 @@ export default class TimelapseHandler {
         this.setPercent(percent);
     }
 
-    setTimestampInterval (first, last) {
-        this.current -= Math.floor((first - this.firstTimestamp) / timestampLength);
+    setTimestampInterval (first, last, timestampLength) {
+        var durationSplitRegexp = /(\d+)(ms|s|m|h|d|w|M|y)/;
+        var m = timestampLength.match(durationSplitRegexp);
+        var dur = moment.duration(parseInt(m[1]), m[2]);
+        timestampLength = dur.asMilliseconds();
+
+        var diff = timestampLength / this.timestampLength;
+        this.current = Math.round(this.current / diff);
+        this.current = this.current - Math.round((first - this.firstTimestamp) / this.timestampLength);
+
+        this.timestampLength = timestampLength;
 
         if (this.current < 0) {
             this.current = 0;
@@ -93,7 +102,7 @@ export default class TimelapseHandler {
     }
 
     setPercent (percent) {
-        this.current = Math.floor(((this.lastTimestamp - this.firstTimestamp) / timestampLength) * percent);
+        this.current = Math.floor(((this.lastTimestamp - this.firstTimestamp) / this.timestampLength) * percent);
 
         this.start();
         this.pause();
@@ -105,16 +114,17 @@ export default class TimelapseHandler {
 
         this.current += 1;
 
-        if (this.current * timestampLength + this.firstTimestamp > this.lastTimestamp) {
+        if (this.current * this.timestampLength + this.firstTimestamp > this.lastTimestamp) {
             this.stop();
+            this.ctrl.scope.$apply();
             return;
         }
 
-        var percent = (this.current / ((this.lastTimestamp - this.firstTimestamp) / timestampLength));
+        var percent = (this.current / ((this.lastTimestamp - this.firstTimestamp) / this.timestampLength));
         percent = Math.floor(percent * 100);
         this.setPercentUI(percent);
 
-        var timestamp = this.current * timestampLength + this.firstTimestamp;
+        var timestamp = this.current * this.timestampLength + this.firstTimestamp;
         this.setTimestampUI(timestamp);
 
         this.ctrl.map.updateData();

@@ -18,8 +18,11 @@
                 <div ng-if = "ctrl.timelapseHandler.isAnimating">
                     <a href = "#" ng-click = "ctrl.timelapseHandler.stop()"><i class="fa fa-stop" aria-hidden="true"></i></a>
                 </div>
+                <div ng-if = "!ctrl.timelapseHandler.isAnimating">
+                    <i class="fa fa-stop disabled" aria-hidden="true"></i>
+                </div>
             </div>
-            <div class = "timelapse-progress-wrapper {{ctrl.timelapseHandler.isAnimating && 'small'}}">
+            <div class = "timelapse-progress-wrapper">
                 <div id = "timelapse-progress" ng-mousedown="ctrl.timelapseHandler.startDrag()" class = "timelapse-progress">
                     <div id = "timelapse-progress-bar" class = "timelapse-progress-bar"></div>
                 </div>

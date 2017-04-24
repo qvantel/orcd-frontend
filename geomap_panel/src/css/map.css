@@ -1,5 +1,9 @@
 /* Default stylesheet which will be used for any Grafana theme */
 
+.disabled {
+    color: gray;
+}
+
 /* Styling for GeoChart country borders */
 .stroke-selected {
     stroke-width: 3px;
@@ -83,13 +87,9 @@ li.key {
 
 .timelapse-progress-wrapper {
     float: left;
-    width: 90%;
+    width: 80%;
     line-height: 30px;
     padding: 0 10px 0 0;
-}
-
-.timelapse-progress-wrapper.small {
-    width: 80%;
 }
 
 .timelapse-progress {

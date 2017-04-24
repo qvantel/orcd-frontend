@@ -93,7 +93,8 @@ export default class GeoMapPanelCtrl extends MetricsPanelCtrl {
 
         this.timelapseHandler.setTimestampInterval(
             this.dataFormatter.firstTimestamp,
-            this.dataFormatter.lastTimestamp
+            this.dataFormatter.lastTimestamp,
+            this.templateHandler.getVariableCurrentValue('timespan')
         );
 
         this.render();
@@ -114,7 +115,6 @@ export default class GeoMapPanelCtrl extends MetricsPanelCtrl {
 
     render () {
         if (!this.disableRenderer) {
-            this.log('Render');
             super.render();
         }
     }

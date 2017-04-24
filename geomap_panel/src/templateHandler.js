@@ -123,6 +123,31 @@ export default class TemplateHandler {
         this.templateSrv.init(this.variableSrv.variables);
     }
 
+    getVariableCurrentValue (name) {
+        var val;
+        var index = this.getVariableIndexByName(name);
+
+        if (index !== -1) {
+            val = this.variableSrv.variables[index].current.value;
+        }
+
+        return val;
+    }
+
+    /**
+    *
+    */
+    getVariableByName (name) {
+        var index = this.getVariableIndexByName(name);
+        var variable;
+
+        if (index !== -1) {
+            variable = this.variableSrv.variables[index];
+        }
+
+        return variable;
+    }
+
     /**
     * Get the index of a variable by name
     *
