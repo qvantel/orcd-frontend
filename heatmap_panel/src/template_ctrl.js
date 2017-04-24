@@ -3,6 +3,7 @@ import Circles from './Circles';
 import TrendCalculator from './TrendCalculator';
 import TemplateHandler from './templateHandler';
 import IndexCalculator from './IndexCalculator';
+import TargetParser from './TargetParser';
 import './css/template-panel.css!';
 import angular from 'angular';
 
@@ -12,8 +13,8 @@ export class TemplateCtrl extends MetricsPanelCtrl {
     this.$rootScope = $rootScope;
     this.$interval = $interval;
 
-    this.templateHandler = new TemplateHandler(this, templateSrv, variableSrv);
-    this.templateHandler.buildSimple('products', []);
+    this.productSelector = new TemplateHandler(this, templateSrv, variableSrv);
+    this.productSelector.buildSimple('products', ['None'], true);
 
     var panelDefaults = {
       circleWidth: 100,
@@ -30,6 +31,7 @@ export class TemplateCtrl extends MetricsPanelCtrl {
 
     this.circles = new Circles(this);
     this.trendCalculator = new TrendCalculator();
+    this.targetParser = new TargetParser();
     this.currentTrend = [];
     this.selected = [];
     this.timeType = 's';
@@ -156,7 +158,7 @@ export class TemplateCtrl extends MetricsPanelCtrl {
       }
     }
 
-    this.templateHandler.buildSimple('products', this.selected);
+    this.productSelector.buildSimple('products', this.selected, true);
   }
 
   handleMouseEnter (data, index, mEvent) { // Change this
