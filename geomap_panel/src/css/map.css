@@ -6,7 +6,7 @@
 
 /* Styling for GeoChart country borders */
 .stroke-selected {
-    stroke-width: 3px;
+    stroke-width: 3px !important;
 }
 
 .stroke-zoom {
@@ -22,7 +22,7 @@ li.key {
     padding-left: 0;
     padding-right: 0;
 }
-.tooltip {
+.d3tooltip {
     position: absolute;
     text-align: center;
     width: 60px;

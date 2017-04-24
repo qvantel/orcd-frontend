@@ -64,7 +64,6 @@ export default class SelectedCountriesHandler {
     }
 
     isCountrySelected (country) {
-        this.ctrl.log(this.selectedCountries);
         return this.selectedCountries.indexOf(country.toLowerCase());
     }
 
@@ -73,5 +72,13 @@ export default class SelectedCountriesHandler {
     */
     formatQuery (query) {
         return query.split(',').join(' + ');
+    }
+
+    checkCountriesTemplate () {
+        this.selectedCountries = this.ctrl.templateHandler.getVariableCurrentValue('countries');
+
+        if (typeof this.ctrl.map !== 'undefined') {
+            this.ctrl.map.updateStrokeColor();
+        }
     }
 }

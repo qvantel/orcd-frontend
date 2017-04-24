@@ -76,8 +76,6 @@ export default class TemplateHandler {
         this.variableSrv.variables.push(newVar);
 
         this.variableUpdated();
-
-        this.ctrl.log(this.variableSrv);
     }
 
     /**

@@ -128,6 +128,8 @@ export default class GeoMapPanelCtrl extends MetricsPanelCtrl {
                 super.refresh();
             }
         }
+
+        this.selectedCountriesHandler.checkCountriesTemplate();
     }
 
     /**
@@ -247,7 +249,7 @@ export default class GeoMapPanelCtrl extends MetricsPanelCtrl {
         sheet += '.map path {';
 
         // Set the country border color to the last color of the color array
-        sheet += 'stroke: #2dbeaa;';
+        sheet += 'stroke-width: 1px; stroke: #4C50A9;';
 
         // If animation is enabled, set the country fill color to transition
         if (this.panel.animate) {
