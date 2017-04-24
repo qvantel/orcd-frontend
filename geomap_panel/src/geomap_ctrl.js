@@ -138,6 +138,9 @@ export default class GeoMapPanelCtrl extends MetricsPanelCtrl {
         this.panelDataHandler.subscribe(['animate', 'animationDuration'], () => {
             self.optionAnimationUpdated();
         });
+        this.panelDataHandler.subscribe('showTrends', () => {
+            self.optionShowTrendsUpdated();
+        });
         this.panelDataHandler.subscribe('colorAmount', () => {
             self.optionColorAmountUpdated();
         });
@@ -212,6 +215,11 @@ export default class GeoMapPanelCtrl extends MetricsPanelCtrl {
     optionAnimationUpdated () {
         this.updateDynamicSheet();
         this.render();
+    }
+
+    optionShowTrendsUpdated () {
+        this.map.updateForTrends();
+        this.refresh();
     }
 
     /**

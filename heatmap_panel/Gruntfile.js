@@ -25,7 +25,7 @@ module.exports = function (grunt) {
 
     watch: {
       options: {
-          livereload: true
+         livereload: true
       },
       rebuild_all: {
         files: ['src/**/*', 'plugin.json'],
@@ -66,4 +66,5 @@ module.exports = function (grunt) {
   });
 
   grunt.registerTask('default', ['clean', 'auto_install', 'copy:src_to_dist', 'copy:pluginDef', 'babel']);
+  grunt.registerTask('dev', ['clean', 'copy:src_to_dist', 'copy:pluginDef', 'babel']);
 };

@@ -5,6 +5,7 @@ const panelDefaults = {
     clickToZoomEnabled: true,
     animate: true,
     animationDuration: 2,
+    showTrends: false,
     colorAmount: 1,
     colors: ['#6699cc'],
     breadcrumbs: ['World'],

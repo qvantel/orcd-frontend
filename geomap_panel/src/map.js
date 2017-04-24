@@ -9,9 +9,8 @@ export default class Map {
         this.readyCallback = onReadyCallback;
         this.options = {
             colorAxis: {
-                // minValue: 0,
-                // maxValue: 100,
-                colors: [this.ctrl.lightTheme ? '#f5f5f3' : '#151515']
+                // colors: [this.ctrl.lightTheme ? '#f5f5f3' : '#151515']
+                colors: ['#ff0000', '#151515', '#00ff00']
             },
             backgroundColor: {
                 'fill': this.ctrl.lightTheme ? '#fbfbfb' : '#1f1d1d'
@@ -23,8 +22,8 @@ export default class Map {
             }
         };
 
+        this.updateForTrends();
         this.setRegion(this.ctrl.zoomHandler.getLastZoom());
-        this.setColors(this.ctrl.panel.colors);
         this.loadGoogle();
     }
 
@@ -127,12 +126,29 @@ export default class Map {
     * Set which colors to be used for the regions
     */
     setColors (colors) {
+        if (this.ctrl.panel.showTrends) return;
+
         // Reset the color array with the default element
         this.options.colorAxis.colors = [this.options.colorAxis.colors[0]];
 
         // Set the other colors if available
         for (var i = 0; i < colors.length; i++) {
             this.options.colorAxis.colors[i + 1] = colors[i];
+        }
+    }
+
+    updateForTrends () {
+        if (this.ctrl.panel.showTrends) {
+            this.options.colorAxis = {
+                minValue: -1,
+                maxValue: 1,
+                colors: ['#ff0000', this.ctrl.lightTheme ? '#f5f5f3' : '#151515', '#00ff00']
+            };
+        } else {
+            this.options.colorAxis = {
+                colors: [this.ctrl.lightTheme ? '#f5f5f3' : '#151515']
+            };
+            this.setColors(this.ctrl.panel.colors);
         }
     }
 }

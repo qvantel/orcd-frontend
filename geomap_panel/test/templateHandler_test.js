@@ -10,6 +10,50 @@ describe('SelectedCountriesHandler', () => {
         setupHandler();
     });
 
+    describe('when building a variable simple', () => {
+        beforeEach(() => {
+            templateHandler.buildSimple('Test', ['Test2', 'Test3']);
+        });
+
+        it('it should add a variable to the variablesrv with the correct information', () => {
+            expect(templateHandler.variableSrv.variables.length).to.equal(1);
+            expect(templateHandler.variableSrv.variables[0].options.length).to.equal(2);
+        });
+    });
+
+    describe('when updating a variable simple', () => {
+        beforeEach(() => {
+            templateHandler.buildSimple('Test', ['Test2', 'Test3']);
+            templateHandler.buildSimple('Test', ['Test2', 'Test3', 'Test4']);
+        });
+
+        it('it should add a variable to the variablesrv with the correct information', () => {
+            expect(templateHandler.variableSrv.variables.length).to.equal(1);
+            expect(templateHandler.variableSrv.variables[0].options.length).to.equal(3);
+        });
+    });
+
+    describe('when deleting a variable simple', () => {
+        beforeEach(() => {
+            templateHandler.buildSimple('Test', ['Test2', 'Test3']);
+            templateHandler.buildSimple('Test', []);
+        });
+
+        it('it should delete a variable to the variablesrv with the correct information', () => {
+            expect(templateHandler.variableSrv.variables.length).to.equal(0);
+        });
+    });
+
+    describe('when delete a variable that doesnt exist simple', () => {
+        beforeEach(() => {
+            templateHandler.buildSimple('Test', []);
+        });
+
+        it('it should add a variable to the variablesrv with the correct information', () => {
+            expect(templateHandler.variableSrv.variables.length).to.equal(0);
+        });
+    });
+
     describe('when a variable has been added', () => {
         beforeEach(() => {
             var variable = buildVariable();
@@ -266,11 +310,17 @@ describe('SelectedCountriesHandler', () => {
         variableSrv.addVariable = (data) => {
             variableSrv.variables.push({
                 name: data.name,
-                current: data.current
+                current: data.current,
+                options: data.options
             });
         };
 
-        ctrl = {};
+        ctrl = {
+            dashboard: {
+                updateSubmenuVisibility: () => {
+                }
+            }
+        };
 
         templateHandler = new TemplateHandler(ctrl, templateSrv, variableSrv)
     }

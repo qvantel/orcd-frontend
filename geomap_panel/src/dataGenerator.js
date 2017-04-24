@@ -12,10 +12,14 @@ export default class DataGenerator {
     * @return {dictionary} returns a dictionary where the key is the country and the value is a random value between 0 and 100
     */
     generate () {
-        var data = [['Country', 'Frequency']];
+        var data = [['Country', (this.ctrl.panel.showTrends ? 'Trend' : 'Roaming calls')]];
 
         for (var key in this.ctrl.locations.countries) {
-            data.push([key, Math.floor(Math.random() * 100)]);
+            if (this.ctrl.panel.showTrends) {
+                data.push([key, Math.random() * 2 - 1]);
+            } else {
+                data.push([key, Math.floor(Math.random() * 100)]);
+            }
         }
 
         return data;
