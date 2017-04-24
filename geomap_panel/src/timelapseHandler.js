@@ -107,6 +107,10 @@ export default class TimelapseHandler {
         this.ctrl.scope.$apply();
     }
 
+    isTimelapseAvailable () {
+        return this.lastTimestamp - this.firstTimestamp > this.timestampLength;
+    }
+
     animate () {
         if (!this.isAnimating || this.isAnimatingPaused) return;
 

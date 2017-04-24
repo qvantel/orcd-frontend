@@ -8,7 +8,12 @@
         <div class = "timelapse-player">
             <div class = "timelapse-action">
                 <div ng-if = "!ctrl.timelapseHandler.isAnimating || ctrl.timelapseHandler.isAnimatingPaused">
-                    <a href = "#" ng-click = "ctrl.timelapseHandler.start()"><i class="fa fa-play" aria-hidden="true"></i></a>
+                    <div ng-if = "ctrl.timelapseHandler.isTimelapseAvailable()">
+                        <a href = "#" ng-click = "ctrl.timelapseHandler.start()"><i class="fa fa-play" aria-hidden="true"></i></a>
+                    </div>
+                    <div ng-if = "!ctrl.timelapseHandler.isTimelapseAvailable()">
+                        <i class="fa fa-play disabled" aria-hidden="true"></i>
+                    </div>
                 </div>
                 <div ng-if = "ctrl.timelapseHandler.isAnimating && !ctrl.timelapseHandler.isAnimatingPaused">
                     <a href = "#" ng-click = "ctrl.timelapseHandler.pause()"><i class="fa fa-pause" aria-hidden="true"></i></a>
