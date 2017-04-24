@@ -164,11 +164,9 @@ export default class D3map {
     }
 
     sortCountries () {
-        let self = this;
-        d3.selectAll('.country').each(function() {
+        d3.selectAll('.country').each(function () {
             let firstChild = this.parentNode.firstChild;
-            self.ctrl.log(firstChild)
-            if (firstChild) {
+            if (!this.className.baseVal.includes('stroke-selected')) {
                 this.parentNode.insertBefore(this, firstChild);
             }
         });
@@ -192,6 +190,7 @@ export default class D3map {
                 colorIndex = 0;
             }
         }
+        this.sortCountries();
     }
 
     getColor () {
