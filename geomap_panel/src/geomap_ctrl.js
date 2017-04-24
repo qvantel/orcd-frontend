@@ -150,6 +150,9 @@ export default class GeoMapPanelCtrl extends MetricsPanelCtrl {
         this.panelDataHandler.subscribe('useFakeData', () => {
             self.refresh();
         });
+        this.panelDataHandler.subscribe('timespan', () => {
+            this.templateHandler.updateConstantSimple('timespan', this.panel.timespan);
+        });
     }
 
     /**

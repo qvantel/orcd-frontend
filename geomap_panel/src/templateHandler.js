@@ -50,6 +50,18 @@ export default class TemplateHandler {
         }
     }
 
+    updateConstantSimple (name, value) {
+        if (this.variableExists(name)) {
+            this.updateVariable(
+                name,
+                [this.buildOption(value, value, true)],
+                value,
+                value,
+                value
+            );
+        }
+    }
+
     /**
     * Add a new variable to the variable service
     *
