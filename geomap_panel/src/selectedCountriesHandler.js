@@ -77,6 +77,10 @@ export default class SelectedCountriesHandler {
     checkCountriesTemplate () {
         this.selectedCountries = this.ctrl.templateHandler.getVariableCurrentValue('countries');
 
+        if (typeof this.selectedCountries === 'undefined') {
+            this.selectedCountries = [];
+        }
+
         if (typeof this.ctrl.map !== 'undefined') {
             this.ctrl.map.updateStrokeColor();
         }

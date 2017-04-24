@@ -170,8 +170,6 @@ export default class D3map {
         .classed('stroke-selected', false)
         .attr('style', null);
 
-        if (typeof countries === 'undefined') return;
-
         var colorIndex = 0;
         for (var i = 0; i < countries.length; i++) {
             d3.select('#' + countries[i].toUpperCase())
