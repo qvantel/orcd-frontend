@@ -193,6 +193,8 @@ input[type=range]::-moz-range-thumb {
   height:20px;
   font-size: 20px;
   color:white;
+  position:relative;
+  top: calc(50% - 10px);
 }
 
 .upbig-downbig{
@@ -287,12 +289,12 @@ input[type=range]::-moz-range-thumb {
 }
 
 .downbig-downsmall{
-  animation: downBigToDownSmall 2s linear reverse;
+  animation: downBigToDownSmall 2s linear;
   animation-fill-mode:forwards;
 }
 
 .upbig-upsmall{
-  animation: upBigToUpSmall 2s linear reverse;
+  animation: upBigToUpSmall 2s linear;
   animation-fill-mode:forwards;
 }
 
