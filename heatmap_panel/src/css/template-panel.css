@@ -269,22 +269,22 @@ input[type=range]::-moz-range-thumb {
 }
 
 .upsmall-middle{
-  animation: upBigToMiddle 2s -1s linear reverse;
+  animation: upBigToMiddle 2s -1s linear;
   animation-fill-mode:forwards;
 }
 
 .upbig-middle{
-  animation: upBigToMiddle 2s linear reverse;
+  animation: upBigToMiddle 2s linear;
   animation-fill-mode:forwards;
 }
 
 .downsmall-middle{
-  animation: downBigToMiddle 2s -1s linear reverse;
+  animation: downBigToMiddle 2s -1s linear;
   animation-fill-mode:forwards;
 }
 
 .downbig-middle{
-  animation: downBigToMiddle 2s linear reverse;
+  animation: downBigToMiddle 2s linear;
   animation-fill-mode:forwards;
 }
 
