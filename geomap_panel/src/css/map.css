@@ -11,7 +11,7 @@
 
 .stroke-zoom {
     transition: scale 1s;
-    stroke-width: 0.3px !important;
+    stroke-width: 1px !important;
 }
 
 li.key {

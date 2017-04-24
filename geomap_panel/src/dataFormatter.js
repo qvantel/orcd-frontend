@@ -23,9 +23,8 @@ export default class DataFormatter {
     */
     generate (dataList) {
         var res = [];
-
         if (this.ctrl.locations) {
-            res = this.readData(dataList, res);
+            res = this.readData(dataList);
         }
 
         return res;
@@ -35,10 +34,10 @@ export default class DataFormatter {
     * Read the data
     *
     * @param {array} dataList the data
-    * @param {array} res where the read data should be stored
     * @return {array} the read data
     */
-    readData (dataList, res) {
+    readData (dataList) {
+        var res = [];
         dataList.forEach((data) => {
             if (this.validateRegionCode(data.target.toUpperCase())) {
                 var countryData = this.getCountryCurMinMax(data.datapoints);

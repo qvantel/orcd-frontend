@@ -55,7 +55,7 @@ export default class D3map {
             .attr('class', 'country')
             .attr('id', function (d) { return d.id; })
             .attr('fill', function (d) {
-                return self.getCountryPercentage(d.id);
+                return self.colorScale(self.getCountryPercentage(d.id));
             })
             .attr('d', path)
             .on('click', (d) => {
@@ -66,13 +66,8 @@ export default class D3map {
                 .duration(200)
                 .style('opacity', 0.9);
 
-                var minMaxCur = self.ctrl.data[d.id];
-                var percent = 0;
-                if (typeof minMaxCur !== 'undefined') {
-                    percent = (minMaxCur.cur - minMaxCur.min) / (minMaxCur.max - minMaxCur.min) * 100;
-                }
-
-                tooltip.html(d.id + '<br/>' + Math.ceil(percent) + '%');
+                self.ctrl.log(d.id);
+                tooltip.html(d.id + '<br/>' + Math.ceil(self.getCountryPercentage(d.id)) + '%');
             })
             .on('mousemove', function (d) {
                 tooltip.style('left', (d3.event.pageX - 80) + 'px')
@@ -189,15 +184,15 @@ export default class D3map {
         var self = this;
         d3.select('svg').selectAll('.country')
         .attr('fill', function (d) {
-            return self.getCountryPercentage(d.id);
+            return self.colorScale(self.getCountryPercentage(d.id));
         });
     }
 
     getCountryPercentage (countryCode) {
-        var minMaxCur = this.ctrl.data[countryCode];
+        var minMaxCur = this.ctrl.data[countryCode.toLowerCase()];
 
         if (typeof minMaxCur !== 'undefined') {
-            var min = minMaxCur.min;
+            var min = 0;
             var max = minMaxCur.max;
             var curr = minMaxCur.cur;
 
@@ -206,7 +201,7 @@ export default class D3map {
             }
 
             var percent = (curr - min) / (max - min) * 100;
-            return this.colorScale(percent);
+            return percent;
         }
 
         return 0;

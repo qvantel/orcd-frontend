@@ -80,8 +80,6 @@ export default class TimelapseHandler {
         this.isAnimating = true;
         this.isAnimatingPaused = false;
 
-        this.ctrl.log('Animating: ' + this.isAnimating + ' Paused: ' + this.isAnimatingPaused);
-
         // this.ctrl.render();
         // this.ctrl.scope.$apply();
         this.animate();
@@ -114,7 +112,7 @@ export default class TimelapseHandler {
 
         this.current += 1;
 
-        if (this.current * this.timestampLength + this.firstTimestamp > this.lastTimestamp) {
+        if (this.current * this.timestampLength + this.firstTimestamp >= this.lastTimestamp) {
             this.stop();
             this.ctrl.scope.$apply();
             return;

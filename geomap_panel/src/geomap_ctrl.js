@@ -247,7 +247,7 @@ export default class GeoMapPanelCtrl extends MetricsPanelCtrl {
         sheet += '.map path {';
 
         // Set the country border color to the last color of the color array
-        sheet += 'stroke: ' + this.panel.colors[this.panel.colors.length - 1] + ';';
+        sheet += 'stroke: #2dbeaa;';
 
         // If animation is enabled, set the country fill color to transition
         if (this.panel.animate) {
@@ -259,7 +259,6 @@ export default class GeoMapPanelCtrl extends MetricsPanelCtrl {
     }
 
     timelapseStart () {
-        this.log('start')
         this.timelapseHandler.start();
     }
 }
