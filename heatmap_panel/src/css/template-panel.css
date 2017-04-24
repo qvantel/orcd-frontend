@@ -107,6 +107,7 @@ input[type=range]::-moz-range-thumb {
   height: 140px;
   color: grey;
   cursor: pointer;
+  font-size: 0.9em;
 }
 
 /*.trend-arrow {
@@ -163,15 +164,19 @@ input[type=range]::-moz-range-thumb {
   justify-content: center;
 }
 
+.flex-wrap-item {
+  flex-wrap: wrap;
+}
+
 .relative-container {
   position: relative;
   height: auto;
   display: inline-block;
 }
 
-.targetName{
+.targetName {
   position: relative;
-  top:100px;
+  margin-top: 100px;
 }
 
 .layer-0 {
@@ -264,7 +269,13 @@ input[type=range]::-moz-range-thumb {
 
 .arrow-icon{
   width:20px;
-  height:30px;
+  height:20px;
+  color:white;
+  font-size: 1.2em;
+  width:1.2em;
+  height:1.2em;
+  text-align:center;
+  margin: 0 auto;
   background-color:red;
 }
 
@@ -276,7 +287,7 @@ input[type=range]::-moz-range-thumb {
 .downbig-upbig{
   animation: downbigToUpBig 2s linear;
   animation-fill-mode:forwards;
-}
+
 
 .middle-upbig{
   animation: downbigToUpBig 2s -1s linear;
