@@ -93,7 +93,7 @@ export class TemplateCtrl extends MetricsPanelCtrl {
         arrowDir = 'middle';
       } else if (trend < 0 && trend > -25) {
         arrowDir = 'downsmall';
-      } else if (trend < -25) {
+      } else if (trend <= -25) {
         arrowDir = 'downbig';
       } else if (trend > 0 && trend < 25) {
         arrowDir = 'upsmall';

@@ -247,22 +247,22 @@ input[type=range]::-moz-range-thumb {
 }
 
 .upbig-downsmall{
-  animation: upBigToDownSmall 2s linear reverse;
+  animation: upBigToDownSmall 2s linear;
   animation-fill-mode:forwards;
 }
 
 .middle-upsmall{
-  animation: downBigToUpSmall 2s -1.33s linear reverse;
+  animation: downBigToUpSmall 2s -1.33s linear;
   animation-fill-mode:forwards;
 }
 
 .downsmall-upsmall{
-  animation: downBigToUpSmall 2s -0.66s linear reverse;
+  animation: downBigToUpSmall 2s -0.66s linear;
   animation-fill-mode:forwards;
 }
 
 .downbig-upsmall{
-  animation: downBigToUpSmall 2s linear reverse;
+  animation: downBigToUpSmall 2s linear;
   animation-fill-mode:forwards;
 }
 
@@ -304,6 +304,9 @@ input[type=range]::-moz-range-thumb {
   transform: rotate(-45deg);
 }
 
+.middle-middle{
+  transform: rotate(0deg);
+}
 
 .downsmall-downsmall{
   transform: rotate(45deg);
