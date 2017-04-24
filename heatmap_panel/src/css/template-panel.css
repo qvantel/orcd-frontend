@@ -110,53 +110,6 @@ input[type=range]::-moz-range-thumb {
   font-size: 0.9em;
 }
 
-/*.trend-arrow {
-  width: 15px;
-  height: 15px;
-  position: relative;
-
-}
-
-.arrow-part {
-  position: absolute;
-  width: 10px;
-  height: 4px;
-  transition: all 1s;
-}
-
-.arrow-right {
-  background-color: white;
-  border-top-right-radius: 1em;
-  border-bottom-right-radius: 1em;
-  left: calc(50% - 3.5px);
-  top: calc(50%);
-}
-
-.arrow-left {
-  background-color: white;
-  border-top-left-radius: 1em;
-  border-bottom-left-radius: 1em;
-  left: calc(50% - 3.5px - 3.5px);
-  top: calc(50%);
-}*/
-.trend-arrow{
-}
-
-/*@keyframes rotate-up-down {
-  0% {transform: rotate(-45deg);}
-  100% {transform: rotate(45deg);}
-}
-
-@keyframes rotate-up-middle {
-  0% {transform: rotate(-45deg);}
-  100% {transform: rotate(0deg);}
-}
-
-@keyframes rotate-middle-down {
-  0% {transform: rotate(0deg);}
-  100% {transform: rotate(45deg);}
-}*/
-
 /*------------- General stuff -------------*/
 
 .center-flex-container {
@@ -189,41 +142,9 @@ input[type=range]::-moz-range-thumb {
   z-index: 1;
 }
 
-/*.tilt-up-down {
-  transform: rotate(45deg);
-  animation: rotate-up-down 1s linear;
+.name-static-width{
+  width:80px;
 }
-
-.tilt-up-middle {
-  animation: rotate-up-middle 1s linear;
-}
-
-.tilt-middle-up {
-  transform: rotate(-45deg);
-  animation: rotate-up-middle 1s linear reverse;
-}
-
-.tilt-middle-down {
-  transform: rotate(45deg);
-  animation: rotate-middle-down 1s linear;
-}
-
-.tilt-down-up {
-  transform: rotate(-45deg);
-  animation: rotate-up-down 1s linear reverse;
-}
-
-.tilt-down-middle {
-  animation: rotate-middle-down 1s linear reverse;
-}
-
-.tilt-down-down {
-  transform: rotate(45deg);
-}
-
-.tilt-up-up {
-  transform: rotate(-45deg);
-}*/
 
 @keyframes downbigToUpBig {
   0% {transform: rotate(90deg);}
@@ -270,13 +191,8 @@ input[type=range]::-moz-range-thumb {
 .arrow-icon{
   width:20px;
   height:20px;
+  font-size: 20px;
   color:white;
-  font-size: 1.2em;
-  width:1.2em;
-  height:1.2em;
-  text-align:center;
-  margin: 0 auto;
-  background-color:red;
 }
 
 .upbig-downbig{
@@ -287,6 +203,7 @@ input[type=range]::-moz-range-thumb {
 .downbig-upbig{
   animation: downbigToUpBig 2s linear;
   animation-fill-mode:forwards;
+}
 
 
 .middle-upbig{

@@ -28,23 +28,20 @@
   Trend: {{ ctrl.tooltip.trend }}%
 </div>
 <div class="center-flex-container layer-0">
-  <div class="center-flex-container layer-1">
+  <div class="center-flex-container flex-wrap-item layer-1">
     <div ng-repeat="x in ctrl.currentDataList"
       ng-mousemove="ctrl.handleMouseOver($event)"
       ng-mouseenter="ctrl.handleMouseEnter(x, $index, $event)"
       ng-click="ctrl.handleCircleClick(x, $index)" class="angular-container center-flex-container"
       ng-mouseleave="ctrl.showTooltip = false">
       <div class="center-flex-container targetName">
-        <div class="relative-container">
+        <div class="relative-container name-static-width">
           {{ ctrl.splitName(ctrl.parseName(x.target)) }}
         </div>
-          <!--<div class="arrow-left arrow-part" ng-class="ctrl.tiltArrow($index)"></div>
-
-          <div class="arrow-right arrow-part" ng-class="ctrl.tiltArrow($index)"></div>-->
-        <div class="arrow-icon" ng-class="ctrl.tiltArrow($index)"></div>
+        <div class="arrow-icon fa fa-arrow-right" aria-hidden="true" ng-class="ctrl.tiltArrow($index)"></div>
       </div>
     </div>
   </div>
-  <div class="center-flex-container layer-0" id="d3-circle-container">
+  <div class="center-flex-container flex-wrap-item layer-0" id="d3-circle-container">
   </div>
 </div>
