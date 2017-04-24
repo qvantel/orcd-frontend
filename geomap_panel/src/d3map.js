@@ -79,8 +79,8 @@ export default class D3map {
                 .duration(500)
                 .style('opacity', 0);
             })
-
             self.updateStrokeColor();
+            self.sortCountries();
         });
 
         var legendWidth = width * 0.4;
@@ -159,8 +159,19 @@ export default class D3map {
                 }
             }
         }
-
         this.updateStrokeColor();
+        this.sortCountries();
+    }
+
+    sortCountries () {
+        let self = this;
+        d3.selectAll('.country').each(function() {
+            let firstChild = this.parentNode.firstChild;
+            self.ctrl.log(firstChild)
+            if (firstChild) {
+                this.parentNode.insertBefore(this, firstChild);
+            }
+        });
     }
 
     updateStrokeColor () {
