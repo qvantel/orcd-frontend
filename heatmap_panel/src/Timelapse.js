@@ -1,5 +1,6 @@
 import angular from 'angular';
 
+/** Class for handling timelapse logic */
 export default class Timelapse {
   constructor (ctrl, angularInterval) {
     this.$interval = angularInterval;
@@ -12,6 +13,7 @@ export default class Timelapse {
     this.mInterval = undefined;
   }
 
+  /** When play is pressed */
   onPlay () {
     if (this.state === 'pause' && this.range >= 100) {
       this.range = 0;
@@ -21,12 +23,14 @@ export default class Timelapse {
     this.playTimelapse();
   }
 
+  /** When pause is pressed */
   onPause () {
     this.cancelTimelapse();
     this.state = 'pause';
     this.index--;
   }
 
+  /** Plays the time interval */
   playTimelapse () {
     this.ctrl.circles.drawCircles(this.dataList, this.index);
     var context = this;
@@ -61,11 +65,13 @@ export default class Timelapse {
     }
   }
 
+  /** Stop and cancel the running interval */
   cancelTimelapse () {
     this.$interval.cancel(this.mInterval);
     this.mInterval = undefined;
   }
 
+  /** When stop is pressed */
   onStop () {
     this.cancelTimelapse();
     this.state = 'stop';
@@ -74,6 +80,7 @@ export default class Timelapse {
     this.ctrl.onDataReceived(this.ctrl.currentDataList);
   }
 
+  /** Sets range for where in time interval to render */
   setTimelapseRange () {
     let i = 0;
     while (((this.step / 2) * i) < this.range) {

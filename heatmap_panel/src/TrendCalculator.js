@@ -1,10 +1,13 @@
 import IndexCalculator from './IndexCalculator';
+
+/** Class for calculating trend */
 export default class TrendCalculator {
   constructor () {
     this.timeTypeMap = this.initTimeTypeMap();
     this.indexCalculator = new IndexCalculator();
   }
 
+  /** Inits a map for what timetype to be used in calculation */
   initTimeTypeMap () {
     var map = [];
 
@@ -18,6 +21,12 @@ export default class TrendCalculator {
     return map;
   }
 
+  /**
+  * Returns k for a trendline based on datapoints.
+  *
+  * @param {Object} datapoints - datapoints for calculating trendline.
+  * @param {String} timeType - time setting for graphite summarize. Example: 1h or 1m
+  */
   getTrend (datapoints, timeType) {
     var a = 0;
     var b = 0;
@@ -40,6 +49,11 @@ export default class TrendCalculator {
     return Math.round(((a - b) / (c - d)) * 1000);
   }
 
+  /** Returns a simple trend based on first and last point in interval that is not null.
+  *
+  * @param {Object} datapoints - datapoints for calculating trendline.
+  * @param {String} timeType - time setting for graphite summarize. Example: 1h or 1m
+  */
   getSimpleTrend (datapoints, timeType) {
     var latestIndexNotNull = this.indexCalculator.getLatestPointIndex(datapoints);
     var firstIndexNotNull = this.indexCalculator.getFirstPointIndex(datapoints);
@@ -49,6 +63,11 @@ export default class TrendCalculator {
     return this.getPercentageTrend(y1, y2);
   }
 
+  /** Returns the change in percent based on the first and last point in trendline
+  *
+  * @param {Integer} first - The first value in datapoints
+  * @param {Integer} last - The last value in datapoints
+  */
   getPercentageTrend (first, last) {
     if (first > 0) {
       return Math.round(((last - first) / first) * 1000) / 10;

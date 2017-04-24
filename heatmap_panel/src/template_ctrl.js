@@ -14,6 +14,7 @@ export class TemplateCtrl extends MetricsPanelCtrl {
     super($scope, $injector);
     this.$rootScope = $rootScope;
 
+    // These can be changed using grafana's options. Not yet implemented.
     var panelDefaults = {
       circleWidth: 100,
       min: 0,
@@ -65,6 +66,7 @@ export class TemplateCtrl extends MetricsPanelCtrl {
     }
   }
 
+  // Calculates trend and gets information about arrow-directions.
   calculateTrend (dataList) {
     this.timeType = this.targetParser.parseTimeType(dataList[0].target);
     for (var i = 0; i < dataList.length; i++) {
@@ -94,14 +96,17 @@ export class TemplateCtrl extends MetricsPanelCtrl {
     }
   }
 
+  // Renders circles and copies timelapse data.
   onRender () {
     this.circles.drawCircles(this.currentDataList);
     this.timelapse.dataList = this.currentDataList.slice();
     this.timelapse.step = 100 / (this.timelapse.dataList[0].datapoints.length - 1);
   }
 
+  // Handles when a circle is clicked. Sets clicked circle as selected and changes it's color based on grafanas graph panel.
   handleCircleClick (data, index) {
     var serviceName = this.targetParser.parseName(data.target);
+
     if (this.selected.includes(serviceName)) { // If service is in selected
       this.selected = this.selected.filter(function (name) {
         return name !== serviceName;
@@ -128,7 +133,7 @@ export class TemplateCtrl extends MetricsPanelCtrl {
       }
     }
 
-    this.productSelector.buildSimple('products', this.selected);
+    this.productSelector.buildSimple('products', this.selected); // Add product to grafana template variable.
   }
 
   handleMouseEnter (data, index, mEvent) { // Change this

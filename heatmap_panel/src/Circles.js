@@ -1,31 +1,21 @@
 import * as d3 from './node_modules/d3/build/d3.min';
 import IndexCalculator from './IndexCalculator';
 
+/** Class responsible for drawing circles to the screen */
 export default class Circles {
   constructor (ctrl) {
     this.ctrl = ctrl;
-    this.circleWidth = 100; // Change this programatically
+    this.circleWidth = 100; // This should be set to this.ctrl.panel if changes are implemented.
     this.max = ctrl.panel.max;
     this.min = ctrl.panel.min;
-    this.colors = ctrl.panel.colors; // Fix colorbug.
+    this.colors = ctrl.panel.colors;
     this.currentColorIndex = 0;
-    // this.offset = 0;
     this.indexCalculator = new IndexCalculator();
   }
 
-  updateOffset (dataList) {
-    var tmpOffset = 0;
-    while (!dataList[0].datapoints[dataList[0].datapoints.length - 1 - tmpOffset][0] && tmpOffset < dataList[0].datapoints.length - 1) {
-      tmpOffset++;
-    }
-
-    return tmpOffset;
-  }
-
-  getOffset () {
-    return this.offset;
-  }
-
+  /**
+  * Gets color from array in panelDefaults.
+  */
   getColor () {
     var color = this.colors[this.currentColorIndex];
     this.currentColorIndex++;
@@ -33,6 +23,12 @@ export default class Circles {
     return color;
   }
 
+  /**
+  * Returns a scale for each individual datapoint.
+  *
+  * @param {Object} d - contains target and datapoints.
+  * @param {Integer} i - index of d.
+  */
   getScale (d, i) {
     var max = d3.max(d.datapoints.map(function (datapoint) {
       return datapoint[0];
@@ -47,6 +43,12 @@ export default class Circles {
     return scale;
   }
 
+  /**
+  * Draws the circles to the div with the id d2-circle-container.
+  *
+  * @param {Object} dataList - the list of queried tables from data source.
+  * @param {Integer} pointIndex - Optional. Sets which data in dataList to draw.
+  */
   drawCircles (dataList, pointIndex) {
     // Set controller this so that it's usable inside d3 function.
     var classContext = this;
@@ -101,6 +103,13 @@ export default class Circles {
     this.updateCircleSize(dataList, '.circle', pointIndex);
   }
 
+  /**
+  * Updates existing circles with new values.
+  *
+  * @param {Object} dataList - the list of queried tables from data source.
+  * @param {String} circleClass - The class of the circle dom.
+  * @param {Integer} pointIndex - The index of the data in dataList to be updated.
+  */
   updateCircleSize (dataList, circleClass, pointIndex) {
     var classContext = this;
 
@@ -129,6 +138,14 @@ export default class Circles {
       });
   }
 
+  /**
+  * Sets the color of a circle.
+  *
+  * @param {Object} dataList - the list of queried tables from data source.
+  * @param {Integer} index - the index of the circle to change.
+  * @param {String} circleClass - The class of the circle dom.
+  * @param {String} color - Optional. The color to change to.
+  */
   setCircleColor (dataList, index, circleClass, color) {
     var classContext = this;
 

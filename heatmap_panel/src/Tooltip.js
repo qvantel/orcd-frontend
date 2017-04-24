@@ -1,6 +1,7 @@
 import TargetParser from './TargetParser';
 import IndexCalculator from './IndexCalculator';
 
+/** Class for handling tooltip logic */
 export default class Tooltip {
   constructor (ctrl) {
     this.ctrl = ctrl;
@@ -17,6 +18,14 @@ export default class Tooltip {
     }
   }
 
+  /**
+  * Updates the tooltip values that are shown to the user and calculates offset for tooltip position-offset.
+  *
+  * @param {Object} data - data from grafana.
+  * @param {Integer} index - index of data in dataList.
+  * @param {Integer} clientX - x-coordinate of the pointer.
+  * @param {Integer} clientY - y-coordinate of the pointer.
+  */
   updateTooltip (data, index, clientX, clientY) { // Change this
     var submenus = document.getElementsByClassName('submenu-controls');
     var panelRows = document.getElementsByClassName('panels-wrapper');
@@ -51,6 +60,12 @@ export default class Tooltip {
     this.show = true;
   }
 
+  /**
+  * Updates the tooltip position.
+  *
+  * @param {Integer} posX - x-coordinate of the pointer.
+  * @param {Integer} posY - y-coordinate of the pointer.
+  */
   moveTooltip (posX, posY) {
     var tooltip = document.getElementById('circle-tooltip');
 
