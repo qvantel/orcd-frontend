@@ -1,35 +1,47 @@
+<div class="center-flex-container">
+  <i class="fa fa-play icon" ng-click="ctrl.handlePlayPress()" ng-if="ctrl.timelapse.state !== 'play' && ctrl.timelapse.state !== 'end'"></i>
+  <i class="fa fa-pause icon" ng-click="ctrl.handlePausePress()" ng-if="ctrl.timelapse.state === 'play'|| ctrl.timelapse.state === 'end'"></i>
+  <i class="fa fa-stop icon" ng-click="ctrl.stopTimelapse()" ng-if="ctrl.timelapse.state !== 'stop'"></i>
+</div>
+<div class="center-flex-container">
+  <input id="timelapse-range" type="range" ng-model="ctrl.timelapse.range" ng-mousedown="ctrl.handleRangePress()" ng-mouseup="ctrl.setTimelapseRange()" ng-if="ctrl.timelapse.state !== 'stop' || ctrl.timelapse.range > 0">
+</div>
 <div ng-show="ctrl.showTooltip" id="circle-tooltip" ng-class="center-flex-container">
   <div id="tooltip-arrow"></div>
-  Name: {{ ctrl.tooltipName }}
+  Name: {{ ctrl.tooltip.name }}
   <br>
-  Value: {{ ctrl.tooltipValue }} users
-  <br>
-  Trend: {{ ctrl.tooltipTrend }} users/second
+  <div id="tooltip-value-text" ng-if="ctrl.tooltip.value">
+    Value: {{ ctrl.tooltip.value }} users
+    <br>
+  </div>
+  <div ng-if="!ctrl.tooltip.value">
+    Value: null
+    <br>
+  </div>
+  <div ng-if="ctrl.tooltip.max">
+    Max value: {{ ctrl.tooltip.max }} users
+    <br>
+  </div>
+  <div ng-if="!ctrl.tooltip.max">
+    Max: null
+  </div>
+  Trend: {{ ctrl.tooltip.trend }}%
 </div>
 <div class="center-flex-container layer-0">
-  <div class="center-flex-container layer-1">
-    <div ng-mousemove="ctrl.handleMouseOver($event)"
+  <div class="center-flex-container flex-wrap-item layer-1">
+    <div ng-repeat="x in ctrl.currentDataList"
+      ng-mousemove="ctrl.handleMouseOver($event)"
       ng-mouseenter="ctrl.handleMouseEnter(x, $index, $event)"
       ng-click="ctrl.handleCircleClick(x, $index)" class="angular-container center-flex-container"
-      ng-repeat="x in ctrl.currentDataList"
       ng-mouseleave="ctrl.showTooltip = false">
-      <div class="center-flex-container">
-        <div class="relative-container">
-          {{ ctrl.parseName(x.target) }}
+      <div class="center-flex-container targetName">
+        <div class="relative-container name-static-width">
+          {{ ctrl.splitName(ctrl.parseName(x.target)) }}
         </div>
-        <div class="trend-arrow center-flex-container">
-          <div class="arrow-left arrow-part" ng-class="{'tilt-up-middle': ctrl.tiltArrow($index) === 'up-middle', 'tilt-up-down': ctrl.tiltArrow($index) === 'up-down',
-            'tilt-middle-up': ctrl.tiltArrow($index) === 'middle-up', 'tilt-middle-down': ctrl.tiltArrow($index) === 'middle-down',
-            'tilt-down-up': ctrl.tiltArrow($index) === 'down-up', 'tilt-down-middle': ctrl.tiltArrow($index) === 'down-middle',
-            'tilt-down-down': ctrl.tiltArrow($index) === 'down-down', 'tilt-up-up': ctrl.tiltArrow($index) === 'up-up'}"></div>
-          <div class="arrow-right arrow-part" ng-class="{'tilt-up-middle': ctrl.tiltArrow($index) === 'down-middle', 'tilt-up-down': ctrl.tiltArrow($index) === 'down-up',
-            'tilt-middle-up': ctrl.tiltArrow($index) === 'middle-down', 'tilt-middle-down': ctrl.tiltArrow($index) === 'middle-up',
-            'tilt-down-up': ctrl.tiltArrow($index) === 'up-down', 'tilt-down-middle': ctrl.tiltArrow($index) === 'up-middle',
-            'tilt-down-down': ctrl.tiltArrow($index) === 'up-up', 'tilt-up-up': ctrl.tiltArrow($index) === 'down-down'}"></div>
-        </div>
+        <div class="arrow-icon fa fa-arrow-right" aria-hidden="true" ng-class="ctrl.tiltArrow($index)"></div>
       </div>
     </div>
   </div>
-  <div class="center-flex-container layer-0" id="d3-circle-container">
+  <div class="center-flex-container flex-wrap-item layer-0" id="d3-circle-container">
   </div>
 </div>

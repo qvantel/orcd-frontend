@@ -1,4 +1,5 @@
 import * as d3 from './node_modules/d3/build/d3.min';
+import IndexCalculator from './IndexCalculator';
 
 export default class Circles {
   constructor (ctrl) {
@@ -8,22 +9,17 @@ export default class Circles {
     this.min = ctrl.panel.min;
     this.colors = ctrl.panel.colors; // Fix colorbug.
     this.currentColorIndex = 0;
-    this.offset = 0;
-
-    this.scale = d3.scaleLinear()
-      .range([0, this.circleWidth])
-      .domain([this.min, this.max]);
+    // this.offset = 0;
+    this.indexCalculator = new IndexCalculator();
   }
 
   updateOffset (dataList) {
-    if (dataList[0]) {
-      var tmpOffset = 0;
-      while (!dataList[0].datapoints[dataList[0].datapoints.length - 1 - tmpOffset][0]) {
-        tmpOffset++;
-      }
-
-      return tmpOffset;
+    var tmpOffset = 0;
+    while (!dataList[0].datapoints[dataList[0].datapoints.length - 1 - tmpOffset][0] && tmpOffset < dataList[0].datapoints.length - 1) {
+      tmpOffset++;
     }
+
+    return tmpOffset;
   }
 
   getOffset () {
@@ -37,10 +33,23 @@ export default class Circles {
     return color;
   }
 
-  drawCircles (dataList) {
+  getScale (d, i) {
+    var max = d3.max(d.datapoints.map(function (datapoint) {
+      return datapoint[0];
+    }));
+
+    this.ctrl.currentMax[i] = max;
+
+    var scale = d3.scaleLinear()
+      .range([0, this.circleWidth])
+      .domain([0, this.ctrl.currentMax[i]]);
+
+    return scale;
+  }
+
+  drawCircles (dataList, pointIndex) {
     // Set controller this so that it's usable inside d3 function.
     var classContext = this;
-    this.offset = this.updateOffset(dataList);
 
     // Select dots div and bind datapoints.
     var circles = d3.selectAll('#d3-circle-container')
@@ -61,8 +70,20 @@ export default class Circles {
       .attr('fill', 'white')
       .attr('cy', (this.circleWidth / 2) + 20)
       .attr('cx', (this.circleWidth / 2) + 20)
-      .attr('r', function (d) {
-        return classContext.scale(d.datapoints[d.datapoints.length - 1 - classContext.offset][0]) / 2;
+      .attr('r', function (d, i) {
+        var scale = classContext.getScale(d, i);
+        var index = 0;
+        if (pointIndex) {
+          index = pointIndex;
+        } else {
+          index = classContext.indexCalculator.getLatestPointIndex(d.datapoints);
+        }
+
+        if (d.datapoints[index][0]) {
+          return scale(d.datapoints[index][0]) / 2;
+        } else {
+          return 0;
+        }
       })
       .select(function () { // Select parent
           return this.parentNode;
@@ -77,13 +98,10 @@ export default class Circles {
       .attr('stroke', 'grey');
 
     // Update size (and color) of already existing circles.
-    // Have to update color and size in the same function since d3 can't handle concurrent transitions!
-    this.updateCircleSize(dataList, '.circle');
-    // Update service-value.
-    // this.updateTextValue(dataList, '.current-service-value', '');
+    this.updateCircleSize(dataList, '.circle', pointIndex);
   }
 
-  updateCircleSize (dataList, circleClass) {
+  updateCircleSize (dataList, circleClass, pointIndex) {
     var classContext = this;
 
     // Update circle size.
@@ -94,8 +112,20 @@ export default class Circles {
       .duration(1000)
       .attr('cy', (this.circleWidth / 2) + 20)
       .attr('cx', (this.circleWidth / 2) + 20)
-      .attr('r', function (d) {
-        return classContext.scale(d.datapoints[d.datapoints.length - 1 - classContext.offset][0]) / 2;
+      .attr('r', function (d, i) {
+        var scale = classContext.getScale(d, i);
+        var index = 0;
+        if (pointIndex) {
+          index = pointIndex;
+        } else {
+          index = classContext.indexCalculator.getLatestPointIndex(d.datapoints);
+        }
+
+        if (d.datapoints[index][0]) {
+          return scale(d.datapoints[index][0]) / 2;
+        } else {
+          return 0;
+        }
       });
   }
 

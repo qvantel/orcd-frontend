@@ -2,13 +2,15 @@ import {MetricsPanelCtrl} from 'app/plugins/sdk';
 import Circles from './Circles';
 import TrendCalculator from './TrendCalculator';
 import TemplateHandler from './templateHandler';
+import IndexCalculator from './IndexCalculator';
 import './css/template-panel.css!';
 import angular from 'angular';
 
 export class TemplateCtrl extends MetricsPanelCtrl {
-  constructor ($scope, $injector, $rootScope, templateSrv, variableSrv) {
+  constructor ($scope, $injector, $rootScope, templateSrv, variableSrv, $interval) {
     super($scope, $injector);
     this.$rootScope = $rootScope;
+    this.$interval = $interval;
 
     this.templateHandler = new TemplateHandler(this, templateSrv, variableSrv);
     this.templateHandler.buildSimple('products', []);
@@ -30,15 +32,30 @@ export class TemplateCtrl extends MetricsPanelCtrl {
     this.trendCalculator = new TrendCalculator();
     this.currentTrend = [];
     this.selected = [];
+    this.timeType = 's';
+    this.currentMax = [];
+    this.timelapse = {
+      'state': 'stop',
+      'index': 0,
+      'range': 0,
+      'step': 1,
+      'dataList': []
+    }
+
     this.showTooltip = false;
-    this.tooltipName = '';
-    this.tooltipValue = 0;
-    this.tooltipTrend = 0;
-    this.tooltipOffset = {
-      'top': 0,
-      'left': 0
-    };
+    this.tooltip = {
+      'name': '',
+      'value': 0,
+      'trend': 0,
+      'max': 6000,
+      'offset': {
+        'top': 0,
+        'left': 0
+      }
+    }
     this.selectedMap = [];
+    this.testCounter = 0;
+    this.indexCalculator = new IndexCalculator();
 
     this.events.on('render', this.onRender.bind(this));
     this.events.on('data-received', this.onDataReceived.bind(this));
@@ -53,25 +70,35 @@ export class TemplateCtrl extends MetricsPanelCtrl {
   }
 
   onDataReceived (dataList) {
-    this.currentDataList = dataList;
-    this.circles.drawCircles(dataList);
-    this.calculateTrend(dataList);
+    if (dataList[0]) {
+      this.currentDataList = dataList;
+      this.calculateTrend(dataList);
+
+      if (this.timelapse.state === 'stop') {
+        this.render();
+      }
+    }
   }
 
   calculateTrend (dataList) {
+    this.timeType = this.parseTimeType(dataList[0].target);
     for (var i = 0; i < dataList.length; i++) {
       var oldDir = 'middle';
       if (this.currentTrend[i]) {
         oldDir = this.currentTrend[i].arrowDir;
       }
-      var trend = this.trendCalculator.getSimpleTrend(dataList[i].datapoints);
+      var trend = this.trendCalculator.getSimpleTrend(dataList[i].datapoints, this.timeType);
       var arrowDir = '';
-      if (trend < 0.5 && trend > -0.5) {
+      if (trend < 0.5 && trend > -0.5 || isNaN(trend)) {
         arrowDir = 'middle';
-      } else if (trend < 0) {
-        arrowDir = 'down';
+      } else if (trend < 0 && trend > -25) {
+        arrowDir = 'downsmall';
+      } else if (trend <= -25) {
+        arrowDir = 'downbig';
+      } else if (trend > 0 && trend < 25) {
+        arrowDir = 'upsmall';
       } else {
-        arrowDir = 'up';
+        arrowDir = 'upbig';
       }
 
       this.currentTrend[i] = {
@@ -83,11 +110,21 @@ export class TemplateCtrl extends MetricsPanelCtrl {
   }
 
   onRender () {
-    // When is this used?
+    this.circles.drawCircles(this.currentDataList);
+    this.timelapse.dataList = this.currentDataList.slice();
+    this.timelapse.step = 100 / (this.timelapse.dataList[0].datapoints.length - 1);
   }
 
   parseName (target) {
-    return target.replace(/.*[.]([\w])/i, '$1');
+    return target.replace(/.*[.]([\w]*[-:]?[\w]*),.*/i, '$1');
+  }
+
+  splitName (name) {
+    return name.replace(/([a-z])([A-Z])/g, '$1 $2').replace(/([A-Z])([A-Z])([a-z])/g, '$1 $2$3').replace(/([a-z])([0-9])/g, '$1 $2');
+  }
+
+  parseTimeType (target) {
+    return target.replace(/.*,\s"\d(\w+)",.*/, '$1')
   }
 
   handleCircleClick (data, index) {
@@ -123,26 +160,33 @@ export class TemplateCtrl extends MetricsPanelCtrl {
   }
 
   handleMouseEnter (data, index, mEvent) { // Change this
+    var submenus = document.getElementsByClassName('submenu-controls');
     var panelRows = document.getElementsByClassName('panels-wrapper');
+    var navbar = document.getElementsByClassName('navbar')[0];
 
-    this.tooltipName = this.parseName(data.target);
-    this.tooltipValue = data.datapoints[data.datapoints.length - this.circles.getOffset() - 1][0];
-    this.tooltipTrend = this.currentTrend[index].trend;
+    this.tooltip.name = this.splitName(this.parseName(data.target));
+    this.tooltip.value = data.datapoints[this.indexCalculator.getLatestPointIndex(data.datapoints)][0];
+    this.tooltip.trend = this.currentTrend[index].trend;
+    this.tooltip.max = this.currentMax[index];
 
-    this.tooltipOffset.left = 0;
-    this.tooltipOffset.top = 0;
+    this.tooltip.offset.left = 0;
+    this.tooltip.offset.top = 0;
+
+    for (let i = 0; i < submenus.length; i++) {
+      this.tooltip.offset.top += submenus[i].offsetHeight;
+    }
 
     var i = 0;
-    while (i < panelRows.length && this.tooltipOffset.top + panelRows[i].clientHeight < mEvent.clientY) {
-      this.tooltipOffset.top += panelRows[i].clientHeight;
+    while (i < panelRows.length && (this.tooltip.offset.top + panelRows[i].offsetHeight + navbar.offsetHeight + 50) < mEvent.clientY) {
+      this.tooltip.offset.top += panelRows[i].offsetHeight;
       i++;
     }
 
     var panelContainers = panelRows[i].getElementsByClassName('panel-container');
     var k = 0;
 
-    while (k < panelContainers.length && this.tooltipOffset.left + panelContainers[k].clientWidth < mEvent.clientX) {
-      this.tooltipOffset.left += panelContainers[i].clientWidth;
+    while (k < panelContainers.length && (this.tooltip.offset.left + panelContainers[k].offsetWidth + navbar.offsetWidth + 50) < mEvent.clientX) {
+      this.tooltip.offset.left += panelContainers[k].offsetWidth;
       k++;
     }
 
@@ -152,12 +196,100 @@ export class TemplateCtrl extends MetricsPanelCtrl {
   handleMouseOver (mEvent) {
     var tooltip = document.getElementById('circle-tooltip');
 
-    tooltip.style.top = mEvent.clientY - this.tooltipOffset.top + 'px';
-    tooltip.style.left = mEvent.clientX - this.tooltipOffset.left - tooltip.offsetWidth / 2 - 10 + 'px';
+    tooltip.style.top = mEvent.clientY - this.tooltip.offset.top + 'px';
+    tooltip.style.left = mEvent.clientX - this.tooltip.offset.left - tooltip.offsetWidth / 2 - 10 + 'px';
   }
 
   tiltArrow (index) {
-    return this.currentTrend[index].oldDir + '-' + this.currentTrend[index].arrowDir;
+      return this.currentTrend[index].oldDir + '-' + this.currentTrend[index].arrowDir;
+  }
+
+  handlePlayPress () {
+    if (this.timelapse.state === 'pause' && this.timelapse.range >= 100) {
+      this.timelapse.range = 0;
+      this.timelapse.index = 0;
+    }
+    this.timelapse.state = 'play';
+    this.playTimelapse();
+  }
+
+  handlePausePress () {
+    this.cancelTimelapse();
+    this.timelapse.state = 'pause';
+    this.timelapse.index--;
+  }
+
+  playTimelapse () {
+    this.circles.drawCircles(this.timelapse.dataList, this.timelapse.index);
+    this.timelapse.index++;
+
+    var ctrl = this;
+
+    if (angular.isDefined(this.mInterval)) { // Don't start new interval if it's already started.
+      return;
+    }
+    this.mInterval = ctrl.$interval(play, 1500);
+
+    function play () {
+      if (ctrl.timelapse.state !== 'play') {
+        ctrl.cancelTimelapse();
+        if (ctrl.timelapse.state === 'end') {
+          ctrl.circles.drawCircles(ctrl.timelapse.dataList, ctrl.timelapse.index);
+          ctrl.timelapse.range = 100;
+          ctrl.timelapse.state = 'pause';
+        } else if (ctrl.timelapse.state === 'pause') {
+          ctrl.timelapse.index--;
+        }
+      } else {
+        ctrl.circles.drawCircles(ctrl.timelapse.dataList, ctrl.timelapse.index);
+        if (ctrl.timelapse.index < ctrl.timelapse.dataList[0].datapoints.length - 2) {
+          ctrl.timelapse.range = ctrl.timelapse.index * ctrl.timelapse.step;
+          ctrl.timelapse.index++;
+        } else {
+          ctrl.timelapse.range = ctrl.timelapse.index * ctrl.timelapse.step;
+          ctrl.timelapse.index++;
+          ctrl.timelapse.state = 'end';
+        }
+      }
+    }
+  }
+
+  cancelTimelapse () {
+    this.$interval.cancel(this.mInterval);
+    this.mInterval = undefined;
+  }
+
+  stopTimelapse () {
+    this.cancelTimelapse();
+    this.timelapse.state = 'stop';
+    this.timelapse.index = 0;
+    this.timelapse.range = 0;
+    this.onDataReceived(this.currentDataList);
+  }
+
+  handleRangePress () {
+    this.cancelTimelapse();
+  }
+
+  setTimelapseRange () {
+    let i = 0;
+    while (((this.timelapse.step / 2) * i) < this.timelapse.range) {
+      i++;
+    }
+
+    if (i % 2 === 0) {
+      this.timelapse.index = (i / 2);
+      this.timelapse.range = this.timelapse.index * this.timelapse.step;
+    } else {
+      this.timelapse.index = Math.floor(i / 2);
+      this.timelapse.range = this.timelapse.index * this.timelapse.step;
+    }
+
+    if (this.timelapse.state === 'play') {
+      this.playTimelapse();
+    } else {
+      this.circles.drawCircles(this.timelapse.dataList, this.timelapse.index);
+    }
   }
 }
 
