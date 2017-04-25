@@ -121,7 +121,7 @@ export class TemplateCtrl extends MetricsPanelCtrl {
       }
     } else {
       var n = 0;
-      while (serviceName > this.selected[n]) {
+      while (index > this.selectedMap[n]) {
         n++;
       }
 
