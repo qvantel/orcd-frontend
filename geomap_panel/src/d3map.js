@@ -12,6 +12,8 @@ export default class D3map {
         '#70DBED', '#F9BA8F', '#F29191', '#82B5D8', '#E5A8E2', '#AEA2E0', '#629E51', '#E5AC0E', '#64B0C8', '#E0752D', '#BF1B00', '#0A50A1', '#962D82', '#614D93', '#9AC48A', '#F2C96D', '#65C5DB', '#F9934E', '#EA6460', '#5195CE',
         '#D683CE', '#806EB7', '#3F6833', '#967302', '#2F575E', '#99440A', '#58140C', '#052B51', '#511749', '#3F2B5B', '#E0F9D7', '#FCEACA', '#CFFAFF', '#F9E2D2', '#FCE2DE', '#BADFF4', '#F9D9F9', '#DEDAF7'];
         this.currentColorIndex = 0;
+        this.tooltip;
+        this.tooltipCurrentID;
         this.createMap();
     }
 
@@ -46,7 +48,7 @@ export default class D3map {
         });
 
         // Define the div for the tooltip
-        let tooltip = d3.select('body').append('g')
+        this.tooltip = d3.select('body').append('g')
         .attr('class', 'd3tooltip')
         .style('opacity', 0);
 
@@ -68,25 +70,18 @@ export default class D3map {
                 countryClicked(d);
             })
             .on('mouseover', function (d) {
-                tooltip.transition()
+                self.tooltip.transition()
                 .duration(200)
                 .style('opacity', 1);
-
-                var data = self.ctrl.data[d.id.toLowerCase()];
-                var html = '<div class = \'d3tooltip-title\'>' + self.ctrl.locations.countries[d.id.toUpperCase()].name + '</div>';
-                html += '<div class = \'d3tooltip-info\'><div class = \'d3tooltip-left\'>Percent: </div><div class = \'d3tooltip-right\'>' + Math.floor(self.getCountryPercentage(d.id)) + '%</div><div class = \'d3tooltip-clear\'></div></div>';
-                html += '<div class = \'d3tooltip-info\'><div class = \'d3tooltip-left\'>Current: </div><div class = \'d3tooltip-right\'>' + data.cur + '</div><div class = \'d3tooltip-clear\'></div></div>';
-                html += '<div class = \'d3tooltip-info\'><div class = \'d3tooltip-left\'>Min: </div><div class = \'d3tooltip-right\'>' + data.min + '</div><div class = \'d3tooltip-clear\'></div></div>';
-                html += '<div class = \'d3tooltip-info\'><div class = \'d3tooltip-left\'>Max: </div><div class = \'d3tooltip-right\'>' + data.max + '</div><div class = \'d3tooltip-clear\'></div></div>';
-                html += '<div class = \'d3tooltip-info\'><div class = \'d3tooltip-left\'>Trend: </div><div class = \'d3tooltip-right\'>' + data.trend + '%</div><div class = \'d3tooltip-clear\'></div></div>';
-                tooltip.html(html);
+                self.tooltipCurrentID = d.id;
+                self.updateTooltip();
             })
             .on('mousemove', function (d) {
-                tooltip.style('left', (d3.event.pageX) + 'px')
+                self.tooltip.style('left', (d3.event.pageX) + 'px')
                 .style('top', (d3.event.pageY) + 'px');
             })
             .on('mouseout', function (d) {
-                tooltip.transition()
+                self.tooltip.transition()
                 .duration(200)
                 .style('opacity', 0);
             })
@@ -212,6 +207,30 @@ export default class D3map {
         .attr('fill', function (d) {
             return self.colorScale(self.getCountryPercentage(d.id));
         });
+
+        this.ctrl.log(typeof this.tooltip === undefined);
+        this.ctrl.log(typeof this.tooltipCurrentID === undefined);
+
+        this.updateTooltip();
+    }
+
+    updateTooltip () {
+        if (typeof this.tooltip === undefined || typeof this.tooltipCurrentID === undefined) return;
+
+        var data = this.ctrl.data[this.tooltipCurrentID.toLowerCase()];
+        var curr = data.cur;
+
+        if (this.ctrl.timelapseHandler.isAnimating) {
+            curr = data.all[this.ctrl.timelapseHandler.getCurrent()];
+        }
+
+        var html = '<div class = \'d3tooltip-title\'>' + this.ctrl.locations.countries[this.tooltipCurrentID.toUpperCase()].name + '</div>';
+        html += '<div class = \'d3tooltip-info\'><div class = \'d3tooltip-left\'>Percent: </div><div class = \'d3tooltip-right\'>' + Math.floor(this.getCountryPercentage(this.tooltipCurrentID)) + '%</div><div class = \'d3tooltip-clear\'></div></div>';
+        html += '<div class = \'d3tooltip-info\'><div class = \'d3tooltip-left\'>Current: </div><div class = \'d3tooltip-right\'>' + curr + '</div><div class = \'d3tooltip-clear\'></div></div>';
+        html += '<div class = \'d3tooltip-info\'><div class = \'d3tooltip-left\'>Min: </div><div class = \'d3tooltip-right\'>' + data.min + '</div><div class = \'d3tooltip-clear\'></div></div>';
+        html += '<div class = \'d3tooltip-info\'><div class = \'d3tooltip-left\'>Max: </div><div class = \'d3tooltip-right\'>' + data.max + '</div><div class = \'d3tooltip-clear\'></div></div>';
+        html += '<div class = \'d3tooltip-info\'><div class = \'d3tooltip-left\'>Trend: </div><div class = \'d3tooltip-right\'>' + data.trend + '%</div><div class = \'d3tooltip-clear\'></div></div>';
+        this.tooltip.html(html);
     }
 
     getCountryPercentage (countryCode) {
