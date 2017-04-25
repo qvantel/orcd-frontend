@@ -40,10 +40,13 @@ export default class D3map {
         svg.append('rect')
         .attr('class', 'background')
         .attr('width', width)
-        .attr('height', height);
+        .attr('height', height)
+        .on('click', (d) => {
+            countryClicked();
+        });
 
         // Define the div for the tooltip
-        let tooltip = d3.select('#map').append('g')
+        let tooltip = d3.select('body').append('g')
         .attr('class', 'd3tooltip')
         .style('opacity', 0);
 
@@ -67,17 +70,28 @@ export default class D3map {
             .on('mouseover', function (d) {
                 tooltip.transition()
                 .duration(200)
-                .style('opacity', 0.9);
+                .style('opacity', 1);
 
-                tooltip.html(d.id + '<br/>' + Math.ceil(self.getCountryPercentage(d.id)) + '%');
+                var data = self.ctrl.data[d.id.toLowerCase()];
+                var html = '<div class = \'d3tooltip-title\'>' + d.id + '</div>';
+                html += '<div class = \'d3tooltip-info\'><div class = \'d3tooltip-left\'>Percent: </div><div class = \'d3tooltip-right\'>' + Math.ceil(self.getCountryPercentage(d.id)) + '%</div><div class = \'d3tooltip-clear\'></div></div>';
+                html += '<div class = \'d3tooltip-info\'><div class = \'d3tooltip-left\'>Current: </div><div class = \'d3tooltip-right\'>' + data.cur + '</div><div class = \'d3tooltip-clear\'></div></div>';
+                html += '<div class = \'d3tooltip-info\'><div class = \'d3tooltip-left\'>Min: </div><div class = \'d3tooltip-right\'>' + data.min + '</div><div class = \'d3tooltip-clear\'></div></div>';
+                html += '<div class = \'d3tooltip-info\'><div class = \'d3tooltip-left\'>Max: </div><div class = \'d3tooltip-right\'>' + data.max + '</div><div class = \'d3tooltip-clear\'></div></div>';
+                tooltip.html(html);
             })
             .on('mousemove', function (d) {
-                tooltip.style('left', (d3.event.pageX - 80) + 'px')
-                .style('top', (d3.event.pageY - 170) + 'px');
+                var coordinates = [0, 0];
+                coordinates = d3.mouse(this);
+                var x = coordinates[0];
+                var y = coordinates[1];
+
+                tooltip.style('left', (d3.event.pageX) + 'px')
+                .style('top', (d3.event.pageY) + 'px');
             })
             .on('mouseout', function (d) {
                 tooltip.transition()
-                .duration(500)
+                .duration(200)
                 .style('opacity', 0);
             })
             self.updateStrokeColor();
@@ -134,29 +148,17 @@ export default class D3map {
         }
 
         function countryClicked (d, debug) {
-            if (typeof d !== 'undefined') {
-                if (self.ctrl.inputHandler.isCtrlDown() || self.ctrl.inputHandler.isShiftDown() || debug) {
-                    self.ctrl.selectedCountriesHandler.onCountryClicked(d.id);
-                    /*
-                    if (self.ctrl.selectedCountriesHandler.isCountrySelected(d.id) !== -1) {
-                        //  Set random color on selected border
-                        d3.selectAll('#' + d.id).classed('stroke-selected', true);
-                    } else {
-                        // remove color when unselect country
-                        d3.selectAll('#' + d.id).classed('stroke-selected', false)
-                        .attr('style', null);
-                        self.currentColorIndex--;
-                    }*/
-                } else if (self.ctrl.panel.clickToZoomEnabled) {
-                    if (d && self.country !== d) {
-                        let xyz = getXyz(d);
-                        self.country = d;
-                        zoom(xyz);
-                    } else {
-                        let xyz = [width / 2, height / 1.5, 1];
-                        self.country = null;
-                        zoom(xyz);
-                    }
+            if (self.ctrl.inputHandler.isCtrlDown() || self.ctrl.inputHandler.isShiftDown() || debug) {
+                self.ctrl.selectedCountriesHandler.onCountryClicked(d.id);
+            } else if (self.ctrl.panel.clickToZoomEnabled) {
+                if (typeof d !== 'undefined' && self.country !== d) {
+                    let xyz = getXyz(d);
+                    self.country = d;
+                    zoom(xyz);
+                } else {
+                    let xyz = [width / 2, height / 1.5, 1];
+                    self.country = null;
+                    zoom(xyz);
                 }
             }
         }
@@ -191,7 +193,6 @@ export default class D3map {
 
         var colorIndex = 0;
         for (var i = 0; i < countries.length; i++) {
-            this.ctrl.log(d3.select('#' + countries[i].toUpperCase()) + ' ' + i + ' ' + colorIndex)
             d3.select('#' + countries[i].toUpperCase())
             .classed('stroke-selected', true)
             .style('stroke', this.strokeColors[colorIndex]);

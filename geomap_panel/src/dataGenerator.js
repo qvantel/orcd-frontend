@@ -20,7 +20,7 @@ export default class DataGenerator {
         for (var key in this.ctrl.locations.countries) {
             data.push({
                 datapoints: this.generateDatapoints(timestampStart, timestampEnd),
-                target: key
+                target: key.toUpperCase()
             });
         }
 
