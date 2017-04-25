@@ -208,9 +208,6 @@ export default class D3map {
             return self.colorScale(self.getCountryPercentage(d.id));
         });
 
-        this.ctrl.log(typeof this.tooltip === undefined);
-        this.ctrl.log(typeof this.tooltipCurrentID === undefined);
-
         this.updateTooltip();
     }
 

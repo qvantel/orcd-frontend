@@ -3,11 +3,6 @@
 	<div class="section gf-form-group">
 		<h5 class="section-heading">Map Visual Options</h5>
 
-		<!-- Checkbox to toggle wether or not the legend should be showing -->
-		<div class="gf-form">
-			<gf-form-switch class="gf-form" label="Show Legend" label-class="width-10" checked="ctrl.panel.showLegend" on-change="ctrl.optionChanged('showLegend')"></gf-form-switch>
-		</div>
-
 		<!-- Checkbox to toggle wether or not to be able to click to zoom -->
 		<div class="gf-form">
 			<gf-form-switch class="gf-form" label="Click to Zoom" label-class="width-10" checked="ctrl.panel.clickToZoomEnabled"></gf-form-switch>
@@ -22,32 +17,6 @@
 		<div class="gf-form" ng-show="ctrl.panel.animate">
 			<label class="gf-form-label width-10">Anim duration (S)</label>
 			<input type="text" class="input-small gf-form-input width-10" ng-model="ctrl.panel.animationDuration" on-change="ctrl.optionChanged('animationDuration')"/>
-		</div>
-	</div>
-
-	<div class="section gf-form-group">
-		<h5 class="section-heading">Trends</h5>
-
-		<!-- Checkbox to toggle wether or not the legend should be showing -->
-		<div class="gf-form">
-			<gf-form-switch class="gf-form" label="Show Trends" label-class="width-10" checked="ctrl.panel.showTrends" on-change="ctrl.optionChanged('showTrends')"></gf-form-switch>
-		</div>
-
-		<div ng-if="!ctrl.panel.showTrends">
-			<!-- Treshold options -->
-			<h5 class="section-heading">Threshold Options</h5>
-
-			<!-- Input to determine the amount of colors -->
-			<div class="gf-form">
-				<label class="gf-form-label width-10">Color Amount</label>
-				<input type="text" class="input-small gf-form-input width-10" ng-model="ctrl.panel.colorAmount" ng-blur="ctrl.optionChanged('colorAmount')" placeholder="1" />
-			</div>
-
-			<!-- List of color-pickers to select which colors to be used within the map -->
-			<div class="gf-form">
-				<label class="gf-form-label width-10">Color</label>
-				<spectrum-picker class="gf-form-input width-3" ng-repeat="color in ctrl.panel.colors track by $index" ng-model="ctrl.panel.colors[$index]" ng-change="ctrl.optionChanged('colors')" ></spectrum-picker>
-			</div>
 		</div>
 	</div>
 
