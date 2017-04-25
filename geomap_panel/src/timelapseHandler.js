@@ -58,20 +58,20 @@ export default class TimelapseHandler {
     }
 
     /**
-     * Sets the timestampInterval. (The interval between each datapoint) and updates the current position so the progress percentage does not change. 
+     * Sets the timestampInterval. (The interval between each datapoint) and updates the current position so the progress percentage does not change.
      *
      * @param {number} first - Unix timestamp of the first datapoint
      * @param {number} last - Unix timestamp of the last datapoint
      * @param {string} timestampLength - The interval between the timestamps in a grafana supported string format. (1h / 1d / 1m / 20M etc.)
      */
     setTimestampInterval (first, last, timestampLength) {
-    	// Transform timestamp string into millisecond number
+        // Transform timestamp string into millisecond number
         var durationSplitRegexp = /(\d+)(ms|s|m|h|d|w|M|y)/;
         var m = timestampLength.match(durationSplitRegexp);
         var dur = moment.duration(parseInt(m[1]), m[2]);
         timestampLength = dur.asMilliseconds();
 
-        // In case the timestampLength is not the same as before, calculate the new current position. 
+        // In case the timestampLength is not the same as before, calculate the new current position.
         var diff = timestampLength / this.timestampLength;
         this.current = Math.round(this.current / diff);
         this.current = this.current - Math.round((first - this.firstTimestamp) / this.timestampLength);
@@ -89,7 +89,7 @@ export default class TimelapseHandler {
         }
     }
 
-    /** 
+    /**
      * Starts the timelapse
      */
     start () {
@@ -102,7 +102,7 @@ export default class TimelapseHandler {
 
         this.animate();
     }
-    
+
     /**
      * Pauses the timelapse
      */
@@ -129,7 +129,7 @@ export default class TimelapseHandler {
      */
     setPercent (percent) {
         this.current = Math.floor(((this.lastTimestamp - this.firstTimestamp) / this.timestampLength) * percent);
-        
+
         this.start();
         this.pause();
         this.ctrl.scope.$apply();
@@ -182,11 +182,11 @@ export default class TimelapseHandler {
      * @param {number} percent - Progress percentage between 0 and 1
      */
     setPercentUI (percent) {
-    	percent = Math.floor(percent * 100);
+        percent = Math.floor(percent * 100);
         $('#timelapse-progress-bar').css('width', percent + '%');
     }
 
-    /** 
+    /**
      * Set the timestamp displayed in the timelapse UI
      * @param {number} timestamp - The desired timestamp in milliseconds
      */

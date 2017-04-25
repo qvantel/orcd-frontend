@@ -127,7 +127,7 @@ export default class TemplateHandler {
     /**
      * Get the value of a variable
      * @param {string} name - The name of the variable of which to get the value
-     * @return {unknown} - The value of the variable. The datatype depends on the variable value. 
+     * @return {unknown} - The value of the variable. The datatype depends on the variable value.
      */
     getVariableCurrentValue (name) {
         var val;
@@ -141,7 +141,7 @@ export default class TemplateHandler {
     }
 
     /**
-    * Get a variable object from the variableSrv by searching for its name. 
+    * Get a variable object from the variableSrv by searching for its name.
     * Will return undefined if no matching variable was found
     * @param {string} - The name of the variable
     * @return {object} - The variable object. (undefined if not found)
