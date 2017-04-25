@@ -124,6 +124,11 @@ export default class TemplateHandler {
         this.templateSrv.init(this.variableSrv.variables);
     }
 
+    /**
+     * Get the value of a variable
+     * @param {string} name - The name of the variable of which to get the value
+     * @return {unknown} - The value of the variable. The datatype depends on the variable value. 
+     */
     getVariableCurrentValue (name) {
         var val;
         var index = this.getVariableIndexByName(name);
@@ -136,7 +141,10 @@ export default class TemplateHandler {
     }
 
     /**
-    *
+    * Get a variable object from the variableSrv by searching for its name. 
+    * Will return undefined if no matching variable was found
+    * @param {string} - The name of the variable
+    * @return {object} - The variable object. (undefined if not found)
     */
     getVariableByName (name) {
         var index = this.getVariableIndexByName(name);
@@ -188,7 +196,7 @@ export default class TemplateHandler {
     }
 
     /**
-    * Get a built option object, formatted proerply
+    * Get a built option object, formatted properly
     *
     * @param {string} text - The visible name of the option
     * @param {string} value - The value of the option

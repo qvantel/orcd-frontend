@@ -22,6 +22,9 @@ export default class TimelapseHandler {
         });
     }
 
+    /**
+     * Should be called when the user starts dragging the progress bar
+     */
     startDrag () {
         this.isDragging = true;
 
@@ -31,6 +34,9 @@ export default class TimelapseHandler {
         });
     }
 
+    /**
+     * Should be called when the user stops dragging the progress bar (mouse up)
+     */
     stopDrag (e) {
         if (!this.isDragging) return;
 
@@ -39,6 +45,9 @@ export default class TimelapseHandler {
         this.isDragging = false;
     }
 
+    /**
+     *  Calculates and sets the percentage of the timelapse progress depending on where the user dragged it.
+     */
     doDrag (e) {
         var left = $('#timelapse-progress-bar').offset().left;
         var right = left + $('#timelapse-progress').width();
@@ -48,22 +57,30 @@ export default class TimelapseHandler {
         this.setPercent(percent);
     }
 
+    /**
+     * Sets the timestampInterval. (The interval between each datapoint) and updates the current position so the progress percentage does not change. 
+     *
+     * @param {number} first - Unix timestamp of the first datapoint
+     * @param {number} last - Unix timestamp of the last datapoint
+     * @param {string} timestampLength - The interval between the timestamps in a grafana supported string format. (1h / 1d / 1m / 20M etc.)
+     */
     setTimestampInterval (first, last, timestampLength) {
+    	// Transform timestamp string into millisecond number
         var durationSplitRegexp = /(\d+)(ms|s|m|h|d|w|M|y)/;
         var m = timestampLength.match(durationSplitRegexp);
         var dur = moment.duration(parseInt(m[1]), m[2]);
         timestampLength = dur.asMilliseconds();
 
+        // In case the timestampLength is not the same as before, calculate the new current position. 
         var diff = timestampLength / this.timestampLength;
         this.current = Math.round(this.current / diff);
         this.current = this.current - Math.round((first - this.firstTimestamp) / this.timestampLength);
-
-        this.timestampLength = timestampLength;
 
         if (this.current < 0) {
             this.current = 0;
         }
 
+        this.timestampLength = timestampLength;
         this.firstTimestamp = first;
         this.lastTimestamp = last;
 
@@ -72,6 +89,9 @@ export default class TimelapseHandler {
         }
     }
 
+    /** 
+     * Starts the timelapse
+     */
     start () {
         if (!this.isAnimatingPaused && !this.isDragging) {
             this.current = 0;
@@ -80,72 +100,105 @@ export default class TimelapseHandler {
         this.isAnimating = true;
         this.isAnimatingPaused = false;
 
-        // this.ctrl.render();
-        // this.ctrl.scope.$apply();
         this.animate();
     }
-
+    
+    /**
+     * Pauses the timelapse
+     */
     pause () {
         this.isAnimatingPaused = true;
         clearTimeout(this.timeout);
     }
 
+    /**
+     * Stops the timelapse and resets the time to "live"
+     */
     stop () {
         this.isAnimating = false;
         this.isAnimatingPaused = false;
         clearTimeout(this.timeout);
-        this.setPercentUI(100);
+        this.setPercentUI(1);
         this.setTimestampUI(this.lastTimestamp);
         this.ctrl.map.updateData();
     }
 
+    /**
+     * Set the timelapse progress in percent.
+     * @param {number} percent - A number between 0 and 1 representing the desired timelapse progress.
+     */
     setPercent (percent) {
         this.current = Math.floor(((this.lastTimestamp - this.firstTimestamp) / this.timestampLength) * percent);
-
+        
         this.start();
         this.pause();
         this.ctrl.scope.$apply();
     }
 
+    /**
+     * Returns true if timelapsing is available.
+     * A timelapse is unavailable if there are less than 2 datapoints. This can happen if the timestampLength is larger than the total time period duration
+     * @return {bool} - True if available, false if not.
+     */
     isTimelapseAvailable () {
         return this.lastTimestamp - this.firstTimestamp > this.timestampLength;
     }
 
+    /**
+     * The 'game loop' for updating the timelapse.
+     * This function will start a timer that calls this function again, thereby creating the loop.
+     */
     animate () {
         if (!this.isAnimating || this.isAnimatingPaused) return;
 
         this.current += 1;
 
+        // If we have reached the end of the timelapse.
         if (this.current * this.timestampLength + this.firstTimestamp >= this.lastTimestamp) {
             this.stop();
             this.ctrl.scope.$apply();
             return;
         }
 
+        // Calculate the percentage for the new current timelapse position.
         var percent = (this.current / ((this.lastTimestamp - this.firstTimestamp) / this.timestampLength));
-        percent = Math.floor(percent * 100);
         this.setPercentUI(percent);
 
+        // Calculate the timestamp for the new current timelapse position and print it on the screen.
         var timestamp = this.current * this.timestampLength + this.firstTimestamp;
         this.setTimestampUI(timestamp);
 
         this.ctrl.map.updateData();
 
+        // Update loop
         var self = this;
         this.timeout = setTimeout(() => {
             self.animate();
         }, animationStep);
     }
 
+    /**
+     * Set the percentage of the timlapse progress bar UI
+     * @param {number} percent - Progress percentage between 0 and 1
+     */
     setPercentUI (percent) {
+    	percent = Math.floor(percent * 100);
         $('#timelapse-progress-bar').css('width', percent + '%');
     }
 
+    /** 
+     * Set the timestamp displayed in the timelapse UI
+     * @param {number} timestamp - The desired timestamp in milliseconds
+     */
     setTimestampUI (timestamp) {
         timestamp = moment.unix(timestamp / 1000).format('DD-MM-YYYY HH:mm:ss');
         $('#timelapse-timestamp').html(timestamp);
     }
 
+    /**
+     * Get the current datapoint index.
+     * @return {number} - The index as an integer.
+     */
     getCurrent () {
         return this.current;
     }
