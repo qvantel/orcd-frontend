@@ -10,7 +10,7 @@ There is also a graph representing a timeline, where you more specifically can s
 ### How to use
 When initiating the plugin into your dashboard and if the data source is selected you'll see a representation of all available products.
 
-Each product is visualised by a filled white-circle surrounded by a white outline in a circle shape aswell.
+Each product is visualised by a filled white-circle surrounded by a grey outline in a circle shape aswell.
 The inner circle indicates the data that is streaming into the shape. The size is determined by a value property from the data source.
 
 The maximum value is based on what each product is currently showing, meaning that each entity is independent and isolated from other ones. This means that each product will be determined by using its own scale-range. The minimum value in other hand is always counted as 0.
