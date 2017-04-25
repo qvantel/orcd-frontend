@@ -14,29 +14,65 @@ describe('DataFormatter', () => {
         beforeEach(() => {
             data = dataFormatter.generate([{
                 target: 'SE',
-                datapoints: [[100, 0]]
+                datapoints: [[100, 0], [300, 0], [20, 0], [244, 0]]
             }]);
         });
 
         it('it should return correctly formatted data', () => {
-            expect(data[1][0]).to.equal('SE');
-            expect(data[1][1]).to.equal(100);
+            expect(data['SE'].cur).to.equal(244);
+            expect(data['SE'].min).to.equal(20);
+            expect(data['SE'].max).to.equal(300);
         });
     });
 
-    describe('When data exists and are split', () => {
+    describe('When data exists and current data point is the min value', () => {
         var data = [];
 
         beforeEach(() => {
             data = dataFormatter.generate([{
                 target: 'SE',
-                datapoints: [[100, 0], [40, 0]]
+                datapoints: [[100, 0], [300, 0], [20, 0], [10, 0]]
             }]);
         });
 
-        it('it should return correctly formatted data', () => {
-            expect(data[1][0]).to.equal('SE');
-            expect(data[1][1]).to.equal(140);
+        it('it should return correctly formatted data with current being the same as min', () => {
+            expect(data['SE'].cur).to.equal(10);
+            expect(data['SE'].min).to.equal(10);
+            expect(data['SE'].max).to.equal(300);
+        });
+    });
+
+    describe('When data exists and current data point is the max value', () => {
+        var data = [];
+
+        beforeEach(() => {
+            data = dataFormatter.generate([{
+                target: 'SE',
+                datapoints: [[100, 0], [244, 0], [20, 0], [300, 0]]
+            }]);
+        });
+
+        it('it should return correctly formatted data with current being the same as max', () => {
+            expect(data['SE'].cur).to.equal(300);
+            expect(data['SE'].min).to.equal(20);
+            expect(data['SE'].max).to.equal(300);
+        });
+    });
+
+    describe('When data exists but there is only one data point', () => {
+        var data = [];
+
+        beforeEach(() => {
+            data = dataFormatter.generate([{
+                target: 'SE',
+                datapoints: [[100, 12345678]]
+            }]);
+        });
+
+        it('it should return correctly formatted data with current being the same as min and max', () => {
+            expect(data['SE'].cur).to.equal(100);
+            expect(data['SE'].min).to.equal(100);
+            expect(data['SE'].max).to.equal(100);
         });
     });
 
@@ -52,7 +88,7 @@ describe('DataFormatter', () => {
         });
 
         it('it should not return data', () => {
-            expect(data.length).to.equal(1);
+            expect(data.length).to.equal(0);
         });
     });
 
@@ -67,7 +103,7 @@ describe('DataFormatter', () => {
         });
 
         it('it should not return data for that country', () => {
-            expect(data.length).to.equal(1);
+            expect(data.length).to.equal(0);
         });
     });
 

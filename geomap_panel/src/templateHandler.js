@@ -64,7 +64,7 @@ export default class TemplateHandler {
     addVariable (type, name, label, options, current, query, multi) {
         if (this.variableExists(name)) return;
 
-        this.variableSrv.addVariable({
+        var newVar = this.variableSrv.createVariableFromModel({
             type: type,
             name: name,
             label: label,
@@ -73,6 +73,7 @@ export default class TemplateHandler {
             query: query,
             multi: multi
         });
+        this.variableSrv.variables.push(newVar);
 
         this.variableUpdated();
     }
@@ -124,6 +125,39 @@ export default class TemplateHandler {
     }
 
     /**
+     * Get the value of a variable
+     * @param {string} name - The name of the variable of which to get the value
+     * @return {unknown} - The value of the variable. The datatype depends on the variable value.
+     */
+    getVariableCurrentValue (name) {
+        var val;
+        var index = this.getVariableIndexByName(name);
+
+        if (index !== -1) {
+            val = this.variableSrv.variables[index].current.value;
+        }
+
+        return val;
+    }
+
+    /**
+    * Get a variable object from the variableSrv by searching for its name.
+    * Will return undefined if no matching variable was found
+    * @param {string} - The name of the variable
+    * @return {object} - The variable object. (undefined if not found)
+    */
+    getVariableByName (name) {
+        var index = this.getVariableIndexByName(name);
+        var variable;
+
+        if (index !== -1) {
+            variable = this.variableSrv.variables[index];
+        }
+
+        return variable;
+    }
+
+    /**
     * Get the index of a variable by name
     *
     * @param {string} name - The name of the variable to be found
@@ -162,7 +196,7 @@ export default class TemplateHandler {
     }
 
     /**
-    * Get a built option object, formatted proerply
+    * Get a built option object, formatted properly
     *
     * @param {string} text - The visible name of the option
     * @param {string} value - The value of the option

@@ -1,3 +1,5 @@
+import TrendCalculator from './trendCalculator';
+
 /** Datapoint definition */
 const datapointDef = {
     value: 0,
@@ -11,23 +13,21 @@ export default class DataFormatter {
     */
     constructor (ctrl) {
         this.ctrl = ctrl;
+        this.firstTimestamp = undefined;
+        this.lastTimestamp = undefined;
+        this.trendCalculator = new TrendCalculator(this.ctrl);
     }
 
     /**
-    * Generate a readable data array for Google GeoCharts from data given by Graphite
+    * Generate a readable data array for the map from data given by Graphite
     *
     * @param {array} inputData the data from Graphite
     * @return {dictionary} returns a dictionary where the key is the country and the value is the frequency
     */
     generate (dataList) {
-        var res = [['Country', (this.ctrl.panel.showTrends ? 'Trend' : 'Roaming calls')]];
-
+        var res = [];
         if (this.ctrl.locations) {
-            if (this.ctrl.panel.showTrends) {
-                res = this.readTrend(dataList, res);
-            } else {
-                res = this.readData(dataList, res);
-            }
+            res = this.readData(dataList);
         }
 
         return res;
@@ -37,18 +37,68 @@ export default class DataFormatter {
     * Read the data
     *
     * @param {array} dataList the data
-    * @param {array} res where the read data should be stored
     * @return {array} the read data
     */
-    readData (dataList, res) {
+    readData (dataList) {
+        var res = [];
         dataList.forEach((data) => {
             if (this.validateRegionCode(data.target.toUpperCase())) {
-                var sum = this.sumDatapointValues(data.datapoints);
-                res.push([data.target, sum]);
+                var countryData = this.getCountryCurMinMaxTrend(data.datapoints);
+                res[data.target] = countryData;
             }
         });
 
+        this.firstTimestamp = dataList[0].datapoints[0][1];
+        this.lastTimestamp = dataList[0].datapoints[dataList[0].datapoints.length - 1][1];
+
         return res;
+    }
+
+    /**
+    * Get the current, min and max value for the data provided.
+    * @param {array} datapoints - The array of datapoints to calculate from
+    * @return {object} - An object containing values for Current, Min, Max, Trend and an array containing all values. Undefined if datapoints is empty
+    */
+    getCountryCurMinMaxTrend (datapoints) {
+        if (datapoints.length > 0) {
+            var min = 0;
+            var max = 0;
+            var current = datapoints[datapoints.length - 1][datapointDef.value];
+            var trend = this.trendCalculator.getTrend(datapoints);
+            var all = [];
+
+            if (current === null) {
+                current = 0;
+            }
+
+            for (var point in datapoints) {
+                var val = datapoints[point][datapointDef.value];
+
+                if (val === null) {
+                    val = 0;
+                }
+
+                if ((min === 0 || val < min)) {
+                    min = val;
+                }
+
+                if (datapoints[point][datapointDef.value] > max) {
+                    max = val;
+                }
+
+                all.push(Math.floor(datapoints[point][datapointDef.value]));
+            }
+
+            return {
+                min: Math.floor(min),
+                max: Math.floor(max),
+                cur: Math.floor(current),
+                trend: trend,
+                all: all
+            };
+        }
+
+        return undefined;
     }
 
     /**
@@ -77,15 +127,9 @@ export default class DataFormatter {
         return (typeof this.ctrl.locations.countries[region] !== 'undefined');
     }
 
-    readTrend (dataList, res) {
-        dataList.forEach((data) => {
-            if (this.validateRegionCode(data.target.toUpperCase())) {
-                var trend = this.calcTrend(data.datapoints[this.getFirstDatapointWithData(data.datapoints)], data.datapoints[this.getLastDatapointWithData(data.datapoints)]);
-                res.push([data.target, trend]);
-            }
-        });
-
-        return res;
+    readTrend (datapoints) {
+        var trend = this.calcTrend(datapoints[this.getFirstDatapointWithData(datapoints)], datapoints[this.getLastDatapointWithData(datapoints)]);
+        return trend;
     }
 
     getFirstDatapointWithData (datapoints) {
@@ -122,5 +166,9 @@ export default class DataFormatter {
         }
 
         return Math.atan(deltaValue / deltaTime) / (Math.PI * 0.5);
+    }
+
+    getDataLength () {
+        return this.dataLength;
     }
 }

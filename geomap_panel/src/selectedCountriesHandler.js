@@ -26,7 +26,7 @@ export default class SelectedCountriesHandler {
         } else {
             this.selectedCountries.splice(regionIndex, 1);
         }
-
+        this.selectedCountries = this.selectedCountries.sort();
         this.updateTemplateVariable();
     }
 
@@ -63,10 +63,26 @@ export default class SelectedCountriesHandler {
         }
     }
 
+    isCountrySelected (country) {
+        return this.selectedCountries.indexOf(country.toLowerCase());
+    }
+
     /**
     * Format the query to be more readable
     */
     formatQuery (query) {
         return query.split(',').join(' + ');
+    }
+
+    checkCountriesTemplate () {
+        this.selectedCountries = this.ctrl.templateHandler.getVariableCurrentValue('countries');
+
+        if (typeof this.selectedCountries === 'undefined') {
+            this.selectedCountries = [];
+        }
+
+        if (typeof this.ctrl.map !== 'undefined') {
+            this.ctrl.map.updateStrokeColor();
+        }
     }
 }

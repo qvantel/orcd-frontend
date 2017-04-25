@@ -1,23 +1,119 @@
 /* Default stylesheet which will be used for any Grafana theme */
 
-/* Styling for GeoChart country borders */
-.map path {
-    stroke-width: 1;
+.disabled {
+    color: gray;
 }
 
-/* Make sure the holder is relative so absolute children get its bounds*/
-.map-holder {
+/* Styling for GeoChart country borders */
+.stroke-selected {
+    stroke-width: 3px !important;
+}
+
+.stroke-zoom {
+    transition: scale 1s;
+    stroke-width: 1px !important;
+}
+
+li.key {
+    border-top-width: 15px;
+    border-top-style: solid;
+    font-size: .75em;
+    width: 10%;
+    padding-left: 0;
+    padding-right: 0;
+}
+
+.d3tooltip {
+    position: absolute;
+    text-align: center;
+    padding: 0 4px 0 4px;
+    font-size: .875rem;
+    pointer-events: none;
+    border-radius: 1px;
+}
+
+.d3tooltip .d3tooltip-title {
+    font-weight: bold;
+    padding-top: 2px;
+}
+
+.d3tooltip .d3tooltip-info {
+}
+
+.d3tooltip .d3tooltip-left {
+    color: #32D1DF;
+    float: left;
+    padding-right: 4px;
+}
+
+.d3tooltip .d3tooltip-right {
+    float: right;
+}
+
+.d3tooltip .d3tooltip-clear {
+    clear: both;
+}
+
+.map {
     position: relative;
 }
 
-/* Position the breadcrumbs in the top left corner*/
-.breadcrumbs {
+.timelapse {
+    width: 250px;
+
     position: absolute;
-    top: 10px;
-    left: 10px;
+    top: 0;
+    left: 0;
 }
 
-/* Make sure the elements inside the breadcrumbs are inline so they don't stack under each other*/
-.breadcrumbs div {
-    display: inline;
+.timelapse-title {
+    width: 100%;
+    font-size: 12px;
+    font-weight: bold;
+    text-align: center;
+    padding-top: 4px;
+}
+
+.timelapse-timestamp {
+    width: 100%;
+    font-size: 12px;
+    text-align: center;
+    padding-bottom: 4px;
+}
+
+.timelapse-player {
+    height: 30px;
+    border-radius: 1px;
+}
+
+.timelapse-action {
+    line-height: 30px;
+    float: left;
+    width: 10%;
+    text-align: center;
+}
+
+.timelapse-live {
+    color: red;
+}
+
+.timelapse-progress-wrapper {
+    float: left;
+    width: 80%;
+    line-height: 30px;
+    padding: 0 10px 0 0;
+}
+
+.timelapse-progress {
+    text-align: center;
+    height: 10px;
+    display: inline-block;
+    width: 100%;
+    border-radius: 1px;
+}
+
+.timelapse-progress-bar {
+    width: 100%;
+    height: 100%;
+    background: #2AB2E4;
 }
