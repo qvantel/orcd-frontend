@@ -14,14 +14,16 @@ export default class DataGenerator {
     generate () {
         var data = [];
 
-        var timestampEnd = Math.floor(new Date().getTime() / 1000) * 1000;
-        var timestampStart = timestampEnd - (24 * 60 * 60 * 1000);
+        if (this.ctrl.locations) {
+            var timestampEnd = Math.floor(new Date().getTime() / 1000) * 1000;
+            var timestampStart = timestampEnd - (24 * 60 * 60 * 1000);
 
-        for (var key in this.ctrl.locations.countries) {
-            data.push({
-                datapoints: this.generateDatapoints(timestampStart, timestampEnd),
-                target: key.toUpperCase()
-            });
+            for (var key in this.ctrl.locations.countries) {
+                data.push({
+                    datapoints: this.generateDatapoints(timestampStart, timestampEnd),
+                    target: key.toLowerCase()
+                });
+            }
         }
 
         return data;

@@ -249,7 +249,7 @@ export default class GeoMapPanelCtrl extends MetricsPanelCtrl {
         sheet += '.map path {';
 
         // Set the country border color to the last color of the color array
-        sheet += 'stroke-width: 1px; stroke: #4C50A9;';
+        sheet += 'stroke-width: 1px; stroke: #003366;';
 
         // If animation is enabled, set the country fill color to transition
         if (this.panel.animate) {

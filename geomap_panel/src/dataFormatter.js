@@ -56,6 +56,7 @@ export default class DataFormatter {
             var min = 0;
             var max = 0;
             var current = datapoints[datapoints.length - 1][datapointDef.value];
+            var trend = Math.floor(this.readTrend(datapoints) * 100);
             var all = [];
 
             if (current === null) {
@@ -80,7 +81,7 @@ export default class DataFormatter {
                 all.push(datapoints[point][datapointDef.value]);
             }
 
-            return {min: min, max: max, cur: current, all: all};
+            return {min: min, max: max, cur: current, trend: trend, all: all};
         }
 
         return undefined;
@@ -112,15 +113,9 @@ export default class DataFormatter {
         return (typeof this.ctrl.locations.countries[region] !== 'undefined');
     }
 
-    readTrend (dataList, res) {
-        dataList.forEach((data) => {
-            if (this.validateRegionCode(data.target.toUpperCase())) {
-                var trend = this.calcTrend(data.datapoints[this.getFirstDatapointWithData(data.datapoints)], data.datapoints[this.getLastDatapointWithData(data.datapoints)]);
-                res.push([data.target, trend]);
-            }
-        });
-
-        return res;
+    readTrend (datapoints) {
+        var trend = this.calcTrend(datapoints[this.getFirstDatapointWithData(datapoints)], datapoints[this.getLastDatapointWithData(datapoints)]);
+        return trend;
     }
 
     getFirstDatapointWithData (datapoints) {

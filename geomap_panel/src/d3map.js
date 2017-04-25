@@ -45,7 +45,6 @@ export default class D3map {
             countryClicked();
         });
 
-
         // Define the div for the tooltip
         let tooltip = d3.select('body').append('g')
         .attr('class', 'd3tooltip')
@@ -79,6 +78,7 @@ export default class D3map {
                 html += '<div class = \'d3tooltip-info\'><div class = \'d3tooltip-left\'>Current: </div><div class = \'d3tooltip-right\'>' + data.cur + '</div><div class = \'d3tooltip-clear\'></div></div>';
                 html += '<div class = \'d3tooltip-info\'><div class = \'d3tooltip-left\'>Min: </div><div class = \'d3tooltip-right\'>' + data.min + '</div><div class = \'d3tooltip-clear\'></div></div>';
                 html += '<div class = \'d3tooltip-info\'><div class = \'d3tooltip-left\'>Max: </div><div class = \'d3tooltip-right\'>' + data.max + '</div><div class = \'d3tooltip-clear\'></div></div>';
+                html += '<div class = \'d3tooltip-info\'><div class = \'d3tooltip-left\'>Trend: </div><div class = \'d3tooltip-right\'>' + data.trend + '%</div><div class = \'d3tooltip-clear\'></div></div>';
                 tooltip.html(html);
             })
             .on('mousemove', function (d) {
@@ -223,6 +223,7 @@ export default class D3map {
         var minMaxCur = this.ctrl.data[countryCode.toLowerCase()];
 
         if (typeof minMaxCur !== 'undefined') {
+            var percent = 0;
             var min = 0;
             var max = minMaxCur.max;
             var curr = minMaxCur.cur;
@@ -231,7 +232,10 @@ export default class D3map {
                 curr = minMaxCur.all[this.ctrl.timelapseHandler.getCurrent()];
             }
 
-            var percent = (curr - min) / (max - min) * 100;
+            if (max - min !== 0) {
+                percent = (curr - min) / (max - min) * 100;
+            }
+
             return percent;
         }
 
