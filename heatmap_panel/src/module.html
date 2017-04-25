@@ -1,3 +1,4 @@
+<!-- timelapse player -->
 <div class="center-flex-container">
   <i class="fa fa-play icon" ng-click="ctrl.handlePlayPress()" ng-if="ctrl.timelapse.state !== 'play' && ctrl.timelapse.state !== 'end'"></i>
   <i class="fa fa-pause icon" ng-click="ctrl.handlePausePress()" ng-if="ctrl.timelapse.state === 'play'|| ctrl.timelapse.state === 'end'"></i>
@@ -6,7 +7,8 @@
 <div class="center-flex-container">
   <input id="timelapse-range" type="range" ng-model="ctrl.timelapse.range" ng-mousedown="ctrl.handleRangePress()" ng-mouseup="ctrl.setTimelapseRange()" ng-if="ctrl.timelapse.state !== 'stop' || ctrl.timelapse.range > 0">
 </div>
-<div ng-show="ctrl.showTooltip" id="circle-tooltip" ng-class="center-flex-container">
+<!-- tooltip -->
+<div ng-show="ctrl.tooltip.show" id="circle-tooltip" ng-class="center-flex-container">
   <div id="tooltip-arrow"></div>
   Name: {{ ctrl.tooltip.name }}
   <br>
@@ -27,21 +29,24 @@
   </div>
   Trend: {{ ctrl.tooltip.trend }}%
 </div>
+<!-- Circles  -->
 <div class="center-flex-container layer-0">
+  <!-- Angular container for click-events -->
   <div class="center-flex-container flex-wrap-item layer-1">
     <div ng-repeat="x in ctrl.currentDataList"
       ng-mousemove="ctrl.handleMouseOver($event)"
       ng-mouseenter="ctrl.handleMouseEnter(x, $index, $event)"
       ng-click="ctrl.handleCircleClick(x, $index)" class="angular-container center-flex-container"
-      ng-mouseleave="ctrl.showTooltip = false">
+      ng-mouseleave="ctrl.tooltip.show = false">
       <div class="center-flex-container targetName">
         <div class="relative-container name-static-width">
-          {{ ctrl.splitName(ctrl.parseName(x.target)) }}
+          {{ ctrl.targetParser.splitName(ctrl.targetParser.parseName(x.target)) }}
         </div>
         <div class="arrow-icon fa fa-arrow-right" aria-hidden="true" ng-class="ctrl.tiltArrow($index)"></div>
       </div>
     </div>
   </div>
+  <!-- Separate container for d3 -->
   <div class="center-flex-container flex-wrap-item layer-0" id="d3-circle-container">
   </div>
 </div>
