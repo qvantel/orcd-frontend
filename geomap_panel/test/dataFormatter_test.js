@@ -25,6 +25,57 @@ describe('DataFormatter', () => {
         });
     });
 
+    describe('When data exists and current data point is the min value', () => {
+        var data = [];
+
+        beforeEach(() => {
+            data = dataFormatter.generate([{
+                target: 'SE',
+                datapoints: [[100, 0], [300, 0], [20, 0], [10, 0]]
+            }]);
+        });
+
+        it('it should return correctly formatted data with current being the same as min', () => {
+            expect(data['SE'].cur).to.equal(10);
+            expect(data['SE'].min).to.equal(10);
+            expect(data['SE'].max).to.equal(300);
+        });
+    });
+
+    describe('When data exists and current data point is the max value', () => {
+        var data = [];
+
+        beforeEach(() => {
+            data = dataFormatter.generate([{
+                target: 'SE',
+                datapoints: [[100, 0], [244, 0], [20, 0], [300, 0]]
+            }]);
+        });
+
+        it('it should return correctly formatted data with current being the same as max', () => {
+            expect(data['SE'].cur).to.equal(300);
+            expect(data['SE'].min).to.equal(20);
+            expect(data['SE'].max).to.equal(300);
+        });
+    });
+
+    describe('When data exists but there is only one data point', () => {
+        var data = [];
+
+        beforeEach(() => {
+            data = dataFormatter.generate([{
+                target: 'SE',
+                datapoints: [[100, 12345678]]
+            }]);
+        });
+
+        it('it should return correctly formatted data with current being the same as min and max', () => {
+            expect(data['SE'].cur).to.equal(100);
+            expect(data['SE'].min).to.equal(100);
+            expect(data['SE'].max).to.equal(100);
+        });
+    });
+
     describe('When data exists but countries has not been recieved', () => {
         var data = [];
 

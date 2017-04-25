@@ -16,7 +16,7 @@ export default class DataFormatter {
     }
 
     /**
-    * Generate a readable data array for Google GeoCharts from data given by Graphite
+    * Generate a readable data array for the map from data given by Graphite
     *
     * @param {array} inputData the data from Graphite
     * @return {dictionary} returns a dictionary where the key is the country and the value is the frequency
@@ -40,7 +40,7 @@ export default class DataFormatter {
         var res = [];
         dataList.forEach((data) => {
             if (this.validateRegionCode(data.target.toUpperCase())) {
-                var countryData = this.getCountryCurMinMax(data.datapoints);
+                var countryData = this.getCountryCurMinMaxTrend(data.datapoints);
                 res[data.target] = countryData;
             }
         });
@@ -51,7 +51,12 @@ export default class DataFormatter {
         return res;
     }
 
-    getCountryCurMinMax (datapoints) {
+    /**
+    * Get the current, min and max value for the data provided.
+    * @param {array} datapoints - The array of datapoints to calculate from
+    * @return {object} - An object containing values for Current, Min, Max, Trend and an array containing all values. Undefined if datapoints is empty
+    */
+    getCountryCurMinMaxTrend (datapoints) {
         if (datapoints.length > 0) {
             var min = 0;
             var max = 0;
