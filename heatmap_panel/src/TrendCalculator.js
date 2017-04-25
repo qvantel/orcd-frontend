@@ -34,19 +34,34 @@ export default class TrendCalculator {
     var b2 = 0;
     var c = 0;
     var d = 0;
-
-    for (var i = 0; i < datapoints.length; i++) {
-      b1 += datapoints[i][0];
-      b2 += datapoints[i][1];
-      a += datapoints[i][0] * datapoints[i][1];
-      c += Math.pow(datapoints[i][1], 2);
+    var firstIndex = this.indexCalculator.getFirstPointIndex(datapoints);
+    var lastIndex = this.indexCalculator.getLatestPointIndex(datapoints);
+    if (firstIndex >= lastIndex || lastIndex <= 0) {
+      return 0;
     }
 
-    a = a * datapoints.length;
+    var timeOffset = datapoints[firstIndex][1];
+
+    for (var i = firstIndex; i <= lastIndex; i++) {
+      if (!datapoints[i][0]) {
+        return 0;
+      }
+      b1 += datapoints[i][0];
+      b2 += (datapoints[i][1] - timeOffset) / this.timeTypeMap[timeType];
+      a += datapoints[i][0] * ((datapoints[i][1] - timeOffset) / this.timeTypeMap[timeType]);
+      c += Math.pow(((datapoints[i][1] - timeOffset) / this.timeTypeMap[timeType]), 2);
+    }
+
+    a = a * (lastIndex - firstIndex);
     b = b1 * b2;
     d = Math.pow(b2, 2);
+    c = c * (lastIndex - firstIndex);
 
-    return Math.round(((a - b) / (c - d)) * 1000);
+    var slope = Math.round((a - b) / (c - d));
+    var first = (b1 - (slope * b2)) / (lastIndex - firstIndex);
+    var last = first + slope * (lastIndex - firstIndex);
+
+    return this.getPercentageTrend(first, last);
   }
 
   /** Returns a simple trend based on first and last point in interval that is not null.
