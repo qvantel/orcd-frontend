@@ -164,6 +164,11 @@ export default class D3map {
         this.updateStrokeColor();
     }
 
+    /**
+    * Selecting all countries, the countries that is NOT selected will be pushed above the ones that ARE
+    * This is because we want the selected borders to be above the ones that are not selected
+    * Because otherwise, the selected ones might get cut-off
+    */
     sortCountries () {
         d3.selectAll('.country').each(function () {
             let firstChild = this.parentNode.firstChild;
@@ -235,7 +240,6 @@ export default class D3map {
 
         if (typeof minMaxCur !== 'undefined') {
             var percent = 0;
-            var min = 0;
             var max = minMaxCur.max;
             var curr = minMaxCur.cur;
 
@@ -243,8 +247,8 @@ export default class D3map {
                 curr = minMaxCur.all[this.ctrl.timelapseHandler.getCurrent()];
             }
 
-            if (max - min !== 0) {
-                percent = (curr - min) / (max - min) * 100;
+            if (max !== 0) {
+                percent = curr / max * 100;
             }
 
             return percent;

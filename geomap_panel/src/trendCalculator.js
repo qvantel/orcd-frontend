@@ -8,6 +8,7 @@ export default class TrendCalculator {
   * Returns k for a trendline based on datapoints.
   *
   * @param {Object} datapoints - datapoints for calculating trendline.
+  * @return {number} - Percentage where 100 means 100%
   */
   getTrend (datapoints) {
     var a = 0;
@@ -16,8 +17,8 @@ export default class TrendCalculator {
     var b2 = 0;
     var c = 0;
     var d = 0;
-    var firstIndex = this.getFirstDatapointWithData(datapoints);
-    var lastIndex = this.getLastDatapointWithData(datapoints);
+    var firstIndex = 0;
+    var lastIndex = datapoints.length - 1;
     if (firstIndex >= lastIndex || lastIndex <= 0) {
       return 0;
     }
@@ -25,19 +26,22 @@ export default class TrendCalculator {
     var timeOffset = datapoints[firstIndex][1];
 
     for (var i = firstIndex; i <= lastIndex; i++) {
-      if (!datapoints[i][0]) {
-        return 0;
+      let val = datapoints[i][0];
+
+      if (!val) {
+        val = 1;
       }
-      b1 += datapoints[i][0];
+
+      b1 += val;
       b2 += (datapoints[i][1] - timeOffset) / this.ctrl.timestampLength;
-      a += datapoints[i][0] * ((datapoints[i][1] - timeOffset) / this.ctrl.timestampLength);
+      a += val * ((datapoints[i][1] - timeOffset) / this.ctrl.timestampLength);
       c += Math.pow(((datapoints[i][1] - timeOffset) / this.ctrl.timestampLength), 2);
     }
 
-    a = a * (lastIndex - firstIndex);
+    a = a * datapoints.length;
     b = b1 * b2;
     d = Math.pow(b2, 2);
-    c = c * (lastIndex - firstIndex);
+    c = c * datapoints.length;
 
     var slope = Math.round((a - b) / (c - d));
     var first = (b1 - (slope * b2)) / (lastIndex - firstIndex);
@@ -63,6 +67,7 @@ export default class TrendCalculator {
   *
   * @param {Integer} first - The first value in datapoints
   * @param {Integer} last - The last value in datapoints
+  * @returns {number} - Percentage where 100 means 100%
   */
   getPercentageTrend (first, last) {
     if (first > 0) {
@@ -70,25 +75,5 @@ export default class TrendCalculator {
     } else {
       return Math.round(((last - first) / 1) * 1000) / 10;
     }
-  }
-
-  getFirstDatapointWithData (datapoints) {
-      for (var i = 0; i < datapoints.length; i++) {
-          if (datapoints[i][0] !== null) {
-              return i;
-          }
-      }
-
-      return 0;
-  }
-
-  getLastDatapointWithData (datapoints) {
-      for (var i = datapoints.length - 1; i >= 0; i--) {
-          if (datapoints[i][0] !== null) {
-              return i;
-          }
-      }
-
-      return datapoints.length - 1;
   }
 }

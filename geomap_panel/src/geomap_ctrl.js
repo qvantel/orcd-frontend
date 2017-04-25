@@ -85,6 +85,8 @@ export default class GeoMapPanelCtrl extends MetricsPanelCtrl {
     * @param {array} datalist - list of datapoints
     */
     onDataReceived (dataList) {
+        this.updateTimestampLength();
+
         if (this.panel.useFakeData) {
             this.data = this.dataFormatter.generate(
                 this.dataGenerator.generate()
@@ -92,8 +94,6 @@ export default class GeoMapPanelCtrl extends MetricsPanelCtrl {
         } else {
             this.data = this.dataFormatter.generate(dataList);
         }
-
-        this.updateTimestampLength();
 
         this.timelapseHandler.setTimestampInterval(
             this.dataFormatter.firstTimestamp,
@@ -261,10 +261,6 @@ export default class GeoMapPanelCtrl extends MetricsPanelCtrl {
 
         sheet += '}';
         this.dynamicSheet.innerHTML = sheet;
-    }
-
-    timelapseStart () {
-        this.timelapseHandler.start();
     }
 
     updateTimestampLength () {

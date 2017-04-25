@@ -10,7 +10,6 @@ export default function link (scope, elem, attrs, ctrl) {
     // Bind the render call
     ctrl.events.on('render', function () {
         render();
-        // ctrl.renderingCompleted();
     });
 
     /**
@@ -18,7 +17,6 @@ export default function link (scope, elem, attrs, ctrl) {
     */
     function initializeMap () {
         ctrl.map = new D3map(ctrl, mapContainer);
-        //  ctrl.map = new Map(ctrl, mapContainer);
     }
 
     /**
