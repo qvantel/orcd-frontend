@@ -220,6 +220,9 @@ export default class D3map {
         if (typeof this.tooltip === undefined || typeof this.tooltipCurrentID === undefined) return;
 
         var data = this.ctrl.data[this.tooltipCurrentID.toLowerCase()];
+
+        if (typeof data === 'undefined') return;
+
         var curr = data.cur;
 
         if (this.ctrl.timelapseHandler.isAnimating) {
