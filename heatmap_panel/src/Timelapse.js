@@ -9,6 +9,7 @@ export default class Timelapse {
     this.index = 0;
     this.range = 0;
     this.step = 1;
+    this.time = 0;
     this.dataList = []; // Is updated in onRender()
     this.mInterval = undefined;
   }
@@ -33,6 +34,7 @@ export default class Timelapse {
   /** Plays the time interval */
   playTimelapse () {
     this.ctrl.circles.drawCircles(this.dataList, this.index);
+    this.time = new Date(this.dataList[0].datapoints[this.index][1]).toLocaleString();
     var context = this;
     this.index++;
 
@@ -46,6 +48,7 @@ export default class Timelapse {
         context.cancelTimelapse();
         if (context.state === 'end') {
           context.ctrl.circles.drawCircles(context.dataList, context.index);
+          context.time = new Date(context.dataList[0].datapoints[context.index][1]).toLocaleString();
           context.range = 100;
           context.state = 'pause';
         } else if (context.state === 'pause') {
@@ -53,6 +56,7 @@ export default class Timelapse {
         }
       } else {
         context.ctrl.circles.drawCircles(context.dataList, context.index);
+        context.time = new Date(context.dataList[0].datapoints[context.index][1]).toLocaleString();
         if (context.index < context.dataList[0].datapoints.length - 2) {
           context.range = context.index * context.step;
           context.index++;
@@ -99,6 +103,7 @@ export default class Timelapse {
       this.playTimelapse();
     } else {
       this.ctrl.circles.drawCircles(this.dataList, this.index);
+      this.time = new Date(this.dataList[0].datapoints[this.index][1]).toLocaleString();
     }
   }
 }

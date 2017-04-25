@@ -32,9 +32,9 @@ export default class Tooltip {
     var navbar = document.getElementsByClassName('navbar')[0];
 
     this.name = this.targetParser.splitName(this.targetParser.parseName(data.target));
-    this.value = data.datapoints[this.indexCalculator.getLatestPointIndex(data.datapoints)][0];
+    this.value = Math.round(data.datapoints[this.indexCalculator.getLatestPointIndex(data.datapoints)][0]);
     this.trend = this.ctrl.currentTrend[index].trend;
-    this.max = this.ctrl.currentMax[index];
+    this.max = Math.round(this.ctrl.currentMax[index]);
 
     this.offset.left = 0;
     this.offset.top = 0;
