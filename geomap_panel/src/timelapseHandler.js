@@ -64,15 +64,9 @@ export default class TimelapseHandler {
      * @param {number} last - Unix timestamp of the last datapoint
      * @param {string} timestampLength - The interval between the timestamps in a grafana supported string format. (1h / 1d / 1m / 20M etc.)
      */
-    setTimestampInterval (first, last, timestampLength) {
-        // Transform timestamp string into millisecond number
-        var durationSplitRegexp = /(\d+)(ms|s|m|h|d|w|M|y)/;
-        var m = timestampLength.match(durationSplitRegexp);
-        var dur = moment.duration(parseInt(m[1]), m[2]);
-        timestampLength = dur.asMilliseconds();
-
+    setTimestampInterval (first, last) {
         // In case the timestampLength is not the same as before, calculate the new current position.
-        var diff = timestampLength / this.timestampLength;
+        var diff = this.ctrl.timestampLength / this.timestampLength;
         this.current = Math.round(this.current / diff);
         this.current = this.current - Math.round((first - this.firstTimestamp) / this.timestampLength);
 
@@ -80,7 +74,7 @@ export default class TimelapseHandler {
             this.current = 0;
         }
 
-        this.timestampLength = timestampLength;
+        this.timestampLength = this.ctrl.timestampLength;
         this.firstTimestamp = first;
         this.lastTimestamp = last;
 
@@ -151,8 +145,6 @@ export default class TimelapseHandler {
     animate () {
         if (!this.isAnimating || this.isAnimatingPaused) return;
 
-        this.current += 1;
-
         // If we have reached the end of the timelapse.
         if (this.current * this.timestampLength + this.firstTimestamp >= this.lastTimestamp) {
             this.stop();
@@ -169,6 +161,8 @@ export default class TimelapseHandler {
         this.setTimestampUI(timestamp);
 
         this.ctrl.map.updateData();
+
+        this.current += 1;
 
         // Update loop
         var self = this;

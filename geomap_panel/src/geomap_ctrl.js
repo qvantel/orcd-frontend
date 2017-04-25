@@ -1,4 +1,5 @@
 import {MetricsPanelCtrl} from 'app/plugins/sdk';
+import moment from 'moment';
 import mapRenderer from './map_renderer';
 import DataFormatter from './dataFormatter';
 import DataGenerator from './dataGenerator';
@@ -40,6 +41,7 @@ export default class GeoMapPanelCtrl extends MetricsPanelCtrl {
         this.lightTheme = contextSrv.user.lightTheme
         this.disableRenderer = false;
         this.disableRefresh = false;
+        this.timestampLength = 10000;
 
         // Components
         this.panelDataHandler = new PanelDataHandler(this);
@@ -91,10 +93,11 @@ export default class GeoMapPanelCtrl extends MetricsPanelCtrl {
             this.data = this.dataFormatter.generate(dataList);
         }
 
+        this.updateTimestampLength();
+
         this.timelapseHandler.setTimestampInterval(
             this.dataFormatter.firstTimestamp,
-            this.dataFormatter.lastTimestamp,
-            this.templateHandler.getVariableCurrentValue('timespan')
+            this.dataFormatter.lastTimestamp
         );
 
         this.render();
@@ -262,6 +265,16 @@ export default class GeoMapPanelCtrl extends MetricsPanelCtrl {
 
     timelapseStart () {
         this.timelapseHandler.start();
+    }
+
+    updateTimestampLength () {
+        var timestampLength = this.templateHandler.getVariableCurrentValue('timespan')
+        var durationSplitRegexp = /(\d+)(ms|s|m|h|d|w|M|y)/;
+        var m = timestampLength.match(durationSplitRegexp);
+        var dur = moment.duration(parseInt(m[1]), m[2]);
+        timestampLength = dur.asMilliseconds();
+
+        this.timestampLength = timestampLength;
     }
 }
 

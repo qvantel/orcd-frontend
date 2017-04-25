@@ -1,3 +1,5 @@
+import TrendCalculator from './trendCalculator';
+
 /** Datapoint definition */
 const datapointDef = {
     value: 0,
@@ -13,6 +15,7 @@ export default class DataFormatter {
         this.ctrl = ctrl;
         this.firstTimestamp = undefined;
         this.lastTimestamp = undefined;
+        this.trendCalculator = new TrendCalculator(this.ctrl);
     }
 
     /**
@@ -61,7 +64,7 @@ export default class DataFormatter {
             var min = 0;
             var max = 0;
             var current = datapoints[datapoints.length - 1][datapointDef.value];
-            var trend = Math.floor(this.readTrend(datapoints) * 100);
+            var trend = this.trendCalculator.getTrend(datapoints);
             var all = [];
 
             if (current === null) {
