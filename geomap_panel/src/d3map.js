@@ -82,11 +82,6 @@ export default class D3map {
                 tooltip.html(html);
             })
             .on('mousemove', function (d) {
-                var coordinates = [0, 0];
-                coordinates = d3.mouse(this);
-                var x = coordinates[0];
-                var y = coordinates[1];
-
                 tooltip.style('left', (d3.event.pageX) + 'px')
                 .style('top', (d3.event.pageY) + 'px');
             })
