@@ -78,11 +78,11 @@ export class TemplateCtrl extends MetricsPanelCtrl {
       var arrowDir = '';
       if (trend < 0.5 && trend > -0.5 || isNaN(trend)) {
         arrowDir = 'middle';
-      } else if (trend < -0.5 && trend > -25) {
+      } else if (trend < -0.5 && trend > -50) {
         arrowDir = 'downsmall';
-      } else if (trend <= -25) {
+      } else if (trend <= -50) {
         arrowDir = 'downbig';
-      } else if (trend > 0.5 && trend < 25) {
+      } else if (trend > 0.5 && trend < 50) {
         arrowDir = 'upsmall';
       } else {
         arrowDir = 'upbig';
