@@ -1,1 +1,18 @@
 /* Stylesheet which will be used for the light Grafana theme */
+
+.background {
+    fill: #fbfbfb;
+}
+
+.d3tooltip {
+    background: #f4f5f8;
+}
+
+.timelapse-player {
+    background: #f4f5f8;
+}
+
+.timelapse-progress {
+    background: #cfcfd1;
+    border: 1px solid #6d6c6c;
+}

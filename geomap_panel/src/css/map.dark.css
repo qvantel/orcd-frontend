@@ -1,1 +1,18 @@
 /* Stylesheet which will be used for the dark Grafana theme */
+
+.background {
+    fill: #1f1d1d;
+}
+
+.d3tooltip {
+    background: #292929;
+}
+
+.timelapse-player {
+    background: #292929;
+}
+
+.timelapse-progress {
+    background: #222222;
+    border: 1px solid #444444;
+}
