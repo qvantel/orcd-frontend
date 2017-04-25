@@ -14,29 +14,14 @@ describe('DataFormatter', () => {
         beforeEach(() => {
             data = dataFormatter.generate([{
                 target: 'SE',
-                datapoints: [[100, 0]]
+                datapoints: [[100, 0], [300, 0], [20, 0], [244, 0]]
             }]);
         });
 
         it('it should return correctly formatted data', () => {
-            expect(data[1][0]).to.equal('SE');
-            expect(data[1][1]).to.equal(100);
-        });
-    });
-
-    describe('When data exists and are split', () => {
-        var data = [];
-
-        beforeEach(() => {
-            data = dataFormatter.generate([{
-                target: 'SE',
-                datapoints: [[100, 0], [40, 0]]
-            }]);
-        });
-
-        it('it should return correctly formatted data', () => {
-            expect(data[1][0]).to.equal('SE');
-            expect(data[1][1]).to.equal(140);
+            expect(data['SE'].cur).to.equal(244);
+            expect(data['SE'].min).to.equal(20);
+            expect(data['SE'].max).to.equal(300);
         });
     });
 
@@ -52,7 +37,7 @@ describe('DataFormatter', () => {
         });
 
         it('it should not return data', () => {
-            expect(data.length).to.equal(1);
+            expect(data.length).to.equal(0);
         });
     });
 
@@ -67,7 +52,7 @@ describe('DataFormatter', () => {
         });
 
         it('it should not return data for that country', () => {
-            expect(data.length).to.equal(1);
+            expect(data.length).to.equal(0);
         });
     });
 

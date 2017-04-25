@@ -40,8 +40,8 @@ describe('SelectedCountriesHandler', () => {
         });
 
         it('it should both be in the array', () => {
-            expect(selectedCountriesHandler.selectedCountries[0]).to.equal('se');
-            expect(selectedCountriesHandler.selectedCountries[1]).to.equal('de');
+            expect(selectedCountriesHandler.selectedCountries[0]).to.equal('de');
+            expect(selectedCountriesHandler.selectedCountries[1]).to.equal('se');
         });
     });
 
@@ -74,7 +74,7 @@ describe('SelectedCountriesHandler', () => {
                 }
             }
         };
-        variableSrv.addVariable = (data) => {
+        variableSrv.createVariableFromModel = (data) => {
             variableSrv.variables.push({
                 name: data.name,
                 current: data.current

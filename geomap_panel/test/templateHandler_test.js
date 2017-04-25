@@ -1,6 +1,6 @@
 import TemplateHandler from '../src/templateHandler';
 
-describe('SelectedCountriesHandler', () => {
+describe('TemplateHandler', () => {
     let ctrl;
     let variableSrv;
     let templateSrv;
@@ -28,6 +28,7 @@ describe('SelectedCountriesHandler', () => {
         });
 
         it('it should add a variable to the variablesrv with the correct information', () => {
+            console.log(templateHandler.variableSrv.variables);
             expect(templateHandler.variableSrv.variables.length).to.equal(1);
             expect(templateHandler.variableSrv.variables[0].options.length).to.equal(3);
         });
@@ -307,12 +308,12 @@ describe('SelectedCountriesHandler', () => {
                 }
             }
         };
-        variableSrv.addVariable = (data) => {
-            variableSrv.variables.push({
+        variableSrv.createVariableFromModel = (data) => {
+            return {
                 name: data.name,
                 current: data.current,
                 options: data.options
-            });
+            };
         };
 
         ctrl = {
