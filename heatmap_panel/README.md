@@ -15,7 +15,6 @@ The inner circle indicates the data that is streaming into the shape. Each circl
 
 The maximum value is based on what each product is currently showing, meaning that each entity is independent and isolated from other ones. This means that each product will be determined by using its own scale-range. The minimum value however is always 0.
 
-<<<<<<< HEAD
 You can select or deselect products by left-clicking on a specific product with your mouse. The selected products will be displayed in the top left corner, but more importantly, the selected product will be presented in the timeline graph showing the popularity of each product. When a product is selected and is displayed on the graph, the product will be colored dynamically both in the graph plugin and the heat map plugin. This helps the user to know what entities are are shown in the timeline graph when selecting products.
 
 You can also see in the top left corner options to select or deselect services. Selecting specific services will let you filter the data by services, the currently available services are Champions League Final, Free Facebook, MMS Plan Normal, SMS Plan Normal and Call Plan Normal.
