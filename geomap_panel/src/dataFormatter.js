@@ -78,10 +78,16 @@ export default class DataFormatter {
                     max = val;
                 }
 
-                all.push(datapoints[point][datapointDef.value]);
+                all.push(Math.floor(datapoints[point][datapointDef.value]));
             }
 
-            return {min: min, max: max, cur: current, trend: trend, all: all};
+            return {
+                min: Math.floor(min),
+                max: Math.floor(max),
+                cur: Math.floor(current),
+                trend: trend,
+                all: all
+            };
         }
 
         return undefined;

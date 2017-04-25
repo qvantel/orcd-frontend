@@ -74,7 +74,7 @@ export default class D3map {
 
                 var data = self.ctrl.data[d.id.toLowerCase()];
                 var html = '<div class = \'d3tooltip-title\'>' + self.ctrl.locations.countries[d.id.toUpperCase()].name + '</div>';
-                html += '<div class = \'d3tooltip-info\'><div class = \'d3tooltip-left\'>Percent: </div><div class = \'d3tooltip-right\'>' + Math.ceil(self.getCountryPercentage(d.id)) + '%</div><div class = \'d3tooltip-clear\'></div></div>';
+                html += '<div class = \'d3tooltip-info\'><div class = \'d3tooltip-left\'>Percent: </div><div class = \'d3tooltip-right\'>' + Math.floor(self.getCountryPercentage(d.id)) + '%</div><div class = \'d3tooltip-clear\'></div></div>';
                 html += '<div class = \'d3tooltip-info\'><div class = \'d3tooltip-left\'>Current: </div><div class = \'d3tooltip-right\'>' + data.cur + '</div><div class = \'d3tooltip-clear\'></div></div>';
                 html += '<div class = \'d3tooltip-info\'><div class = \'d3tooltip-left\'>Min: </div><div class = \'d3tooltip-right\'>' + data.min + '</div><div class = \'d3tooltip-clear\'></div></div>';
                 html += '<div class = \'d3tooltip-info\'><div class = \'d3tooltip-left\'>Max: </div><div class = \'d3tooltip-right\'>' + data.max + '</div><div class = \'d3tooltip-clear\'></div></div>';
