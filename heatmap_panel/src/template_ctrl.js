@@ -74,15 +74,15 @@ export class TemplateCtrl extends MetricsPanelCtrl {
       if (this.currentTrend[i]) {
         oldDir = this.currentTrend[i].arrowDir;
       }
-      var trend = this.trendCalculator.getSimpleTrend(dataList[i].datapoints, this.timeType);
+      var trend = this.trendCalculator.getTrend(dataList[i].datapoints, this.timeType);
       var arrowDir = '';
       if (trend < 0.5 && trend > -0.5 || isNaN(trend)) {
         arrowDir = 'middle';
-      } else if (trend < -0.5 && trend > -25) {
+      } else if (trend < -0.5 && trend > -50) {
         arrowDir = 'downsmall';
-      } else if (trend <= -25) {
+      } else if (trend <= -50) {
         arrowDir = 'downbig';
-      } else if (trend > 0.5 && trend < 25) {
+      } else if (trend > 0.5 && trend < 50) {
         arrowDir = 'upsmall';
       } else {
         arrowDir = 'upbig';
