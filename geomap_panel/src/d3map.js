@@ -45,6 +45,7 @@ export default class D3map {
             countryClicked();
         });
 
+
         // Define the div for the tooltip
         let tooltip = d3.select('body').append('g')
         .attr('class', 'd3tooltip')
@@ -95,7 +96,6 @@ export default class D3map {
                 .style('opacity', 0);
             })
             self.updateStrokeColor();
-            self.sortCountries();
         });
 
         var legendWidth = width * 0.4;
@@ -172,7 +172,6 @@ export default class D3map {
             });
         }
         this.updateStrokeColor();
-        this.sortCountries();
     }
 
     sortCountries () {
