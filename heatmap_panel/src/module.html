@@ -17,20 +17,13 @@
   <div id="tooltip-arrow"></div>
   Name: {{ ctrl.tooltip.name }}
   <br>
-  <div id="tooltip-value-text" ng-if="ctrl.tooltip.value">
+  <div id="tooltip-value-text">
     Value: {{ ctrl.tooltip.value }} users
     <br>
   </div>
-  <div ng-if="!ctrl.tooltip.value">
-    Value: null
-    <br>
-  </div>
-  <div ng-if="ctrl.tooltip.max">
+  <div>
     Max value: {{ ctrl.tooltip.max }} users
     <br>
-  </div>
-  <div ng-if="!ctrl.tooltip.max">
-    Max: null
   </div>
   Trend: {{ ctrl.tooltip.trend }}%
 </div>

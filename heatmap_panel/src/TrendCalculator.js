@@ -58,7 +58,9 @@ export default class TrendCalculator {
 
     var slope = (a - b) / (c - d);
     var first = (b1 - (slope * b2)) / (lastIndex - firstIndex + 1);
-    var last = first + slope * (lastIndex - firstIndex + 1);
+    var last = first + slope * (lastIndex - firstIndex);
+
+    console.log(first, last);
 
     return this.getPercentageTrend(first, last);
   }
