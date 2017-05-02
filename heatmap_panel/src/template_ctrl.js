@@ -6,7 +6,9 @@ import IndexCalculator from './IndexCalculator';
 import TargetParser from './TargetParser';
 import Timelapse from './Timelapse';
 import Tooltip from './Tooltip';
-import './css/template-panel.css!';
+import './css/heatmap.css!';
+import './css/general.css!';
+import './css/arrows.css!';
 import angular from 'angular';
 
 export class TemplateCtrl extends MetricsPanelCtrl {

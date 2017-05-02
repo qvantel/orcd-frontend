@@ -1,0 +1,35 @@
+/*------------- General stuff -------------*/
+
+.center-flex-container {
+  display: flex;
+  justify-content: center;
+}
+
+.flex-wrap-item {
+  flex-wrap: wrap;
+}
+
+.relative-container {
+  position: relative;
+  height: auto;
+  display: inline-block;
+}
+
+.targetName {
+  position: relative;
+  margin-top: 100px;
+}
+
+.layer-0 {
+  position: relative;
+  z-index: 0;
+}
+
+.layer-1 {
+  position: absolute;
+  z-index: 1;
+}
+
+.name-static-width{
+  width:80px;
+}

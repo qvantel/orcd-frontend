@@ -1,0 +1,97 @@
+table, tr, td {
+  border: 1px white;
+  padding: 10px;
+}
+
+.icon {
+  cursor: pointer;
+  font-size: 1.5em;
+  margin: 5px;
+}
+
+#circle-tooltip {
+  background-color: black;
+  border: 1px solid grey;
+  position: absolute;
+  padding: 5px;
+  border-radius: 0.4em;
+  z-index: 5;
+}
+
+#timelapse-range {
+  width: 500px;
+  height: 0px;
+  margin-bottom: 10px;
+  margin-top: 10px;
+}
+
+#tooltip-arrow {
+  position: absolute;
+  background-color: black;
+  width: 16px;
+  height: 16px;
+  transform: rotate(45deg);
+  top: -8px;
+  left: calc(50% - 8px);
+  border-bottom-right-radius: 100%;
+  border-top: 1px solid grey;
+  border-left: 1px solid grey;
+}
+
+.item {
+  margin: 0px 20px 20px 0px;
+  text-align: center;
+}
+
+input[type=range] {
+  -webkit-appearance: none;
+  margin: 10px 0;
+  width: 500px;
+}
+
+input[type=range]:focus {
+  outline: none;
+}
+
+input[type=range]::-webkit-slider-runnable-track {
+  width: 100%;
+  height: 4px;
+  cursor: pointer;
+}
+
+input[type=range]::-webkit-slider-thumb {
+ border: 1px solid;
+ height: 15px;
+ width: 15px;
+ border-radius: 50%;
+ cursor: pointer;
+ -webkit-appearance: none;
+ margin-top: -6px;
+}
+
+input[type=range]::-moz-range-track {
+  width: 100%;
+  height: 5px;
+  cursor: pointer;
+  border-radius:2.5px;
+}
+
+input[type=range]::-moz-range-thumb {
+  border: 1px solid;
+  height: 15px;
+  width: 15px;
+  border-radius: 50%;
+  cursor: pointer;
+  outline: none;
+}
+
+.angular-container {
+  background-color: none;
+  border-top-right-radius: 6em;
+  border-top-left-radius: 6em;
+  margin: 20px 20px 0px 20px;
+  width: 100px;
+  height: 140px;
+  cursor: pointer;
+  font-size: 0.9em;
+}
