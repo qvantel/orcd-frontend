@@ -28,6 +28,7 @@ export default class Circles {
   *
   * @param {Object} d - contains target and datapoints.
   * @param {Integer} i - index of d.
+  * @return {d3.scale} a d3 scale that maps values to other values depending on d and i.
   */
   getScale (d, i) {
     var max = d3.max(d.datapoints.map(function (datapoint) {
@@ -78,7 +79,7 @@ export default class Circles {
         if (pointIndex) {
           index = pointIndex;
         } else {
-          index = classContext.indexCalculator.getLatestPointIndex(d.datapoints);
+          index = d.datapoints.length - 1;
         }
 
         if (d.datapoints[index][0]) {
@@ -127,7 +128,7 @@ export default class Circles {
         if (pointIndex) {
           index = pointIndex;
         } else {
-          index = classContext.indexCalculator.getLatestPointIndex(d.datapoints);
+          index = d.datapoints.length - 1;
         }
 
         if (d.datapoints[index][0]) {
