@@ -2,6 +2,7 @@
 
 .disabled {
     color: gray;
+    cursor: not-allowed;
 }
 
 /* Styling for GeoChart country borders */
@@ -58,12 +59,34 @@ li.key {
     position: relative;
 }
 
-.timelapse {
-    width: 250px;
-
+.controls {
     position: absolute;
     top: 0;
     left: 0;
+    width: 250px;
+}
+
+.selectedCountriesControl {
+    margin-top: 10px;
+    width: 100%
+}
+
+.selectedCountriesControl .clabel {
+    width: 65%;
+    float: left;
+}
+
+.selectedCountriesControl .cbutton {
+    width: 35%;
+    float: right;
+}
+
+.selectedCountriesControl .clabel .gf-form-label {
+    text-align: center;
+}
+
+.selectedCountriesControl .cbutton .gf-form-btn {
+    width: 100%;
 }
 
 .timelapse-title {
@@ -71,14 +94,14 @@ li.key {
     font-size: 12px;
     font-weight: bold;
     text-align: center;
-    padding-top: 4px;
+    padding-bottom: 4px;
 }
 
 .timelapse-timestamp {
     width: 100%;
     font-size: 12px;
     text-align: center;
-    padding-bottom: 4px;
+    padding-top: 4px;
 }
 
 .timelapse-player {

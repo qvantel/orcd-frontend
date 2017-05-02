@@ -58,7 +58,8 @@ export default class SelectedCountriesHandler {
                 countriesOptions,
                 th.buildCurrent(this.formatQuery(countriesQuery), this.selectedCountries),
                 countriesQuery,
-                true
+                true,
+                2
             );
         }
     }
@@ -84,5 +85,13 @@ export default class SelectedCountriesHandler {
         if (typeof this.ctrl.map !== 'undefined') {
             this.ctrl.map.updateStrokeColor();
         }
+    }
+
+    selectedCountriesAmount () {
+        return this.selectedCountries.length;
+    }
+
+    clear () {
+        this.ctrl.templateHandler.deleteVariable(templateName);
     }
 }

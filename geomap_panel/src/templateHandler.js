@@ -61,7 +61,7 @@ export default class TemplateHandler {
     * @param {string} query - The query this template will produce
     * @param {bool} multi - If multiple options can be selected
     */
-    addVariable (type, name, label, options, current, query, multi) {
+    addVariable (type, name, label, options, current, query, multi, hide) {
         if (this.variableExists(name)) return;
 
         var newVar = this.variableSrv.createVariableFromModel({
@@ -71,7 +71,8 @@ export default class TemplateHandler {
             options: options,
             current: current,
             query: query,
-            multi: multi
+            multi: multi,
+            hide: hide
         });
         this.variableSrv.variables.push(newVar);
 
