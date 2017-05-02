@@ -217,7 +217,7 @@ export default class D3map {
     }
 
     updateTooltip () {
-        if (typeof this.tooltip === undefined || typeof this.tooltipCurrentID === undefined) return;
+        if (typeof this.tooltip === 'undefined' || typeof this.tooltipCurrentID === 'undefined') return;
 
         var data = this.ctrl.data[this.tooltipCurrentID.toLowerCase()];
 
