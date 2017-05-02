@@ -264,13 +264,15 @@ export default class GeoMapPanelCtrl extends MetricsPanelCtrl {
     }
 
     updateTimestampLength () {
-        var timestampLength = this.templateHandler.getVariableCurrentValue('timespan')
-        var durationSplitRegexp = /(\d+)(ms|s|m|h|d|w|M|y)/;
-        var m = timestampLength.match(durationSplitRegexp);
-        var dur = moment.duration(parseInt(m[1]), m[2]);
-        timestampLength = dur.asMilliseconds();
-
-        this.timestampLength = timestampLength;
+        if (this.templateHandler.variableExists('timespan')) {
+            var timestampLength = this.templateHandler.getVariableCurrentValue('timespan')
+            var durationSplitRegexp = /(\d+)(ms|s|m|h|d|w|M|y)/;
+            var m = timestampLength.match(durationSplitRegexp);
+            var dur = moment.duration(parseInt(m[1]), m[2]);
+            this.timestampLength = dur.asMilliseconds();
+        } else {
+            this.timestampLength = -1;
+        }
     }
 }
 
