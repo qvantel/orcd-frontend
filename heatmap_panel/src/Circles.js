@@ -76,7 +76,7 @@ export default class Circles {
       .attr('r', function (d, i) {
         var scale = classContext.getScale(d, i);
         var index = 0;
-        if (pointIndex) {
+        if (pointIndex !== undefined) {
           index = pointIndex;
         } else {
           index = d.datapoints.length - 1;
@@ -125,7 +125,7 @@ export default class Circles {
       .attr('r', function (d, i) {
         var scale = classContext.getScale(d, i);
         var index = 0;
-        if (pointIndex) {
+        if (pointIndex !== undefined) {
           index = pointIndex;
         } else {
           index = d.datapoints.length - 1;
