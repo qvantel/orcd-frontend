@@ -26,6 +26,7 @@ export default class TrendCalculator {
   *
   * @param {Object} datapoints - datapoints for calculating trendline.
   * @param {String} timeType - time setting for graphite summarize. Example: 1h or 1m
+  * @return {Integer} - the trend percentage
   */
   getTrend (datapoints, timeType) {
     var a = 0;
@@ -36,30 +37,28 @@ export default class TrendCalculator {
     var d = 0;
     var firstIndex = this.indexCalculator.getFirstPointIndex(datapoints);
     var lastIndex = this.indexCalculator.getLatestPointIndex(datapoints);
+
     if (firstIndex >= lastIndex || lastIndex <= 0) {
       return 0;
     }
 
-    var timeOffset = datapoints[firstIndex][1];
-
     for (var i = firstIndex; i <= lastIndex; i++) {
-      if (!datapoints[i][0]) {
-        return 0;
+      if (datapoints[i][0]) {
+        b1 += datapoints[i][0];
       }
-      b1 += datapoints[i][0];
-      b2 += (datapoints[i][1] - timeOffset) / this.timeTypeMap[timeType];
-      a += datapoints[i][0] * ((datapoints[i][1] - timeOffset) / this.timeTypeMap[timeType]);
-      c += Math.pow(((datapoints[i][1] - timeOffset) / this.timeTypeMap[timeType]), 2);
+      b2 += i;
+      a += datapoints[i][0] * i;
+      c += Math.pow(i, 2);
     }
 
-    a = a * (lastIndex - firstIndex);
+    a = a * (lastIndex - firstIndex + 1);
     b = b1 * b2;
     d = Math.pow(b2, 2);
-    c = c * (lastIndex - firstIndex);
+    c = c * (lastIndex - firstIndex + 1);
 
-    var slope = Math.round((a - b) / (c - d));
-    var first = (b1 - (slope * b2)) / (lastIndex - firstIndex);
-    var last = first + slope * (lastIndex - firstIndex);
+    var slope = (a - b) / (c - d);
+    var first = (b1 - (slope * b2)) / (lastIndex - firstIndex + 1);
+    var last = first + slope * (lastIndex - firstIndex + 1);
 
     return this.getPercentageTrend(first, last);
   }
