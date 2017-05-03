@@ -56,19 +56,20 @@ export default class GeoMapPanelCtrl extends MetricsPanelCtrl {
         // Bind events
         this.events.on('init-edit-mode', this.onInitEditMode.bind(this));
         this.events.on('data-received', this.onDataReceived.bind(this));
+        this.events.on('data-snapshot-load', this.onDataSnapshotLoad.bind(this));
 
         this.updateDynamicSheet();
-        this.loadLocations();
         this.subscribeToPanel();
     }
 
     /**
     * Load the locations from the json file
     */
-    loadLocations () {
+    loadLocations (callback) {
         var self = this;
         $.getJSON('public/plugins/qvantel-geomap-panel/data/locations.json').then((res) => {
             self.locations = res;
+            callback();
         });
     }
 
@@ -85,6 +86,15 @@ export default class GeoMapPanelCtrl extends MetricsPanelCtrl {
     * @param {array} datalist - list of datapoints
     */
     onDataReceived (dataList) {
+        if (typeof this.locations === 'undefined') {
+            var self = this;
+            this.loadLocations(() => {
+                self.onDataReceived(dataList);
+            });
+
+            return;
+        }
+
         this.updateTimestampLength();
 
         if (this.panel.useFakeData) {
@@ -104,6 +114,10 @@ export default class GeoMapPanelCtrl extends MetricsPanelCtrl {
         this.disableRefresh = false;
     }
 
+    onDataSnapshotLoad (snapshotData) {
+        this.onDataReceived(snapshotData);
+    }
+
     /**
     * When linked, call the exported mapRenderer function, found in map_renderer.js
     *
@@ -118,6 +132,7 @@ export default class GeoMapPanelCtrl extends MetricsPanelCtrl {
 
     render () {
         if (!this.disableRenderer) {
+            this.log(1);
             super.render();
         }
     }
@@ -268,8 +283,13 @@ export default class GeoMapPanelCtrl extends MetricsPanelCtrl {
             var timestampLength = this.templateHandler.getVariableCurrentValue('timespan')
             var durationSplitRegexp = /(\d+)(ms|s|m|h|d|w|M|y)/;
             var m = timestampLength.match(durationSplitRegexp);
-            var dur = moment.duration(parseInt(m[1]), m[2]);
-            this.timestampLength = dur.asMilliseconds();
+
+            if (m !== null) {
+                var dur = moment.duration(parseInt(m[1]), m[2]);
+                this.timestampLength = dur.asMilliseconds();
+            } else {
+                this.timestampLength = -1;
+            }
         } else {
             this.timestampLength = -1;
         }
