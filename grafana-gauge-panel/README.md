@@ -28,7 +28,8 @@ We have exported an default dashboard into cassandraHealthDashboard.json, the fi
 
 Follow these steps to import cassandraHealthDashboard.json:
 1. Clone [cassandraHealthDashboard.json](https://github.com/flygare/QvantelFrontend/blob/cassandrahealth/grafana-gauge-panel/cassandraHealthDashboard.json)
-2. Import cassandraHealthDashboard.json ![image of import](src/img/import.png)
+2. Import cassandraHealthDashboard.json
+![image of import](src/img/import.png)
 3. Define you custom metrics for each panel.
 
 ### Resource script
