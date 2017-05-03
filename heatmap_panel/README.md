@@ -3,9 +3,9 @@
 </p>
 
 ## HeatMap Panel plugin for Grafana
-This dashboard visualizes available products. This is done by utilizing two different plugins, one which we have written ourselves, called heatmap panel, and also the graph, which comes with Grafana.
+This dashboard visualizes available products. This is done by utilizing two different plugins, one which we have written ourselves, called heatmap panel, and also the [graph panel](http://docs.grafana.org/features/panels/graph/), which comes with Grafana.
 
-The heatmap panel contains functionality to visualize the products and lapse through time to see how the products have changed.This is done by using the D3 JavaScript library to render each product. The product data is retrieved from a Graphite data source.
+The heatmap panel contains functionality to visualize the products and lapse through time to see how the products have changed.This is done by using the [D3](https://d3js.org/) JavaScript library to render each product. The product data is retrieved from a Graphite data source.
 
 The graph plugin is used to show a timeline over how the popularity of selected products has evolved over time.
 
@@ -14,7 +14,7 @@ When initiating the heatmap plugin into your dashboard, if the data source is se
 
 You can select or deselect products by clicking on a specific product. The selected product will be presented in the timeline graph showing the usage over time of each product. When a product is selected and is displayed on the graph, the product will be colored dynamically both in the graph plugin and the heatmap plugin. This helps the user to know what entities are are shown in the timeline graph when selecting products.
 
-In the top left corner are two different menus located. The category menu is used to show only one category of products or all categories. The timetype menu is used to change how the values of the products is summarized over time. This will changes how many points that the timeline will have in the graph and how many steps the time-lapse will take. These menus are created with the help of templates, see **Templating** for more information.
+In the top left corner are two different menus located. The category menu is used to show only one category of products or all categories. The timetype menu is used to change how the values of the products is summarized over time. This will changes how many points that the timeline will have in the graph and how many steps the time-lapse will take. These menus are created with the help of templates, see [Templating](#templating) for more information.
 
 #### Trends
 Each product has an arrow beside the product name. This is representing the current trend of the product. The trend is calculated by using  [simple linear regression](https://en.wikipedia.org/wiki/Simple_linear_regression)
