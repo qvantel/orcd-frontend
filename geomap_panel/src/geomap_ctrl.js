@@ -91,27 +91,25 @@ export default class GeoMapPanelCtrl extends MetricsPanelCtrl {
             this.loadLocations(() => {
                 self.onDataReceived(dataList);
             });
-
-            return;
-        }
-
-        this.updateTimestampLength();
-
-        if (this.panel.useFakeData) {
-            this.data = this.dataFormatter.generate(
-                this.dataGenerator.generate()
-            );
         } else {
-            this.data = this.dataFormatter.generate(dataList);
+            this.updateTimestampLength();
+
+            if (this.panel.useFakeData) {
+                this.data = this.dataFormatter.generate(
+                    this.dataGenerator.generate()
+                );
+            } else {
+                this.data = this.dataFormatter.generate(dataList);
+            }
+
+            this.timelapseHandler.setTimestampInterval(
+                this.dataFormatter.firstTimestamp,
+                this.dataFormatter.lastTimestamp
+            );
+
+            this.render();
+            this.disableRefresh = false;
         }
-
-        this.timelapseHandler.setTimestampInterval(
-            this.dataFormatter.firstTimestamp,
-            this.dataFormatter.lastTimestamp
-        );
-
-        this.render();
-        this.disableRefresh = false;
     }
 
     onDataSnapshotLoad (snapshotData) {
