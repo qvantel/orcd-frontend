@@ -10,6 +10,12 @@ Predefined dashboard currently displays:
 
 ![image of import](src/img/dashboard.png)
 
+![image of dashboardCPU](src/img/dashboardCPU.png)
+
+![image of dashboardDiskSpace](src/img/dashboardDiskGauge.png)
+
+![image of dashboardCDR](src/img/dashboardCDR.png)
+
 ## Plugins
 Cassandra Health Metrics dashboard uses 2 existing plugins.
 Usage over time are displayed in [Graphby Grafana Labs](https://grafana.com/plugins/graph) while current value of data displays in [D3 Gaugeby Brian Gann](https://github.com/briangann/grafana-gauge-panel)
