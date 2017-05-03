@@ -10,8 +10,7 @@ table, tr, td {
 }
 
 #circle-tooltip {
-  background-color: black;
-  border: 1px solid grey;
+  border: 1px solid;
   position: absolute;
   padding: 5px;
   border-radius: 0.4em;

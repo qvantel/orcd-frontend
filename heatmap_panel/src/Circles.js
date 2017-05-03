@@ -70,7 +70,7 @@ export default class Circles {
       .attr('height', this.circleWidth + 60)
       .append('circle') // Append colored circles.
       .classed('circle', true)
-      .attr('fill', 'white')
+      .attr('fill', this.ctrl.lightTheme ? 'lightgrey' : 'white')
       .attr('cy', (this.circleWidth / 2) + 20)
       .attr('cx', (this.circleWidth / 2) + 20)
       .attr('r', function (d, i) {
@@ -98,7 +98,7 @@ export default class Circles {
       .attr('r', this.circleWidth / 2)
       .attr('fill-opacity', 0)
       .attr('stroke-width', 2)
-      .attr('stroke', 'grey');
+      .attr('stroke', this.ctrl.lightTheme ? 'grey' : 'grey');
 
     // Update size (and color) of already existing circles.
     this.updateCircleSize(dataList, '.circle', pointIndex);

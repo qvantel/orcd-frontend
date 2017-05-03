@@ -28,3 +28,13 @@ input[type=range]::-moz-range-thumb {
 .angular-container {
   color: grey;
 }
+
+#circle-tooltip {
+  background-color: black;
+  border-color: grey;
+}
+
+#tooltip-arrow {
+  background-color: black;
+  border-color: grey;
+}
