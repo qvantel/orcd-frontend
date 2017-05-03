@@ -101,6 +101,20 @@ export class TemplateCtrl extends MetricsPanelCtrl {
     this.circles.drawCircles(this.currentDataList);
     this.timelapse.dataList = this.currentDataList.slice();
     this.timelapse.step = 100 / (this.timelapse.dataList[0].datapoints.length - 1);
+
+    for (let i = 0; i < this.currentDataList.length; i++) {
+      this.circles.setCircleColor(this.currentDataList, i, '.circle', 'white');
+    }
+
+    for (let i = 0; i < this.selected.length; i++) {
+      let k = 0;
+
+      while (this.selected[i] !== this.targetParser.parseName(this.currentDataList[k].target) && this.currentDataList[k + 1] !== undefined) {
+        k++;
+      }
+
+      this.circles.setCircleColor(this.currentDataList, k, '.circle', this.panel.colors[i]);
+    }
   }
 
   // Handles when a circle is clicked. Sets clicked circle as selected and changes it's color based on grafanas graph panel.
@@ -115,10 +129,6 @@ export class TemplateCtrl extends MetricsPanelCtrl {
         return k !== index;
       })
       this.circles.setCircleColor(this.currentDataList, index, '.circle', 'white'); // set white
-
-      for (var i = 0; i < this.selected.length; i++) {
-        this.circles.setCircleColor(this.currentDataList, this.selectedMap[i], '.circle', this.panel.colors[i]);
-      }
     } else {
       var n = 0;
       while (index > this.selectedMap[n]) {
@@ -127,10 +137,6 @@ export class TemplateCtrl extends MetricsPanelCtrl {
 
       this.selected = this.selected.slice(0, n).concat(serviceName).concat(this.selected.slice(n));
       this.selectedMap = this.selectedMap.slice(0, n).concat(index).concat(this.selectedMap.slice(n));
-
-      for (var k = 0; k < this.selected.length; k++) {
-        this.circles.setCircleColor(this.currentDataList, this.selectedMap[k], '.circle', this.panel.colors[k]);
-      }
     }
 
     this.productSelector.buildSimple('products', this.selected); // Add product to grafana template variable.
