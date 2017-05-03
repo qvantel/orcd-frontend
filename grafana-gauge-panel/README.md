@@ -22,9 +22,18 @@ Example 2 metrics:
 When one 1 metrics is defined the gauge will automatically set the value 100 as it's maximum value. This is used when displaying CPU usage where the maximum value of a CPU is 100%.
 
 ## Installation
+
+### Dashboard
 We have exported an default dashboard into cassandraHealthDashboard.json, the file provides you with an existing dashboard.
+
 Follow these steps to import cassandraHealthDashboard.json:
 1. Clone [cassandraHealthDashboard.json](https://github.com/flygare/QvantelFrontend/blob/cassandrahealth/grafana-gauge-panel/cassandraHealthDashboard.json)
 2. Import cassandraHealthDashboard.json [text](src/img/import.png)
+3. Define you custom metrics for each panel.
 
-## Where data come from???????
+### Resource script
+To reach and push data dynamically every second to Grafana we have created a script called [resourceUsageCassandra.sh](https://github.com/flygare/QvantelFrontend/blob/cassandrahealth/grafana-gauge-panel/resourceUsageCassandra.sh). The script pushed data into Cassandra.
+
+Follow these steps to run resourceUsageCassandra.sh
+1. Clone [resourceUsageCassandra.sh](https://github.com/flygare/QvantelFrontend/blob/cassandrahealth/grafana-gauge-panel/resourceUsageCassandra.sh)
+2. Run script > bash resourceUsageCassandra.sh
