@@ -1,6 +1,10 @@
-![Heatmap dashboard](img/heatmap-dashboard.png)
-
 ## HeatMap Dashboard for Grafana
+**Dark theme:**
+![Heatmap dashboard (dark theme)](images/heatmap-dashboard-dark.png)
+
+**Light theme:**
+![Heatmap dashboard (light theme)](images/heatmap-dashboard-light.png)
+
 This dashboard visualizes available products. This is done by utilizing two different plugins, one which we have written ourselves, called heatmap panel, and also the [graph panel](http://docs.grafana.org/features/panels/graph/), which comes with Grafana.
 
 The heatmap panel contains functionality to visualize the products and lapse through time to see how the products have changed.This is done by using the [D3](https://d3js.org/) JavaScript library to render each product. The product data is retrieved from a Graphite data source.
@@ -41,12 +45,12 @@ In order to setup the templates, first need to find the **cogwheel** in the top 
 #### Timetype
 Add timetype as **Name** and **Label**, and input the **Type** custom. In **Custom Options** add the different times that can be used. In our case *1d,1h,1m,10s*.
 
-![Adding timetype template](img/timetype-template.png)
+![Adding timetype template](images/timetype-template.png)
 
 #### Category
 Add category as **Name** and **Label** and set **Type** to query. This will give reveal **Query Options**. Add the data source and point the query towards the placement of the categories in the data source. Also select Multi-value under the **Selection Options**.
 
-![Adding category template](img/category-template.png)
+![Adding category template](images/category-template.png)
 
 ### Metrics
 To get the plugin working, a data source is required. This is done by setting up a data source. The data source is needed to fetch current values from available products to display each product a representative way.
