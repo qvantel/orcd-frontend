@@ -138,7 +138,7 @@ export default class D3map {
         }
 
         function countryClicked (d, debug) {
-            if (self.ctrl.inputHandler.isCtrlDown() || self.ctrl.inputHandler.isShiftDown() || debug) {
+            if (!self.ctrl.dashboard.snapshot && (self.ctrl.inputHandler.isCtrlDown() || self.ctrl.inputHandler.isShiftDown() || debug)) {
                 self.ctrl.selectedCountriesHandler.onCountryClicked(d.id);
             } else if (self.ctrl.panel.clickToZoomEnabled) {
                 if (typeof d !== 'undefined' && self.country !== d) {

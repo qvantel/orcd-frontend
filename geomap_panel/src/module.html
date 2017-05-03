@@ -39,10 +39,10 @@
 
         <div class = "selectedCountriesControl gf-form-inline">
             <div class = "clabel">
-                <label class = "gf-form-label"><span class = "template-variable">{{ctrl.selectedCountriesHandler.selectedCountriesAmount()}}</span> selected countries</label>
+                <label class = "gf-form-label"><span class = "template-variable">{{ctrl.selectedCountriesHandler.selectedCountriesAmount()}}</span> selected countr{{ctrl.selectedCountriesHandler.selectedCountriesAmount() !== 1 ? 'ies' : 'y'}}</label>
             </div>
             <div class = "cbutton">
-                <button class="btn gf-form-btn btn-secondary" ng-disabled = "ctrl.selectedCountriesHandler.selectedCountriesAmount() === 0" ng-click="ctrl.selectedCountriesHandler.clear()">
+                <button class="btn gf-form-btn btn-secondary" ng-disabled = "ctrl.selectedCountriesHandler.selectedCountriesAmount() === 0 || ctrl.dashboard.snapshot" ng-click="ctrl.selectedCountriesHandler.clear()">
                     <i class="fa fa-undo"></i>
                     &nbsp;Clear
                 </button>
