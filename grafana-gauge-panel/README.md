@@ -9,11 +9,8 @@ Predefined dashboard currently displays:
 ## Screenshots
 
 ![image of import](src/img/dashboard.png)
-
 ![image of dashboardCPU](src/img/dashboardCPU.png)
-
 ![image of dashboardDiskSpace](src/img/dashboardDiskGauge.png)
-
 ![image of dashboardCDR](src/img/dashboardCDR.png)
 
 ## Plugins
