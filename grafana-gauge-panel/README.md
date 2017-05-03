@@ -10,8 +10,9 @@ Predefined dashboard currently displays:
 
 ![image of import](src/img/dashboard.png)
 ![image of dashboardCPU](src/img/dashboardCPU.png)
-![image of dashboardDiskSpace](src/img/dashboardDiskGauge.png)
 ![image of dashboardCDR](src/img/dashboardCDR.png)
+![image of dashboardDiskSpace](src/img/dashboardDiskGauge.png)
+
 
 ## Plugins
 Cassandra Health Metrics dashboard uses 2 existing plugins.
