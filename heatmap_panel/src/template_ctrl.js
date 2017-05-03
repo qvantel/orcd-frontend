@@ -6,11 +6,13 @@ import IndexCalculator from './IndexCalculator';
 import TargetParser from './TargetParser';
 import Timelapse from './Timelapse';
 import Tooltip from './Tooltip';
-import './css/template-panel.css!';
+import './css/heatmap.css!';
+import './css/general.css!';
+import './css/arrows.css!';
 import angular from 'angular';
 
 export class TemplateCtrl extends MetricsPanelCtrl {
-  constructor ($scope, $injector, $rootScope, templateSrv, variableSrv, $interval) {
+  constructor ($scope, $injector, $rootScope, contextSrv, templateSrv, variableSrv, $interval) {
     super($scope, $injector);
     this.$rootScope = $rootScope;
 
@@ -28,6 +30,7 @@ export class TemplateCtrl extends MetricsPanelCtrl {
       }
     }
 
+    this.lightTheme = contextSrv.user.lightTheme;
     this.productSelector = new TemplateHandler(this, templateSrv, variableSrv);
     this.productSelector.buildSimple('products', []);
     this.timelapse = new Timelapse(this, $interval);
@@ -114,7 +117,7 @@ export class TemplateCtrl extends MetricsPanelCtrl {
       this.selectedMap = this.selectedMap.filter(function (k) {
         return k !== index;
       })
-      this.circles.setCircleColor(this.currentDataList, index, '.circle', 'white'); // set white
+      this.circles.setCircleColor(this.currentDataList, index, '.circle', this.lightTheme ? 'lightgrey' : 'white'); // set white
 
       for (var i = 0; i < this.selected.length; i++) {
         this.circles.setCircleColor(this.currentDataList, this.selectedMap[i], '.circle', this.panel.colors[i]);
