@@ -8,6 +8,8 @@ Predefined dashboard currently displays:
 
 ## Screenshots
 
+![image of import](src/img/dashboard.png)
+
 ## Plugins
 Cassandra Health Metrics dashboard uses 2 existing plugins.
 Usage over time are displayed in [Graphby Grafana Labs](https://grafana.com/plugins/graph) while current value of data displays in [D3 Gaugeby Brian Gann](https://github.com/briangann/grafana-gauge-panel)
@@ -31,6 +33,7 @@ Follow these steps to import cassandraHealthDashboard.json:
 2. Import cassandraHealthDashboard.json
 
 ![image of import](src/img/import.png)
+
 3. Define you custom metrics for each panel.
 
 ### Resource script
