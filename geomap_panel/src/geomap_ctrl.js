@@ -152,22 +152,13 @@ export default class GeoMapPanelCtrl extends MetricsPanelCtrl {
     */
     subscribeToPanel () {
         var self = this;
-        this.panelDataHandler.subscribe('showLegend', () => {
-            self.optionShowLegendUpdated();
-        });
         this.panelDataHandler.subscribe(['animate', 'animationDuration'], () => {
             self.optionAnimationUpdated();
         });
-        this.panelDataHandler.subscribe('showTrends', () => {
-            self.optionShowTrendsUpdated();
-        });
-        this.panelDataHandler.subscribe('colorAmount', () => {
-            self.optionColorAmountUpdated();
-        });
-        this.panelDataHandler.subscribe('colors', () => {
-            self.optionColorsUpdated();
-        });
         this.panelDataHandler.subscribe('useFakeData', () => {
+            self.refresh();
+        });
+        this.panelDataHandler.subscribe('individualMaxValue', () => {
             self.refresh();
         });
     }
