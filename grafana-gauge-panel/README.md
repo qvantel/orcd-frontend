@@ -45,4 +45,4 @@ To reach and push data dynamically every second to Grafana we have created a scr
 
 Follow these steps to run resourceUsageCassandra.sh
 1. Clone [resourceUsageCassandra.sh](https://github.com/flygare/QvantelFrontend/blob/cassandrahealth/grafana-gauge-panel/resourceUsageCassandra.sh)
-2. Run script > bash resourceUsageCassandra.sh
+2. Run script `bash resourceUsageCassandra.sh`
