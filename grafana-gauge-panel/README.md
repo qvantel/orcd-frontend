@@ -17,9 +17,9 @@ Usage over time are displayed in [Graphby Grafana Labs](https://grafana.com/plug
 
 Example 2 metrics:
 - server->disk->usage
-- server->disk-total - Will represent maximum value of gauge.
+- server->disk->total - Will represent maximum value of gauge.
 
-When one 1 metrics is defined the gauge will automatically set the value 100 as it's maximum value. This is used when displaying CPU usage where the maximum value of a CPU is 100%.
+When only 1 metric is defined the gauge will automatically set the value 100 as it's maximum value. This is used when displaying CPU usage where the maximum value of a CPU is 100%.
 
 ## Installation
 
@@ -28,11 +28,11 @@ We have exported an default dashboard into cassandraHealthDashboard.json, the fi
 
 Follow these steps to import cassandraHealthDashboard.json:
 1. Clone [cassandraHealthDashboard.json](https://github.com/flygare/QvantelFrontend/blob/cassandrahealth/grafana-gauge-panel/cassandraHealthDashboard.json)
-2. Import cassandraHealthDashboard.json [text](src/img/import.png)
+2. Import cassandraHealthDashboard.json [text](https://github.com/flygare/QvantelFrontend/blob/cassandrahealth/grafana-gauge-panel/src/img/import.png?raw=true)https://github.com/flygare/QvantelFrontend/blob/cassandrahealth/grafana-gauge-panel/src/img/import.png?raw=true
 3. Define you custom metrics for each panel.
 
 ### Resource script
-To reach and push data dynamically every second to Grafana we have created a script called [resourceUsageCassandra.sh](https://github.com/flygare/QvantelFrontend/blob/cassandrahealth/grafana-gauge-panel/resourceUsageCassandra.sh). The script pushed data into Cassandra.
+To reach and push data dynamically every second to Grafana we have created a script called [resourceUsageCassandra.sh](https://github.com/flygare/QvantelFrontend/blob/cassandrahealth/grafana-gauge-panel/resourceUsageCassandra.sh). The script pushes data into Cassandra.
 
 Follow these steps to run resourceUsageCassandra.sh
 1. Clone [resourceUsageCassandra.sh](https://github.com/flygare/QvantelFrontend/blob/cassandrahealth/grafana-gauge-panel/resourceUsageCassandra.sh)
