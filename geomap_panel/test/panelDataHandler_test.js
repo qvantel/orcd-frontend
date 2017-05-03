@@ -15,7 +15,7 @@ describe('PanelDataHandler', () => {
             expect(defaults.showBreadcrumbs).to.equal(true);
             expect(defaults.clickToZoomEnabled).to.equal(true);
             expect(defaults.animate).to.equal(true);
-            expect(defaults.animationDuration).to.equal(2);
+            expect(defaults.animationDuration).to.equal(0.5);
             expect(defaults.colorAmount).to.equal(1);
             expect(defaults.colors[0]).to.equal('#6699cc');
             expect(defaults.breadcrumbs[0]).to.equal('World');

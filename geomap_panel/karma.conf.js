@@ -7,9 +7,7 @@ module.exports = function (config) {
     frameworks: ['browserify', 'chai', 'mocha'],
 
     files: [
-      'https://www.gstatic.com/charts/loader.js',
       'https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js',
-      'src/map.js',
       'src/utilities.js',
       'src/dataFormatter.js',
       'src/zoomHandler.js',
@@ -21,7 +19,6 @@ module.exports = function (config) {
     ],
 
     preprocessors: {
-      'src/map.js': ['browserify'],
       'src/utilities.js': ['browserify'],
       'src/dataFormatter.js': ['browserify'],
       'src/zoomHandler.js': ['browserify'],

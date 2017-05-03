@@ -14,7 +14,7 @@ module.exports = function(grunt) {
       src_to_dist: {
         cwd: 'src',
         expand: true,
-        src: ['**/*', '!**/*.js', '!**/*.scss'],
+        src: ['**/*', '**/*.js', '!**/*.scss'],
         dest: 'dist'
       },
       pluginDef: {
@@ -54,4 +54,8 @@ module.exports = function(grunt) {
 
   });
   grunt.registerTask('default', ['clean', 'copy:src_to_dist', 'copy:pluginDef', 'babel']);
+  var sys = require('sys')
+var exec = require('child_process').exec;
+
+function puts(error, stdout, stderr) { sys.puts(stdout) } exec("docker restart grafana_dev", puts);
 };

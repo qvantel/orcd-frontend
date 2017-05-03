@@ -64,7 +64,7 @@ export default class TemplateHandler {
     addVariable (type, name, label, options, current, query, multi) {
         if (this.variableExists(name)) return;
 
-        this.variableSrv.addVariable({
+        var newVar = this.variableSrv.createVariableFromModel({
             type: type,
             name: name,
             label: label,
@@ -73,6 +73,7 @@ export default class TemplateHandler {
             query: query,
             multi: multi
         });
+        this.variableSrv.variables.push(newVar);
 
         this.variableUpdated();
     }

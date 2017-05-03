@@ -1,18 +1,51 @@
 <!-- Get the GeoChart map service -->
-<script type = "text/javascript" src = "https://www.gstatic.com/charts/loader.js"></script>
 
-<!-- This div will hold the content of the GeoChart map -->
-<div class = "map-holder">
-    <div id = "map" class = "map"></div>
-
-    <!-- Render breadcrumbs -->
-    <div id = "breadcrumbs" class = "breadcrumbs" ng-if="ctrl.panel.showBreadcrumbs">
-        <div ng-repeat = "n in ctrl.breadcrumbs track by $index">
-            <div ng-if="!$last">
-                <a href = "#" ng-click = "ctrl.breadcrumbClicked($index)">{{n}}</a>&nbsp;>&nbsp;
+<div id = "map" class = "map">
+    <div class = "controls">
+        <div class = "timelapse">
+            <div class = "timelapse-title">
+                Timelapse <span ng-if = "!ctrl.timelapseHandler.isAnimating">- LIVE <i class="fa fa-circle timelapse-live" aria-hidden="true"></i></span>
             </div>
-            <div ng-if="$last">
-                {{n}}
+            <div class = "timelapse-player">
+                <div class = "timelapse-action">
+                    <div ng-if = "!ctrl.timelapseHandler.isAnimating || ctrl.timelapseHandler.isAnimatingPaused">
+                        <div ng-if = "ctrl.timelapseHandler.isTimelapseAvailable()">
+                            <a href = "#" ng-click = "ctrl.timelapseHandler.start()"><i class="fa fa-play" aria-hidden="true"></i></a>
+                        </div>
+                        <div ng-if = "!ctrl.timelapseHandler.isTimelapseAvailable()">
+                            <i class="fa fa-play disabled" aria-hidden="true"></i>
+                        </div>
+                    </div>
+                    <div ng-if = "ctrl.timelapseHandler.isAnimating && !ctrl.timelapseHandler.isAnimatingPaused">
+                        <a href = "#" ng-click = "ctrl.timelapseHandler.pause()"><i class="fa fa-pause" aria-hidden="true"></i></a>
+                    </div>
+                </div>
+                <div class = "timelapse-action">
+                    <div ng-if = "ctrl.timelapseHandler.isAnimating">
+                        <a href = "#" ng-click = "ctrl.timelapseHandler.stop()"><i class="fa fa-stop" aria-hidden="true"></i></a>
+                    </div>
+                    <div ng-if = "!ctrl.timelapseHandler.isAnimating">
+                        <i class="fa fa-stop disabled" aria-hidden="true"></i>
+                    </div>
+                </div>
+                <div class = "timelapse-progress-wrapper">
+                    <div id = "timelapse-progress" ng-mousedown="ctrl.timelapseHandler.startDrag()" class = "timelapse-progress">
+                        <div id = "timelapse-progress-bar" class = "timelapse-progress-bar"></div>
+                    </div>
+                </div>
+            </div>
+            <div id = "timelapse-timestamp" class = "timelapse-timestamp"></div>
+        </div>
+
+        <div class = "selectedCountriesControl gf-form-inline">
+            <div class = "clabel">
+                <label class = "gf-form-label"><span class = "template-variable">{{ctrl.selectedCountriesHandler.selectedCountriesAmount()}}</span> selected countries</label>
+            </div>
+            <div class = "cbutton">
+                <button class="btn gf-form-btn btn-secondary" ng-disabled = "ctrl.selectedCountriesHandler.selectedCountriesAmount() === 0" ng-click="ctrl.selectedCountriesHandler.clear()">
+                    <i class="fa fa-undo"></i>
+                    &nbsp;Clear
+                </button>
             </div>
         </div>
     </div>

@@ -1,0 +1,40 @@
+/*Arrows color*/
+.arrow-icon {
+  color: white;
+}
+
+.icon {
+  color: white;
+}
+
+input[type=range]::-webkit-slider-runnable-track {
+  background: grey;
+}
+
+input[type=range]::-webkit-slider-thumb {
+ border-color: black;
+ background: white;
+}
+
+input[type=range]::-moz-range-track {
+  background: grey;
+}
+
+input[type=range]::-moz-range-thumb {
+  border-color: black;
+  background: #FFF;
+}
+
+.angular-container {
+  color: grey;
+}
+
+#circle-tooltip {
+  background-color: black;
+  border-color: grey;
+}
+
+#tooltip-arrow {
+  background-color: black;
+  border-color: grey;
+}

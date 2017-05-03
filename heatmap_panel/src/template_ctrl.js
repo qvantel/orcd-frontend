@@ -3,18 +3,20 @@ import Circles from './Circles';
 import TrendCalculator from './TrendCalculator';
 import TemplateHandler from './templateHandler';
 import IndexCalculator from './IndexCalculator';
-import './css/template-panel.css!';
+import TargetParser from './TargetParser';
+import Timelapse from './Timelapse';
+import Tooltip from './Tooltip';
+import './css/heatmap.css!';
+import './css/general.css!';
+import './css/arrows.css!';
 import angular from 'angular';
 
 export class TemplateCtrl extends MetricsPanelCtrl {
-  constructor ($scope, $injector, $rootScope, templateSrv, variableSrv, $interval) {
+  constructor ($scope, $injector, $rootScope, contextSrv, templateSrv, variableSrv, $interval) {
     super($scope, $injector);
     this.$rootScope = $rootScope;
-    this.$interval = $interval;
 
-    this.templateHandler = new TemplateHandler(this, templateSrv, variableSrv);
-    this.templateHandler.buildSimple('products', []);
-
+    // These can be changed using grafana's options. Not yet implemented.
     var panelDefaults = {
       circleWidth: 100,
       min: 0,
@@ -28,31 +30,18 @@ export class TemplateCtrl extends MetricsPanelCtrl {
       }
     }
 
+    this.lightTheme = contextSrv.user.lightTheme;
+    this.productSelector = new TemplateHandler(this, templateSrv, variableSrv);
+    this.productSelector.buildSimple('products', []);
+    this.timelapse = new Timelapse(this, $interval);
+    this.tooltip = new Tooltip(this);
     this.circles = new Circles(this);
     this.trendCalculator = new TrendCalculator();
+    this.targetParser = new TargetParser();
     this.currentTrend = [];
     this.selected = [];
     this.timeType = 's';
     this.currentMax = [];
-    this.timelapse = {
-      'state': 'stop',
-      'index': 0,
-      'range': 0,
-      'step': 1,
-      'dataList': []
-    }
-
-    this.showTooltip = false;
-    this.tooltip = {
-      'name': '',
-      'value': 0,
-      'trend': 0,
-      'max': 6000,
-      'offset': {
-        'top': 0,
-        'left': 0
-      }
-    }
     this.selectedMap = [];
     this.testCounter = 0;
     this.indexCalculator = new IndexCalculator();
@@ -80,22 +69,23 @@ export class TemplateCtrl extends MetricsPanelCtrl {
     }
   }
 
+  // Calculates trend and gets information about arrow-directions.
   calculateTrend (dataList) {
-    this.timeType = this.parseTimeType(dataList[0].target);
+    this.timeType = this.targetParser.parseTimeType(dataList[0].target);
     for (var i = 0; i < dataList.length; i++) {
       var oldDir = 'middle';
       if (this.currentTrend[i]) {
         oldDir = this.currentTrend[i].arrowDir;
       }
-      var trend = this.trendCalculator.getSimpleTrend(dataList[i].datapoints, this.timeType);
+      var trend = this.trendCalculator.getTrend(dataList[i].datapoints, this.timeType);
       var arrowDir = '';
       if (trend < 0.5 && trend > -0.5 || isNaN(trend)) {
         arrowDir = 'middle';
-      } else if (trend < 0 && trend > -25) {
+      } else if (trend < -0.5 && trend > -50) {
         arrowDir = 'downsmall';
-      } else if (trend <= -25) {
+      } else if (trend <= -50) {
         arrowDir = 'downbig';
-      } else if (trend > 0 && trend < 25) {
+      } else if (trend > 0.5 && trend < 50) {
         arrowDir = 'upsmall';
       } else {
         arrowDir = 'upbig';
@@ -109,26 +99,17 @@ export class TemplateCtrl extends MetricsPanelCtrl {
     }
   }
 
+  // Renders circles and copies timelapse data.
   onRender () {
     this.circles.drawCircles(this.currentDataList);
     this.timelapse.dataList = this.currentDataList.slice();
     this.timelapse.step = 100 / (this.timelapse.dataList[0].datapoints.length - 1);
   }
 
-  parseName (target) {
-    return target.replace(/.*[.]([\w]*[-:]?[\w]*),.*/i, '$1');
-  }
-
-  splitName (name) {
-    return name.replace(/([a-z])([A-Z])/g, '$1 $2').replace(/([A-Z])([A-Z])([a-z])/g, '$1 $2$3').replace(/([a-z])([0-9])/g, '$1 $2');
-  }
-
-  parseTimeType (target) {
-    return target.replace(/.*,\s"\d(\w+)",.*/, '$1')
-  }
-
+  // Handles when a circle is clicked. Sets clicked circle as selected and changes it's color based on grafanas graph panel.
   handleCircleClick (data, index) {
-    var serviceName = this.parseName(data.target);
+    var serviceName = this.targetParser.parseName(data.target);
+
     if (this.selected.includes(serviceName)) { // If service is in selected
       this.selected = this.selected.filter(function (name) {
         return name !== serviceName;
@@ -136,160 +117,58 @@ export class TemplateCtrl extends MetricsPanelCtrl {
       this.selectedMap = this.selectedMap.filter(function (k) {
         return k !== index;
       })
-      this.circles.setCircleColor(this.currentDataList, index, '.circle', 'white'); // set white
+      this.circles.setCircleColor(this.currentDataList, index, '.circle', this.lightTheme ? 'lightgrey' : 'white'); // set white
 
       for (var i = 0; i < this.selected.length; i++) {
         this.circles.setCircleColor(this.currentDataList, this.selectedMap[i], '.circle', this.panel.colors[i]);
       }
     } else {
       var n = 0;
-      while (serviceName > this.selected[n]) {
+      while (index > this.selectedMap[n]) {
         n++;
       }
 
       this.selected = this.selected.slice(0, n).concat(serviceName).concat(this.selected.slice(n));
       this.selectedMap = this.selectedMap.slice(0, n).concat(index).concat(this.selectedMap.slice(n));
 
-      // this.circles.setCircleColor(this.currentDataList, index, '.circle', this.panel.colors[n]); // set random color
       for (var k = 0; k < this.selected.length; k++) {
         this.circles.setCircleColor(this.currentDataList, this.selectedMap[k], '.circle', this.panel.colors[k]);
       }
     }
 
-    this.templateHandler.buildSimple('products', this.selected);
+    this.productSelector.buildSimple('products', this.selected); // Add product to grafana template variable.
   }
 
   handleMouseEnter (data, index, mEvent) { // Change this
-    var submenus = document.getElementsByClassName('submenu-controls');
-    var panelRows = document.getElementsByClassName('panels-wrapper');
-    var navbar = document.getElementsByClassName('navbar')[0];
-
-    this.tooltip.name = this.splitName(this.parseName(data.target));
-    this.tooltip.value = data.datapoints[this.indexCalculator.getLatestPointIndex(data.datapoints)][0];
-    this.tooltip.trend = this.currentTrend[index].trend;
-    this.tooltip.max = this.currentMax[index];
-
-    this.tooltip.offset.left = 0;
-    this.tooltip.offset.top = 0;
-
-    for (let i = 0; i < submenus.length; i++) {
-      this.tooltip.offset.top += submenus[i].offsetHeight;
-    }
-
-    var i = 0;
-    while (i < panelRows.length && (this.tooltip.offset.top + panelRows[i].offsetHeight + navbar.offsetHeight + 50) < mEvent.clientY) {
-      this.tooltip.offset.top += panelRows[i].offsetHeight;
-      i++;
-    }
-
-    var panelContainers = panelRows[i].getElementsByClassName('panel-container');
-    var k = 0;
-
-    while (k < panelContainers.length && (this.tooltip.offset.left + panelContainers[k].offsetWidth + navbar.offsetWidth + 50) < mEvent.clientX) {
-      this.tooltip.offset.left += panelContainers[k].offsetWidth;
-      k++;
-    }
-
-    this.showTooltip = true;
+    this.tooltip.updateTooltip(data, index, mEvent.clientX, mEvent.clientY);
   }
 
   handleMouseOver (mEvent) {
-    var tooltip = document.getElementById('circle-tooltip');
-
-    tooltip.style.top = mEvent.clientY - this.tooltip.offset.top + 'px';
-    tooltip.style.left = mEvent.clientX - this.tooltip.offset.left - tooltip.offsetWidth / 2 - 10 + 'px';
+    this.tooltip.moveTooltip(mEvent.clientX, mEvent.clientY);
   }
 
   tiltArrow (index) {
-      return this.currentTrend[index].oldDir + '-' + this.currentTrend[index].arrowDir;
+    return this.currentTrend[index].oldDir + '-' + this.currentTrend[index].arrowDir;
   }
 
   handlePlayPress () {
-    if (this.timelapse.state === 'pause' && this.timelapse.range >= 100) {
-      this.timelapse.range = 0;
-      this.timelapse.index = 0;
-    }
-    this.timelapse.state = 'play';
-    this.playTimelapse();
+    this.timelapse.onPlay();
   }
 
   handlePausePress () {
-    this.cancelTimelapse();
-    this.timelapse.state = 'pause';
-    this.timelapse.index--;
-  }
-
-  playTimelapse () {
-    this.circles.drawCircles(this.timelapse.dataList, this.timelapse.index);
-    this.timelapse.index++;
-
-    var ctrl = this;
-
-    if (angular.isDefined(this.mInterval)) { // Don't start new interval if it's already started.
-      return;
-    }
-    this.mInterval = ctrl.$interval(play, 1500);
-
-    function play () {
-      if (ctrl.timelapse.state !== 'play') {
-        ctrl.cancelTimelapse();
-        if (ctrl.timelapse.state === 'end') {
-          ctrl.circles.drawCircles(ctrl.timelapse.dataList, ctrl.timelapse.index);
-          ctrl.timelapse.range = 100;
-          ctrl.timelapse.state = 'pause';
-        } else if (ctrl.timelapse.state === 'pause') {
-          ctrl.timelapse.index--;
-        }
-      } else {
-        ctrl.circles.drawCircles(ctrl.timelapse.dataList, ctrl.timelapse.index);
-        if (ctrl.timelapse.index < ctrl.timelapse.dataList[0].datapoints.length - 2) {
-          ctrl.timelapse.range = ctrl.timelapse.index * ctrl.timelapse.step;
-          ctrl.timelapse.index++;
-        } else {
-          ctrl.timelapse.range = ctrl.timelapse.index * ctrl.timelapse.step;
-          ctrl.timelapse.index++;
-          ctrl.timelapse.state = 'end';
-        }
-      }
-    }
-  }
-
-  cancelTimelapse () {
-    this.$interval.cancel(this.mInterval);
-    this.mInterval = undefined;
+    this.timelapse.onPause();
   }
 
   stopTimelapse () {
-    this.cancelTimelapse();
-    this.timelapse.state = 'stop';
-    this.timelapse.index = 0;
-    this.timelapse.range = 0;
-    this.onDataReceived(this.currentDataList);
+    this.timelapse.onStop();
   }
 
   handleRangePress () {
-    this.cancelTimelapse();
+    this.timelapse.cancelTimelapse();
   }
 
   setTimelapseRange () {
-    let i = 0;
-    while (((this.timelapse.step / 2) * i) < this.timelapse.range) {
-      i++;
-    }
-
-    if (i % 2 === 0) {
-      this.timelapse.index = (i / 2);
-      this.timelapse.range = this.timelapse.index * this.timelapse.step;
-    } else {
-      this.timelapse.index = Math.floor(i / 2);
-      this.timelapse.range = this.timelapse.index * this.timelapse.step;
-    }
-
-    if (this.timelapse.state === 'play') {
-      this.playTimelapse();
-    } else {
-      this.circles.drawCircles(this.timelapse.dataList, this.timelapse.index);
-    }
+    this.timelapse.setTimelapseRange();
   }
 }
 
