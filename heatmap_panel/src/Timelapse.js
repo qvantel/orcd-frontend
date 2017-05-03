@@ -35,7 +35,7 @@ export default class Timelapse {
   playTimelapse () {
     this.ctrl.circles.drawCircles(this.dataList, this.index);
     this.time = new Date(this.dataList[0].datapoints[this.index][1]).toLocaleString();
-    this.ctrl.tooltip.value = this.dataList[this.ctrl.tooltip.current].datapoints[this.index][0];
+    this.ctrl.tooltip.value = Math.round(this.dataList[this.ctrl.tooltip.current].datapoints[this.index][0]);
 
     var context = this;
 
@@ -50,7 +50,7 @@ export default class Timelapse {
         if (context.state === 'end') {
           context.ctrl.circles.drawCircles(context.dataList, context.index);
           context.time = new Date(context.dataList[context.ctrl.tooltip.current].datapoints[context.index][1]).toLocaleString();
-          context.ctrl.tooltip.value = context.dataList[context.ctrl.tooltip.current].datapoints[context.index][0];
+          context.ctrl.tooltip.value = Math.round(context.dataList[context.ctrl.tooltip.current].datapoints[context.index][0]);
           context.range = 100;
           context.state = 'pause';
         } else if (context.state === 'pause') {
@@ -60,7 +60,7 @@ export default class Timelapse {
         context.index++;
         context.ctrl.circles.drawCircles(context.dataList, context.index);
         context.time = new Date(context.dataList[0].datapoints[context.index][1]).toLocaleString();
-        context.ctrl.tooltip.value = context.dataList[context.ctrl.tooltip.current].datapoints[context.index][0];
+        context.ctrl.tooltip.value = Math.round(context.dataList[context.ctrl.tooltip.current].datapoints[context.index][0]);
         if (context.index < context.dataList[0].datapoints.length - 2) {
           context.range = context.index * context.step;
         } else {
