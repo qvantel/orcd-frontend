@@ -132,7 +132,6 @@ export default class GeoMapPanelCtrl extends MetricsPanelCtrl {
 
     render () {
         if (!this.disableRenderer) {
-            this.log(1);
             super.render();
         }
     }
