@@ -60,8 +60,9 @@ export default class TemplateHandler {
     * @param {object} current - The currently selected option(s) (see the current builder)
     * @param {string} query - The query this template will produce
     * @param {bool} multi - If multiple options can be selected
+    * @param {number} hide - 0 = not hidden, 1 = hide label, 2 = completely hidden
     */
-    addVariable (type, name, label, options, current, query, multi) {
+    addVariable (type, name, label, options, current, query, multi, hide) {
         if (this.variableExists(name)) return;
 
         var newVar = this.variableSrv.createVariableFromModel({
@@ -71,7 +72,8 @@ export default class TemplateHandler {
             options: options,
             current: current,
             query: query,
-            multi: multi
+            multi: multi,
+            hide: hide
         });
         this.variableSrv.variables.push(newVar);
 

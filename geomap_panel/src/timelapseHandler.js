@@ -135,7 +135,7 @@ export default class TimelapseHandler {
      * @return {bool} - True if available, false if not.
      */
     isTimelapseAvailable () {
-        return this.lastTimestamp - this.firstTimestamp > this.timestampLength;
+        return this.timestampLength >= 0 && this.lastTimestamp - this.firstTimestamp >= this.timestampLength;
     }
 
     /**
