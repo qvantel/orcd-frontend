@@ -71,7 +71,8 @@ export default class TemplateHandler {
             options: options,
             current: current,
             query: query,
-            multi: multi
+            multi: multi,
+            hide: 2
         });
         this.variableSrv.variables.push(newVar);
 
