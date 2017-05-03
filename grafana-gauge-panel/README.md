@@ -25,6 +25,6 @@ When one 1 metrics is defined the gauge will automatically set the value 100 as 
 We have exported an default dashboard into cassandraHealthDashboard.json, the file provides you with an existing dashboard.
 Follow these steps to import cassandraHealthDashboard.json:
 1. Clone [cassandraHealthDashboard.json](https://github.com/flygare/QvantelFrontend/blob/cassandrahealth/grafana-gauge-panel/cassandraHealthDashboard.json)
-2. Import cassandraHealthDashboard.json [text]("src/img/import.png")
+2. Import cassandraHealthDashboard.json [text](src/img/import.png)
 
 ## Where data come from???????
