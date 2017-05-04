@@ -9,9 +9,6 @@ Predefined dashboard currently displays:
 ## Screenshots
 
 ![image of import](src/img/dashboard.png)
-![image of dashboardCPU](src/img/dashboardCPU.png)
-![image of dashboardCDR](src/img/dashboardCDR.png)
-![image of dashboardDiskSpace](src/img/dashboardDiskGauge.png)
 
 
 ## Plugins
@@ -41,7 +38,7 @@ Follow these steps to import cassandraHealthDashboard.json:
 3. Define you custom metrics for each panel.
 
 ### Resource script
-To reach and push data dynamically every second to Grafana we have created a script called [resourceUsageCassandra.sh](https://github.com/flygare/QvantelFrontend/blob/cassandrahealth/grafana-gauge-panel/resourceUsageCassandra.sh). The script pushes data into Cassandra.
+To reach and push data dynamically every second to Grafana we have created a script [resourceUsageCassandra.sh](https://github.com/flygare/QvantelFrontend/blob/cassandrahealth/grafana-gauge-panel/resourceUsageCassandra.sh). The script pushes data into Cassandra.
 
 Follow these steps to run resourceUsageCassandra.sh
 1. Clone [resourceUsageCassandra.sh](https://github.com/flygare/QvantelFrontend/blob/cassandrahealth/grafana-gauge-panel/resourceUsageCassandra.sh)
