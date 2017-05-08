@@ -61,7 +61,7 @@ export default class D3map {
             .enter()
             .append('path')
             .attr('class', 'country')
-            .attr('id', function (d) { return d.id; })
+            .attr('id', function (d) { return d.properties.ISO2; })
             .attr('d', path)
             .on('click', (d) => {
                 countryClicked(d);
@@ -70,7 +70,7 @@ export default class D3map {
                 self.tooltip.transition()
                 .duration(200)
                 .style('opacity', 1);
-                self.tooltipCurrentID = d.id;
+                self.tooltipCurrentID = d.properties.ISO2;
                 self.updateTooltip();
             })
             .on('mousemove', function (d) {
@@ -138,7 +138,9 @@ export default class D3map {
 
         function countryClicked (d, debug) {
             if (!self.ctrl.dashboard.snapshot && (self.ctrl.inputHandler.isCtrlDown() || self.ctrl.inputHandler.isShiftDown() || debug)) {
-                self.ctrl.selectedCountriesHandler.onCountryClicked(d.id);
+                if (typeof d.properties !== 'undefined') {
+                    self.ctrl.selectedCountriesHandler.onCountryClicked(d.properties.ISO2);
+                }
             } else if (self.ctrl.panel.clickToZoomEnabled) {
                 if (typeof d !== 'undefined' && self.country !== d) {
                     let xyz = getXyz(d);
@@ -207,7 +209,7 @@ export default class D3map {
         var self = this;
         d3.select('svg').selectAll('.country')
         .attr('fill', function (d) {
-            return self.colorScale(Math.floor(self.getCountryPercentage(d.id, commonMinMax)));
+            return self.colorScale(Math.floor(self.getCountryPercentage(d.properties.ISO2, commonMinMax)));
         });
     }
 
