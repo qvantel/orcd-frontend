@@ -10,12 +10,6 @@ import TemplateHandler from './templateHandler';
 import SelectedCountriesHandler from './selectedCountriesHandler';
 import TimelapseHandler from './timelapseHandler';
 
-/** options */
-const options = {
-    minColors: 1,
-    maxColors: 5
-};
-
 /**
  * This class represents the controller of the plugin
  */
@@ -86,6 +80,7 @@ export default class GeoMapPanelCtrl extends MetricsPanelCtrl {
     * @param {array} datalist - list of datapoints
     */
     onDataReceived (dataList) {
+        // Make sure we have loaded the location data
         if (typeof this.locations === 'undefined') {
             var self = this;
             this.loadLocations(() => {
@@ -94,6 +89,7 @@ export default class GeoMapPanelCtrl extends MetricsPanelCtrl {
         } else {
             this.updateTimestampLength();
 
+            // If we're using fake data, ignore the incomming data and generate our own
             if (this.panel.useFakeData) {
                 this.data = this.dataFormatter.generate(
                     this.dataGenerator.generate()
@@ -102,6 +98,7 @@ export default class GeoMapPanelCtrl extends MetricsPanelCtrl {
                 this.data = this.dataFormatter.generate(dataList);
             }
 
+            // Make sure to update the timelapse with the new information recieved
             this.timelapseHandler.setTimestampInterval(
                 this.dataFormatter.firstTimestamp,
                 this.dataFormatter.lastTimestamp
@@ -128,6 +125,10 @@ export default class GeoMapPanelCtrl extends MetricsPanelCtrl {
         mapRenderer(scope, elem, attrs, ctrl);
     }
 
+    /**
+    * Override the render call to make sure that we don't render while already
+    * rendering and then make sure angular have successfully digested
+    */
     render () {
         if (!this.disableRenderer) {
             super.render();
@@ -135,6 +136,9 @@ export default class GeoMapPanelCtrl extends MetricsPanelCtrl {
         }
     }
 
+    /**
+    * Override the refresh call and make sure to not refresh while a refresh is already in progress
+    */
     refresh () {
         if (!this.disableRenderer) {
             if (this.disableRefresh) {
@@ -172,58 +176,9 @@ export default class GeoMapPanelCtrl extends MetricsPanelCtrl {
     }
 
     /**
-    * When the legend option is updated, tell the map and re-render
-    */
-    optionShowLegendUpdated () {
-        if (!this.map) return;
-
-        this.map.toggleLegend();
-        this.render();
-    }
-
-    /**
     * When the animation option is updated, tell the dynamic stylesheet and re-render
     */
     optionAnimationUpdated () {
-        this.updateDynamicSheet();
-        this.render();
-    }
-
-    optionShowTrendsUpdated () {
-        this.map.updateForTrends();
-        this.refresh();
-    }
-
-    /**
-    * When the color amount option is updated, update the color-array, dynamic style sheet and re-render
-    */
-    optionColorAmountUpdated () {
-        // Make sure that color amount doesn't break the limits
-        this.panel.colorAmount = this.utilities.clamp(this.panel.colorAmount, options.minColors, options.maxColors);
-
-        var diff = Math.abs(this.panel.colorAmount - this.panel.colors.length);
-
-        // Remove or add elements in the color-array
-        for (var i = 0; i < diff; i++) {
-            if (this.panel.colorAmount > this.panel.colors.length) {
-                this.panel.colors.push('#fff');
-            } else {
-                this.panel.colors.pop();
-            }
-        }
-
-        this.optionColorsUpdated();
-        this.updateDynamicSheet();
-        this.render();
-    }
-
-    /**
-    * When a color is updated, tell the map, dynamic stylesheet and re-render
-    */
-    optionColorsUpdated () {
-        if (!this.map) return;
-
-        this.map.setColors(this.panel.colors);
         this.updateDynamicSheet();
         this.render();
     }
@@ -255,9 +210,6 @@ export default class GeoMapPanelCtrl extends MetricsPanelCtrl {
         var sheet = '';
         sheet += '.map path {';
 
-        // Set the country border color to the last color of the color array
-        sheet += 'stroke-width: 1px; stroke: #003366;';
-
         // If animation is enabled, set the country fill color to transition
         if (this.panel.animate) {
             sheet += 'transition: fill ' + this.panel.animationDuration + 's ease;';
@@ -267,13 +219,22 @@ export default class GeoMapPanelCtrl extends MetricsPanelCtrl {
         this.dynamicSheet.innerHTML = sheet;
     }
 
+    /**
+    * Read the timespan template variable and format it into ms
+    * ie the string 1h equals the number 36000000 (ms)
+    */
     updateTimestampLength () {
+        // Make sure the variable is present
         if (this.templateHandler.variableExists('timespan')) {
             var timestampLength = this.templateHandler.getVariableCurrentValue('timespan')
+
+            // With help of regex, split the number and the prefix.
             var durationSplitRegexp = /(\d+)(ms|s|m|h|d|w|M|y)/;
             var m = timestampLength.match(durationSplitRegexp);
 
+            // Make sure a match was found
             if (m !== null) {
+                // Convert the number and prefix into a duration with help of moment.js
                 var dur = moment.duration(parseInt(m[1]), m[2]);
                 this.timestampLength = dur.asMilliseconds();
             } else {
@@ -282,6 +243,10 @@ export default class GeoMapPanelCtrl extends MetricsPanelCtrl {
         } else {
             this.timestampLength = -1;
         }
+    }
+
+    formatTime (timestamp) {
+        moment.unix(timestamp).format('DD-MM-YYYY HH:mm:ss')
     }
 }
 

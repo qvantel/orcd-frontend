@@ -1,31 +1,12 @@
 /** Class for calculating trend */
 export default class TrendCalculator {
-  constructor () {
-    this.timeTypeMap = this.initTimeTypeMap();
-  }
-
-  /** Inits a map for what timetype to be used in calculation */
-  initTimeTypeMap () {
-    var map = [];
-
-    map['ms'] = 0;
-    map['s'] = 1000;
-    map['sec'] = 1000;
-    map['m'] = 1000 * 60;
-    map['min'] = 1000 * 60;
-    map['h'] = 1000 * 60 * 60;
-
-    return map;
-  }
-
   /**
   * Returns k for a trendline based on datapoints.
   *
   * @param {Object} datapoints - datapoints for calculating trendline.
-  * @param {String} timeType - time setting for graphite summarize. Example: 1h or 1m
   * @return {Integer} - the trend percentage
   */
-  getTrend (datapoints, timeType) {
+  getTrend (datapoints) {
     var a = 0;
     var b = 0;
     var b1 = 0;
@@ -63,10 +44,9 @@ export default class TrendCalculator {
   /** Returns a simple trend based on first and last point in interval that is not null.
   *
   * @param {Object} datapoints - datapoints for calculating trendline.
-  * @param {String} timeType - time setting for graphite summarize. Example: 1h or 1m
   * @returns {Number} - The trend in percent based on the first and last value not null.
   */
-  getSimpleTrend (datapoints, timeType) {
+  getSimpleTrend (datapoints) {
     var y1 = datapoints[0][0];
     var y2 = datapoints[datapoints.length - 1][0];
 

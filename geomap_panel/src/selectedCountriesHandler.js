@@ -64,6 +64,12 @@ export default class SelectedCountriesHandler {
         }
     }
 
+    /**
+    * Check if a country exists inside the selected countries array
+    *
+    * @param {String} country the country to be checked
+    * @return {Boolean} The result if the country is in the array or not
+    */
     isCountrySelected (country) {
         return this.selectedCountries.indexOf(country.toLowerCase());
     }
@@ -75,6 +81,10 @@ export default class SelectedCountriesHandler {
         return query.split(',').join(' + ');
     }
 
+    /**
+    * Read the template variable containing the selected countries
+    * Iterate the countries and stroke them
+    */
     checkCountriesTemplate () {
         this.selectedCountries = this.ctrl.templateHandler.getVariableCurrentValue('countries');
 
@@ -87,10 +97,18 @@ export default class SelectedCountriesHandler {
         }
     }
 
+    /**
+    * Get the amount of countries thats currently selected
+    *
+    * @return {Number} the amount of selected countries
+    */
     selectedCountriesAmount () {
         return this.selectedCountries.length;
     }
 
+    /**
+    * Cleat the all selected countries by deleting the template variable containing them
+    */
     clear () {
         this.ctrl.templateHandler.deleteVariable(templateName);
     }

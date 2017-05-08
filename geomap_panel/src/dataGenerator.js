@@ -29,14 +29,22 @@ export default class DataGenerator {
         return data;
     }
 
+    /**
+    * Generate data points between two timestamps
+    *
+    * @param {Number} timestampStart Timestamp of the first datapoint
+    * @param {Number} timestampEnd Timestamp of the last datapoints
+    * @return {Array} An array of datapoints
+    */
     generateDatapoints (timestampStart, timestampEnd) {
         var datapoints = [];
 
-        var steps = (timestampEnd - timestampStart) / (10 * 1000);
+        var timestampLength = this.ctrl.timestampLength;
+        var steps = (timestampEnd - timestampStart) / timestampLength;
         for (var i = 0; i < steps; i++) {
             datapoints.push([
                 this.ctrl.utilities.rand(0, 100),
-                timestampStart + (i * 10 * 1000)
+                timestampStart + (i * timestampLength)
             ]);
         }
 

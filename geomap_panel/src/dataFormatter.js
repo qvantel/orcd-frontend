@@ -41,6 +41,8 @@ export default class DataFormatter {
     */
     readData (dataList) {
         var res = [];
+
+        // Iterate all the data in order to find the wanted information (cur, min, max, trend)
         dataList.forEach((data) => {
             if (this.validateRegionCode(data.target.toUpperCase())) {
                 var countryData = this.getCountryCurMinMaxTrend(data.datapoints);
@@ -48,6 +50,7 @@ export default class DataFormatter {
             }
         });
 
+        // Store the first and last timestamp for ie the timelapse
         this.firstTimestamp = dataList[0].datapoints[0][1];
         this.lastTimestamp = dataList[0].datapoints[dataList[0].datapoints.length - 1][1];
 
@@ -61,8 +64,8 @@ export default class DataFormatter {
     */
     getCountryCurMinMaxTrend (datapoints) {
         if (datapoints.length > 0) {
-            var min = 0;
-            var max = 0;
+            var min = Number.MAX_VALUE;
+            var max = Number.MIN_VALUE;
             var current = datapoints[datapoints.length - 1][datapointDef.value];
             var trend = this.trendCalculator.getTrend(datapoints);
             var all = [];
@@ -78,13 +81,8 @@ export default class DataFormatter {
                     val = 0;
                 }
 
-                if ((min === 0 || val < min)) {
-                    min = val;
-                }
-
-                if (datapoints[point][datapointDef.value] > max) {
-                    max = val;
-                }
+                min = Math.min(min, val);
+                max = Math.max(max, val)
 
                 all.push(Math.floor(datapoints[point][datapointDef.value]));
             }
@@ -125,50 +123,5 @@ export default class DataFormatter {
     */
     validateRegionCode (region) {
         return (typeof this.ctrl.locations.countries[region] !== 'undefined');
-    }
-
-    readTrend (datapoints) {
-        var trend = this.calcTrend(datapoints[this.getFirstDatapointWithData(datapoints)], datapoints[this.getLastDatapointWithData(datapoints)]);
-        return trend;
-    }
-
-    getFirstDatapointWithData (datapoints) {
-        for (var i = 0; i < datapoints.length; i++) {
-            if (datapoints[i][0] !== null) {
-                return i;
-            }
-        }
-
-        return 0;
-    }
-
-    getLastDatapointWithData (datapoints) {
-        for (var i = datapoints.length - 1; i >= 0; i--) {
-            if (datapoints[i][0] !== null) {
-                return i;
-            }
-        }
-
-        return datapoints.length - 1;
-    }
-
-    calcTrend (first, last) {
-        var firstValue = (first[0] !== null ? first[0] : 0);
-        var firstTimestamp = first[1];
-        var lastValue = (last[0] !== null ? last[0] : 0);
-        var lastTimestamp = last[1];
-
-        var deltaValue = lastValue - firstValue;
-        var deltaTime = (lastTimestamp - firstTimestamp) / 1000;
-
-        if (deltaTime === 0) {
-            return 0;
-        }
-
-        return Math.atan(deltaValue / deltaTime) / (Math.PI * 0.5);
-    }
-
-    getDataLength () {
-        return this.dataLength;
     }
 }
