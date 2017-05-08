@@ -1,5 +1,3 @@
-import moment from 'moment';
-
 const animationStep = 500;
 
 export default class TimelapseHandler {
@@ -185,7 +183,7 @@ export default class TimelapseHandler {
      * @param {number} timestamp - The desired timestamp in milliseconds
      */
     setTimestampUI (timestamp) {
-        timestamp = moment.unix(timestamp / 1000).format('DD-MM-YYYY HH:mm:ss');
+        timestamp = this.ctrl.formatTime(timestamp / 1000);
         $('#timelapse-timestamp').html(timestamp);
     }
 

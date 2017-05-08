@@ -43,9 +43,9 @@ export default class TrendCalculator {
     d = Math.pow(b2, 2);
     c = c * datapoints.length;
 
-    var slope = Math.round((a - b) / (c - d));
-    var first = (b1 - (slope * b2)) / (lastIndex - firstIndex);
-    var last = first + slope * (lastIndex - firstIndex);
+    var slope = (a - b) / (c - d);
+    var first = (b1 - (slope * b2)) / (datapoints.length);
+    var last = first + slope * (datapoints.length - 1);
 
     return this.getPercentageTrend(first, last);
   }
@@ -55,8 +55,8 @@ export default class TrendCalculator {
   * @param {Object} datapoints - datapoints for calculating trendline.
   */
   getSimpleTrend (datapoints) {
-    var latestIndexNotNull = this.getFirstDatapointWithData(datapoints);
-    var firstIndexNotNull = this.getLastDatapointWithData(datapoints);
+    var latestIndexNotNull = datapoints.length - 1;
+    var firstIndexNotNull = 0;
     var y1 = datapoints[firstIndexNotNull][0];
     var y2 = datapoints[latestIndexNotNull][0];
 
