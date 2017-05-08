@@ -73,7 +73,7 @@ describe('TemplateHandler', () => {
         });
     });
 
-    describe('when you add a variable when tehere already exists one with the same name', () => {
+    describe('when you add a variable when there already exists one with the same name', () => {
         beforeEach(() => {
             var variable = buildVariable();
             templateHandler.addVariable(
@@ -251,7 +251,7 @@ describe('TemplateHandler', () => {
         });
     });
 
-    describe('when getting checking if a variable exists', () => {
+    describe('when checking if a variable exists', () => {
         beforeEach(() => {
             var variable = buildVariable();
             templateHandler.addVariable(
@@ -285,7 +285,7 @@ describe('TemplateHandler', () => {
           );
       });
 
-      it('Should return the options of variable with name name', () => {
+      it('Should return the options of the variable with the name provided as a parameter', () => {
         var options = templateHandler.buildOptions([
             {text: 'se', value: 'se', select: true},
             {text: 'fi', value: 'fu', select: true}
