@@ -12,11 +12,13 @@ The heatmap panel contains functionality to visualize the products and lapse thr
 The graph plugin is used to show a timeline over how the popularity of selected products has evolved over time.
 
 ### How to use
-When initiating the heatmap plugin into your dashboard, if the data source is selected you will see a representation of all available products. Each product is visualized by a filled white-circle surrounded by a gray outline, where the circle's size representing the current data and the outline representing the biggest value of the data in the timespan. Since the maximum value is based on what each product is currently showing, meaning that each entity is independent and isolated from other ones. This means that each product will be determined by using its own scale-range. The minimum value however, is always 0.
+When initiating the heatmap plugin into your dashboard, if the data source is selected, you will see a representation of all available products. Each product is visualized by a filled white-circle surrounded by a gray outline, where the circle's size represents the current data and the outline represents the biggest value of the data in the timespan.
 
-You can select or deselect products by clicking on a specific product. The selected product will be presented in the timeline graph showing the usage over time of each product. When a product is selected and is displayed on the graph, the product will be colored dynamically both in the graph plugin and the heatmap plugin. This helps the user to know what entities are are shown in the timeline graph when selecting products.
+The maximum value is based on what each product is currently showing, meaning that each entity is independent and isolated from the other ones. This means that each product will be determined by using its own scale-range. The minimum value however, is always 0.
 
-In the top left corner are two different menus located. The category menu is used to show only one category of products or all categories. The timetype menu is used to change how the values of the products is summarized over time. This will changes how many points that the timeline will have in the graph and how many steps the time-lapse will take. These menus are created with the help of templates, see [Templating](#templating) for more information.
+You can select or deselect products by clicking on a specific product circle. The selected product will be presented in the timeline graph showing the usage over time for the product. When a product is selected and is displayed on the graph, the product will be colored dynamically both in the graph plugin and the heatmap plugin. This helps the user to know what products are shown in the timeline graph when selecting products.
+
+In the top left corner two different menus are located. The category menu is used to show only one category of products or all categories. The timetype menu is used to change how the values of the products is summarized over time. This will changes how many points that the timeline will have in the graph and how many steps the time-lapse will take. These menus are created with the help of templates, see [Templating](#templating) for more information.
 
 #### Trends
 Each product has an arrow beside the product name. This is representing the current trend of the product. The trend is calculated by using  [simple linear regression](https://en.wikipedia.org/wiki/Simple_linear_regression)
@@ -29,21 +31,22 @@ Each product has an arrow beside the product name. This is representing the curr
  **Neutral**: Trend is going pretty much straight, spanning between +0,5% to -0,5%.
 
 #### Time-lapse
-Time-lapse is a tool built into the plugin. The tool provides functionality to watch how products have changed under a certain period of time. To start the time lapse, just click the play button at the top of the heatmap panel. This will use the time range in Grafana and go through it with steps stated in the timetype menu.
+Time-lapse is a tool built into the plugin. The tool provides functionality to watch how products have changed under a certain period of time. To start the time lapse, click the play button at the top of the heatmap panel. This will start the process of walking through the set time range in Grafana with steps stated in the timetype menu.
 
 This tool provides different use case scenarios i.e. monitoring abnormal activities, see how products evolves and a fancy way to show off the system for potential customers.
 
 ### Templating
-We are using templates as it provides a good way of sharing data between plugins. A template is a variable accessible by all the panels in a dashboard. For this dashboard, we're going to use three of them, which is called timetype, category and products.
+We are using templates as it provides a good way of sharing data between plugins. A template is a variable accessible by all the panels in a dashboard. For this dashboard, we're going to use three of them, which are called timetype, category and products.
 
-* The product template saves the products that should be shown in the graph.
+* The product template saves the products that should be shown in the graph. This is hidden for the user, but visible in the edit templates for the admin.
 * The timetype template is used to change how much time a node should represent, right now we have it setup so it can be 10 seconds, 1 min, 1 hour or 1 day. This will change the timetype in both the heatmap and the graph.
 * The category template is used to filter the different products. A specific category can be chosen, or all categories.
 
-In order to setup the templates, first need to find the **cogwheel** in the top menu of the dashboard and choose **Templating**. Click the green **New** button and your ready to setup the templates. There are two different templates that will have to be setup. Timetype and category. There is also one more template called products, but it is made automatically in heatmap panel, all that has to be done to utilize products is to add it in the metrics.
+In order to setup the templates, first need to find the **cogwheel** in the top menu of the dashboard and choose **Templating**. Click the green **New** button and you are ready to setup the templates. There are two different templates that will have to be setup, timetype and category. There is also one more template called products, but it is made automatically in heatmap panel, all that has to be done to utilize products is to add it in the query for the graph.
+See [Metrics](#metrics) for more information.
 
 #### Timetype
-Add timetype as **Name** and **Label**, and input the **Type** custom. In **Custom Options** add the different times that can be used. In our case *1d,1h,1m,10s*.
+Add timetype as **Name** and **Label**, and input the **Type** custom. In **Custom Options** add the different times that the user could use. In our case *1d,1h,1m,10s*, but this of course can be changed.
 
 ![Adding timetype template](images/timetype-template.png)
 
@@ -67,7 +70,9 @@ summarize(qvantel.product.$category.*, '$timetype', 'sum', false)
 
 Our query for the graph:
 aliasByMetric(summarize(qvantel.product.$category.$products, '$timetype', 'sum', false))
+
+Notice when a $ is used before a word, it is a template variable.
 ```
 
 #### Setting up the timeline graph
-Follow the same instructions from the **Metrics** section to add the data source. Make sure to set use the right template variables in the right place and the graph will handle everything automatically.
+Follow the same instructions from the **Metrics** section to add the data source. Make sure to set the right template variables in the right place and the graph will handle everything automatically.
