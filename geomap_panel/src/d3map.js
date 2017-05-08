@@ -198,34 +198,36 @@ export default class D3map {
     }
 
     updateCountryColor () {
-        var commonMax = -1;
+        var commonMinMax = {min: -1, max: -1};
 
         if (!this.ctrl.panel.individualMaxValue) {
-            commonMax = this.findCommonMaxValue();
+            commonMinMax = this.findCommonMinMaxValue();
         }
 
         var self = this;
         d3.select('svg').selectAll('.country')
         .attr('fill', function (d) {
-            return self.colorScale(Math.floor(self.getCountryPercentage(d.id, commonMax)));
+            return self.colorScale(Math.floor(self.getCountryPercentage(d.id, commonMinMax)));
         });
     }
 
-    findCommonMaxValue () {
-        var max = -1;
+    findCommonMinMaxValue () {
+        var max = Number.MIN_VALUE;
+        var min = Number.MAX_VALUE;
 
         for (var key in this.ctrl.data) {
             var d = this.ctrl.data[key];
-            var currentMax = d.cur;
+            var current = d.cur;
 
             if (this.ctrl.timelapseHandler.isAnimating) {
-                currentMax = d.all[this.ctrl.timelapseHandler.getCurrent()];
+                current = d.all[this.ctrl.timelapseHandler.getCurrent()];
             }
 
-            max = Math.max(max, currentMax);
+            max = Math.max(max, current);
+            min = Math.min(min, current);
         }
 
-        return max;
+        return {min: min, max: max};
     }
 
     getColor () {
@@ -246,32 +248,43 @@ export default class D3map {
 
             if (typeof data !== 'undefined') {
                 var curr = data.cur;
+                var commonMinMax;
 
                 if (this.ctrl.timelapseHandler.isAnimating) {
                     curr = data.all[this.ctrl.timelapseHandler.getCurrent()];
                 }
 
+                if (!this.ctrl.panel.individualMaxValue) {
+                    commonMinMax = this.findCommonMinMaxValue();
+                }
+
                 var html = '<div class = \'d3tooltip-title\'>' + this.ctrl.locations.countries[this.tooltipCurrentID.toUpperCase()].name + '</div>';
-                html += '<div class = \'d3tooltip-info\'><div class = \'d3tooltip-left\'>Percent: </div><div class = \'d3tooltip-right\'>' + Math.floor(this.getCountryPercentage(this.tooltipCurrentID)) + '%</div><div class = \'d3tooltip-clear\'></div></div>';
+                html += '<div class = \'d3tooltip-info\'><div class = \'d3tooltip-left\'>Percent: </div><div class = \'d3tooltip-right\'>' + Math.floor(this.getCountryPercentage(this.tooltipCurrentID, commonMinMax)) + '%</div><div class = \'d3tooltip-clear\'></div></div>';
                 html += '<div class = \'d3tooltip-info\'><div class = \'d3tooltip-left\'>Current: </div><div class = \'d3tooltip-right\'>' + curr + '</div><div class = \'d3tooltip-clear\'></div></div>';
-                html += '<div class = \'d3tooltip-info\'><div class = \'d3tooltip-left\'>Min: </div><div class = \'d3tooltip-right\'>' + data.min + '</div><div class = \'d3tooltip-clear\'></div></div>';
-                html += '<div class = \'d3tooltip-info\'><div class = \'d3tooltip-left\'>Max: </div><div class = \'d3tooltip-right\'>' + data.max + '</div><div class = \'d3tooltip-clear\'></div></div>';
-                html += '<div class = \'d3tooltip-info\'><div class = \'d3tooltip-left\'>Trend: </div><div class = \'d3tooltip-right\'>' + data.trend + '%</div><div class = \'d3tooltip-clear\'></div></div>';
+
+                if (this.ctrl.panel.individualMaxValue) {
+                    html += '<div class = \'d3tooltip-info\'><div class = \'d3tooltip-left\'>Min: </div><div class = \'d3tooltip-right\'>' + data.min + '</div><div class = \'d3tooltip-clear\'></div></div>';
+                    html += '<div class = \'d3tooltip-info\'><div class = \'d3tooltip-left\'>Max: </div><div class = \'d3tooltip-right\'>' + data.max + '</div><div class = \'d3tooltip-clear\'></div></div>';
+                    html += '<div class = \'d3tooltip-info\'><div class = \'d3tooltip-left\'>Trend: </div><div class = \'d3tooltip-right\'>' + data.trend + '%</div><div class = \'d3tooltip-clear\'></div></div>';
+                } else {
+                    html += '<div class = \'d3tooltip-info\'><div class = \'d3tooltip-left\'>Common min: </div><div class = \'d3tooltip-right\'>' + commonMinMax.min + '</div><div class = \'d3tooltip-clear\'></div></div>';
+                    html += '<div class = \'d3tooltip-info\'><div class = \'d3tooltip-left\'>Common max: </div><div class = \'d3tooltip-right\'>' + commonMinMax.max + '</div><div class = \'d3tooltip-clear\'></div></div>';
+                }
 
                 this.tooltip.html(html);
             }
         }
     }
 
-    getCountryPercentage (countryCode, commonMax) {
+    getCountryPercentage (countryCode, commonMinMax) {
         var minMaxCur = this.ctrl.data[countryCode.toLowerCase()];
 
         if (typeof minMaxCur !== 'undefined') {
             var percent = 0;
             var max = minMaxCur.max;
 
-            if (typeof commonMax !== 'undefined' && commonMax >= 0) {
-                max = commonMax;
+            if (typeof commonMax !== 'undefined' && commonMinMax.max >= 0) {
+                max = commonMinMax.max;
             }
 
             var curr = minMaxCur.cur;
