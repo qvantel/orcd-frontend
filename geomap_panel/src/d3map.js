@@ -198,7 +198,7 @@ export default class D3map {
     }
 
     updateCountryColor () {
-        var commonMax;
+        var commonMax = -1;
 
         if (!this.ctrl.panel.individualMaxValue) {
             commonMax = this.findCommonMaxValue();
@@ -222,9 +222,7 @@ export default class D3map {
                 currentMax = d.all[this.ctrl.timelapseHandler.getCurrent()];
             }
 
-            if (max === -1 || currentMax > max) {
-                max = currentMax;
-            }
+            max = Math.max(max, currentMax);
         }
 
         return max;
@@ -272,7 +270,7 @@ export default class D3map {
             var percent = 0;
             var max = minMaxCur.max;
 
-            if (typeof commonMax !== 'undefined') {
+            if (typeof commonMax !== 'undefined' && commonMax >= 0) {
                 max = commonMax;
             }
 
