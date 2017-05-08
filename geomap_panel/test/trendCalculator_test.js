@@ -6,16 +6,16 @@ describe('TrendCalculator', function () {
   };
   let trendCalculator = new TrendCalculator(ctrl);
   let datapoints = [
-    [2, 1000],
-    [9, 2000],
-    [1, 3000],
-    [4, 4000],
-    [6, 5000],
-    [11, 6000],
-    [1, 7000],
-    [5, 8000],
-    [8, 9000],
-    [3, 10000]
+    [2, 0],
+    [9, 1000],
+    [1, 2000],
+    [4, 3000],
+    [6, 4000],
+    [11, 5000],
+    [1, 6000],
+    [5, 7000],
+    [8, 8000],
+    [3, 9000]
   ]
 
   describe('getPercentageTrend(first, last)', function () {
@@ -35,7 +35,7 @@ describe('TrendCalculator', function () {
 
   describe('getTrend(datapoints)', function () {
     it('Should return a trend in percentage based on the simple linear regression', function () {
-      expect(trendCalculator.getTrend(datapoints)).to.equal(0);
+      expect(trendCalculator.getTrend(datapoints)).to.equal(21.8);
     });
   });
 });
