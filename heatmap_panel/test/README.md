@@ -1,2 +1,2 @@
 # Manual Testing
-* Data from Graphite is equals to data in Grafana
+* Data from Graphite is equal to data in Grafana
