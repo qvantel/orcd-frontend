@@ -1,5 +1,4 @@
 import TargetParser from './TargetParser';
-import IndexCalculator from './IndexCalculator';
 
 /** Class for handling tooltip logic */
 export default class Tooltip {
@@ -7,7 +6,6 @@ export default class Tooltip {
     this.ctrl = ctrl;
     this.current = 0;
     this.targetParser = new TargetParser();
-    this.indexCalculator = new IndexCalculator();
     this.show = false;
     this.name = '';
     this.value = 0;

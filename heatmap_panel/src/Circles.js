@@ -1,5 +1,4 @@
 import * as d3 from './node_modules/d3/build/d3.min';
-import IndexCalculator from './IndexCalculator';
 
 /** Class responsible for drawing circles to the screen */
 export default class Circles {
@@ -10,7 +9,6 @@ export default class Circles {
     this.min = ctrl.panel.min;
     this.colors = ctrl.panel.colors;
     this.currentColorIndex = 0;
-    this.indexCalculator = new IndexCalculator();
   }
 
   /**
