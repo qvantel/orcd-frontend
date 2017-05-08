@@ -44,9 +44,9 @@ export class TemplateCtrl extends MetricsPanelCtrl {
     this.testCounter = 0;
 
     if (this.dashboard.snapshot) {
-      this.selected = this.productSelector.variableExists('products') ? this.productSelector.getOptionsValuesByName('products').value : [];
+      this.selected = this.productSelector.variableExists('products') ? this.productSelector.getOptionsByName('products').value : [];
     } else {
-      this.selected = this.productSelector.variableExists('products') ? this.productSelector.getOptionsValuesByName('products').map(function (option) {
+      this.selected = this.productSelector.variableExists('products') ? this.productSelector.getOptionsByName('products').map(function (option) {
         return option.value;
       }) : [];
     }
