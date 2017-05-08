@@ -198,7 +198,7 @@ export default class D3map {
     }
 
     updateCountryColor () {
-        var commonMinMax = {min: -1, max: -1};
+        var commonMinMax;
 
         if (!this.ctrl.panel.individualMaxValue) {
             commonMinMax = this.findCommonMinMaxValue();
