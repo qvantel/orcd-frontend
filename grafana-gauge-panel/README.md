@@ -1,105 +1,45 @@
-# Grafana Gauge Panel
+# Cassandra Health Metrics dashboard
+Cassandra Health Metrics dashboard provides you with an overview performance visualization of your server.
+Predefined dashboard currently displays:
+- Memory usage
+- CPU performance usage
+- Disk space usage
+- Amount of CDR's generated
 
-This panel plugin provides a [D3-based](http://www.d3js.org) gauge panel for [Grafana](http://www.grafana.org) 3.x
+## Screenshots
 
-## Changes from origin
-* Plugin can use maximum 2 Metrics, 1st is actual value 2nd is maximum value of gauge.
-* If 1 Metric is used maximum value will be 100 in gauge.
-
-### Screenshots
-
-##### Example gauges
-
-![Default Gauge](https://raw.githubusercontent.com/briangann/grafana-gauge-panel/master/src/screenshots/default-gauge.png)
-![Default Gauge With Threshold](https://raw.githubusercontent.com/briangann/grafana-gauge-panel/master/src/screenshots/default-gauge-w-threshold.png)
-
-![Custom Gauge](https://raw.githubusercontent.com/briangann/grafana-gauge-panel/master/src/screenshots/alt-gauge.png)
-![Custom Gauge With Limits](https://raw.githubusercontent.com/briangann/grafana-gauge-panel/master/src/screenshots/alt-gauge-limits.png)
-
-##### Options
-
-![Options](https://raw.githubusercontent.com/briangann/grafana-gauge-panel/master/src/screenshots/options.png)
-
-With Limits
-
-![Options with Limits](https://raw.githubusercontent.com/briangann/grafana-gauge-panel/master/src/screenshots/options-limits.png)
-
-##### Limits Shown
-
-![Options With Limits](https://raw.githubusercontent.com/briangann/grafana-gauge-panel/master/src/screenshots/options-limits.png)
-
-##### Radial Metrics
-![Radial Metrics](https://raw.githubusercontent.com/briangann/grafana-gauge-panel/master/src/screenshots/radialmetrics.png)
-
-##### Thresholding
-![Thresholding](https://raw.githubusercontent.com/briangann/grafana-gauge-panel/master/src/screenshots/thresholding.png)
-
--------
-
-## Features
-
-* Data operator same as SingleStat panel (avg, sum, current, etc)
-* Unit formats same as SingleStat
-
-* Customizable Font size and type for value displayed and ticks
-* Animated needle transition (elastic or quadin)
-* Adjustable Limits
-* All possible color options for gauge components
-
-* Customizable gauge component sizes (needle length, width, tick length, etc)
-
-* Thresholding colors displayed on gauge
-* Threshold can modify displayed value and background
-
-* Needle animation speed is now configurable
-* Arbitrary degree gauges now supported (default is from 60 to 320)
-* Value text on gauge can now be moved up/down as needed
-
-## Building
-
-This plugin relies on Grunt/NPM/Bower, typical build sequence:
-
-```
-npm install
-bower install
-grunt
-```
-
-For development, you can run:
-```
-grunt watch
-```
-The code will be parsed then copied into "dist" if "jslint" passes without errors.
+![image of import](src/img/dashboard.png)
 
 
-### Docker Support
+## Plugins
+Cassandra Health Metrics dashboard uses 2 existing plugins.
+Usage over time are displayed in [Graph by Grafana Labs](https://grafana.com/plugins/graph) while current value of data displays in [D3 Gauge by Brian Gann](https://github.com/briangann/grafana-gauge-panel)
 
-A docker-compose.yml file is include for easy development and testing, just run
-```
-docker-compose up
-```
+### Modifications
+D3 Gauge plugin only supports to define maximum value statically. When displaying disk space where the total disk space differs from server to server defining the maximum value of the gauge static is not an option. We modified the ctrl.js file so when 2 metrics are defined the last metric are the maximum value of the gauge.
 
-Then browse to http://localhost:3000
+Example using two metrics:
+- server->disk->usage
+- server->disk->total - Will represent maximum value of gauge.
 
+When only one metric is defined the gauge will automatically set the value 100 as it's maximum value. This is used when displaying CPU usage where the maximum value of a CPU is 100%.
 
-## External Dependencies
+## Installation
 
-* Grafana 3.x
+### Dashboard
+We have exported an default dashboard into cassandraHealthDashboard.json, the file provides you with an existing dashboard.
 
-## Build Dependencies
+Follow these steps to import cassandraHealthDashboard.json into Grafana:
+1. Clone [cassandraHealthDashboard.json](cassandraHealthDashboard.json)
+2. Import cassandraHealthDashboard.json
 
-* npm
-* bower
-* grunt
+   ![image of import](src/img/import.png)
 
-#### Acknowledgements
+3. Define you custom metrics for each panel.
 
-This panel is based on the "SingleStat" panel by Grafana, along with large portions of these excellent D3 examples:
-* https://oliverbinns.com/articles/D3js-gauge/
-* http://bl.ocks.org/tomerd/1499279
+### Resource script
+To reach and push data dynamically every second to Grafana we have created a script [resourceUsageCassandra.sh](https://github.com/flygare/QvantelFrontend/blob/cassandrahealth/grafana-gauge-panel/resourceUsageCassandra.sh). The script pushes data into Cassandra.
 
-#### Changelog
-
-
-##### v0.0.1
-- Initial commit
+Follow these steps to run resourceUsageCassandra.sh
+1. Clone [resourceUsageCassandra.sh](https://github.com/flygare/QvantelFrontend/blob/cassandrahealth/grafana-gauge-panel/resourceUsageCassandra.sh)
+2. Run script `bash resourceUsageCassandra.sh`
