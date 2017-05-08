@@ -22,7 +22,7 @@ Example using two metrics:
 - server->disk->usage
 - server->disk->total - Will represent maximum value of gauge.
 
-When only 1 metric is defined the gauge will automatically set the value 100 as it's maximum value. This is used when displaying CPU usage where the maximum value of a CPU is 100%.
+When only one metric is defined the gauge will automatically set the value 100 as it's maximum value. This is used when displaying CPU usage where the maximum value of a CPU is 100%.
 
 ## Installation
 
