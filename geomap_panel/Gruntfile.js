@@ -1,5 +1,4 @@
-module.exports = function(grunt) {
-
+module.exports = function (grunt) {
   require('load-grunt-tasks')(grunt);
 
   grunt.loadNpmTasks('grunt-execute');
@@ -8,7 +7,7 @@ module.exports = function(grunt) {
 
   grunt.initConfig({
 
-    clean: ["dist"],
+    clean: ['dist'],
 
     copy: {
       src_to_dist: {
@@ -20,26 +19,26 @@ module.exports = function(grunt) {
       pluginDef: {
         expand: true,
         src: [ 'plugin.json', 'README.md' ],
-        dest: 'dist',
+        dest: 'dist'
       }
     },
 
     watch: {
       options: {
-        livereload: true,
+        livereload: true
       },
       rebuild_all: {
         files: ['src/**/*', 'plugin.json'],
         tasks: ['default'],
         options: {spawn: false}
-      },
+      }
     },
 
     babel: {
       options: {
         sourceMap: true,
-        presets:  ["es2015"],
-        plugins: ['transform-es2015-modules-systemjs', "transform-es2015-for-of"],
+        presets: ['es2015'],
+        plugins: ['transform-es2015-modules-systemjs', 'transform-es2015-for-of']
       },
       dist: {
         files: [{
@@ -47,15 +46,11 @@ module.exports = function(grunt) {
           expand: true,
           src: ['*.js'],
           dest: 'dist',
-          ext:'.js'
+          ext: '.js'
         }]
-      },
-    },
+      }
+    }
 
   });
   grunt.registerTask('default', ['clean', 'copy:src_to_dist', 'copy:pluginDef', 'babel']);
-  var sys = require('sys')
-var exec = require('child_process').exec;
-
-function puts(error, stdout, stderr) { sys.puts(stdout) } exec("docker restart grafana_dev", puts);
 };
