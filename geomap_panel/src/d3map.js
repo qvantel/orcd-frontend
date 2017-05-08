@@ -140,7 +140,9 @@ export default class D3map {
 
         function countryClicked (d) {
             if (!self.ctrl.dashboard.snapshot && typeof d !== 'undefined' && (self.ctrl.inputHandler.isCtrlDown() || self.ctrl.inputHandler.isShiftDown())) {
-                self.ctrl.selectedCountriesHandler.onCountryClicked(d.properties.ISO2);
+                if (typeof self.ctrl.data[d.properties.ISO2.toLowerCase()] !== 'undefined') {
+                    self.ctrl.selectedCountriesHandler.onCountryClicked(d.properties.ISO2);
+                }
             } else if (self.ctrl.panel.clickToZoomEnabled) {
                 if (typeof d !== 'undefined' && self.country !== d) {
                     let xyz = getXyz(d);
