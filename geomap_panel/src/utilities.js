@@ -24,6 +24,12 @@ export default class Utilities {
         return this.clamp(val, 0, 1);
     }
 
+    /**
+    * Get a random value between two numberes
+    * @param {Number} min Minimum value of the random range
+    * @param {Number} max Maximum value of the random range
+    * @return {Number} the randomized value
+    */
     rand (min, max) {
         return Math.floor(Math.random() * (max - min + 1) + min);
     }

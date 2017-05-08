@@ -2,9 +2,8 @@ import * as d3 from './lib/d3.min';
 import * as topojson from './lib/topojson.v2.min.js';
 
 export default class D3map {
-    constructor (ctrl, container, onReadyCallback) {
+    constructor (ctrl, onReadyCallback) {
         this.ctrl = ctrl;
-        this.container = container;
         this.readyCallback = onReadyCallback;
         this.colorScale = null;
         this.debug = false;
@@ -17,28 +16,37 @@ export default class D3map {
         this.createMap();
     }
 
+    /**
+    * Build the map with the help of d3js
+    */
     createMap () {
+        // Define a color scale for the color of each country
         this.colorScale = d3.scaleLinear()
         .domain([0, 100])
         .range([this.ctrl.lightTheme ? '#f5f5f3' : '#151515', '#6699cc']);
 
+        // Specify the wanted dimensions
         var self = this;
         var width = $('#map').width();
         var height = width / 1.5;
 
+        // Project the map using geoMercator, scale and translate the map to make a good fit
         var projection = d3.geoMercator()
         .scale(width / 395 * 60)
         .translate([width / 2, height / 1.5]);
 
+        // Define the geo path
         var path = d3.geoPath()
         .projection(projection);
 
+        // Append a svg object to the map element
         var svg = d3.select('#map').append('svg')
         .attr('preserveAspectRatio', 'xMidYMid')
         .attr('viewBox', '0 0 ' + width + ' ' + height)
         .attr('width', '100%')
         .attr('height', width * height / width);
 
+        // Append the background to the svg
         svg.append('rect')
         .attr('class', 'background')
         .attr('width', width)
@@ -47,11 +55,13 @@ export default class D3map {
             countryClicked();
         });
 
-        // Define the div for the tooltip
+        // Append the tooltip to the body of the document
         this.tooltip = d3.select('body').append('g')
         .attr('class', 'd3tooltip')
         .style('opacity', 0);
 
+        // Iterate all countries generated in the countries.json file
+        // For each country, draw the borders and bind mouse events
         var g = svg.append('g');
         d3.json('public/plugins/qvantel-geomap-panel/data/countries.json', function (world) {
             g.append('g')
@@ -87,6 +97,7 @@ export default class D3map {
             self.updateCountryColor();
         });
 
+        // Create the legend gradient
         var legendWidth = width * 0.4;
         var legendHeight = 10;
         var gradient = svg.append('defs')
@@ -115,6 +126,11 @@ export default class D3map {
             .attr('height', legendHeight)
             .style('fill', 'url(#gradient)');
 
+        /**
+        * Get the center position of a country
+        * @param {Object} d The country object
+        * @return {Array} the coordinates for the center of the country
+        */
         function getXyz (d) {
             let bounds = path.bounds(d);
             let wScale = (bounds[1][0] - bounds[0][0]) / width;
@@ -128,6 +144,11 @@ export default class D3map {
             return [x, y, z];
         }
 
+        /**
+        * Zoom into a point on the map defined by coordinates
+        *
+        * @param {array} xyz XYZ coordinates of where to zoom into
+        */
         function zoom (xyz) {
             g.transition()
             .duration(1500)
@@ -136,6 +157,12 @@ export default class D3map {
             .attr('d', path.pointRadius(20.0 / xyz[2]));
         }
 
+        /**
+        * When a country has been clicked, check if ctrl or shift is countryClicked
+        * Then decide if to mark or zoom into that country
+        *
+        * @param {Object} o the country object clicked
+        */
         function countryClicked (d, debug) {
             if (!self.ctrl.dashboard.snapshot && (self.ctrl.inputHandler.isCtrlDown() || self.ctrl.inputHandler.isShiftDown() || debug)) {
                 self.ctrl.selectedCountriesHandler.onCountryClicked(d.id);
@@ -176,13 +203,18 @@ export default class D3map {
         });
     }
 
+    /**
+    * Iterate all countries and set a stroke on the selected ones and disable the stroke on the others
+    */
     updateStrokeColor () {
         var countries = this.ctrl.selectedCountriesHandler.selectedCountries;
 
+        // Disable the stroke for all countries
         d3.selectAll('.country')
         .classed('stroke-selected', false)
         .attr('style', null);
 
+        // Iterate all selected countries and stroke them
         var colorIndex = 0;
         for (var i = 0; i < countries.length; i++) {
             d3.select('#' + countries[i].toUpperCase())
@@ -197,13 +229,18 @@ export default class D3map {
         this.sortCountries();
     }
 
+    /**
+    * Update the color for each countries
+    */
     updateCountryColor () {
         var commonMinMax;
 
+        // If the option individualMaxValue is not true, find a common max value
         if (!this.ctrl.panel.individualMaxValue) {
             commonMinMax = this.findCommonMinMaxValue();
         }
 
+        // Set the color for each country depending on their percent (cur / max)
         var self = this;
         d3.select('svg').selectAll('.country')
         .attr('fill', function (d) {
@@ -211,6 +248,10 @@ export default class D3map {
         });
     }
 
+    /**
+    * Find the common min and max value for all countries
+    * The max value is found by comparing all countries current value
+    */
     findCommonMinMaxValue () {
         var max = Number.MIN_VALUE;
         var min = Number.MAX_VALUE;
@@ -219,6 +260,7 @@ export default class D3map {
             var d = this.ctrl.data[key];
             var current = d.cur;
 
+            // If the the timelapse is active, select from the timelapse instead
             if (this.ctrl.timelapseHandler.isAnimating) {
                 current = d.all[this.ctrl.timelapseHandler.getCurrent()];
             }
@@ -230,30 +272,33 @@ export default class D3map {
         return {min: min, max: max};
     }
 
-    getColor () {
-      var color = this.strokeColors[this.currentColorIndex];
-      this.currentColorIndex++;
-
-      return color;
-    }
-
+    /**
+    * Call this function when new data is available in order to request and update for the map
+    */
     updateData () {
         this.updateCountryColor();
         this.updateTooltip();
     }
 
+    /**
+    * Update the tooltip values
+    */
     updateTooltip () {
+        // Make sure that the tooltip has been initialized and that it has a valid country connected to it
         if (typeof this.tooltip !== 'undefined' && typeof this.tooltipCurrentID !== 'undefined') {
             var data = this.ctrl.data[this.tooltipCurrentID.toLowerCase()];
 
+            // Make sure that the country has data
             if (typeof data !== 'undefined') {
                 var curr = data.cur;
                 var commonMinMax;
 
+                // If a timelapse is in progress, get the value from that instead
                 if (this.ctrl.timelapseHandler.isAnimating) {
                     curr = data.all[this.ctrl.timelapseHandler.getCurrent()];
                 }
 
+                // If the option individualMaxValue is false, find a common min and max value
                 if (!this.ctrl.panel.individualMaxValue) {
                     commonMinMax = this.findCommonMinMaxValue();
                 }
@@ -276,19 +321,29 @@ export default class D3map {
         }
     }
 
+    /**
+    * Calculate and return the percentage from a country
+    * If a commonMinMax is present, use that max value for the equation
+    *
+    * @param {string} countryCode The country code of the countrys percentage to be calculated
+    * @param {object} commonMinMax The common min and max value, if present
+    * @return {number} The percentage
+    */
     getCountryPercentage (countryCode, commonMinMax) {
         var minMaxCur = this.ctrl.data[countryCode.toLowerCase()];
 
+        // Make sure taht the country has data
         if (typeof minMaxCur !== 'undefined') {
             var percent = 0;
             var max = minMaxCur.max;
+            var curr = minMaxCur.cur;
 
-            if (typeof commonMax !== 'undefined' && commonMinMax.max >= 0) {
+            // If a common max is present, use this instead of the countrys max value
+            if (typeof commonMinMax !== 'undefined' && commonMinMax.max >= 0) {
                 max = commonMinMax.max;
             }
 
-            var curr = minMaxCur.cur;
-
+            // If a timelapse is in progress, use that value instead
             if (this.ctrl.timelapseHandler.isAnimating) {
                 curr = minMaxCur.all[this.ctrl.timelapseHandler.getCurrent()];
             }

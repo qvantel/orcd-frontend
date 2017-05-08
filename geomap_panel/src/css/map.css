@@ -59,6 +59,11 @@ li.key {
     position: relative;
 }
 
+.map path {
+    stroke-width: 1px;
+    stroke: #003366;
+}
+
 .controls {
     position: absolute;
     top: 0;
