@@ -1,5 +1,5 @@
-import * as d3 from './lib/d3.min';
-import * as topojson from './lib/topojson.v2.min.js';
+import * as d3 from './node_modules/d3/build/d3.min';
+import * as topojson from './node_modules/topojson/dist/topojson.min';
 
 export default class D3map {
     constructor (ctrl, container, onReadyCallback) {
@@ -14,6 +14,7 @@ export default class D3map {
         this.currentColorIndex = 0;
         this.tooltip;
         this.tooltipCurrentID;
+        this.tooltipCurrentNAME;
         this.createMap();
     }
 
@@ -71,6 +72,7 @@ export default class D3map {
                 .duration(200)
                 .style('opacity', 1);
                 self.tooltipCurrentID = d.properties.ISO2;
+                self.tooltipCurrentNAME = d.properties.NAME
                 self.updateTooltip();
             })
             .on('mousemove', function (d) {
@@ -242,10 +244,10 @@ export default class D3map {
         this.updateTooltip();
     }
 
-    updateTooltip () {
+    updateTooltip (countryName) {
         if (typeof this.tooltip !== 'undefined' && typeof this.tooltipCurrentID !== 'undefined') {
             var data = this.ctrl.data[this.tooltipCurrentID.toLowerCase()];
-
+            var html;
             if (typeof data !== 'undefined') {
                 var curr = data.cur;
                 var commonMinMax;
@@ -258,7 +260,7 @@ export default class D3map {
                     commonMinMax = this.findCommonMinMaxValue();
                 }
 
-                var html = '<div class = \'d3tooltip-title\'>' + this.ctrl.locations.countries[this.tooltipCurrentID.toUpperCase()].name + '</div>';
+                html = '<div class = \'d3tooltip-title\'>' + this.tooltipCurrentNAME + '</div>';
                 html += '<div class = \'d3tooltip-info\'><div class = \'d3tooltip-left\'>Percent: </div><div class = \'d3tooltip-right\'>' + Math.floor(this.getCountryPercentage(this.tooltipCurrentID, commonMinMax)) + '%</div><div class = \'d3tooltip-clear\'></div></div>';
                 html += '<div class = \'d3tooltip-info\'><div class = \'d3tooltip-left\'>Current: </div><div class = \'d3tooltip-right\'>' + curr + '</div><div class = \'d3tooltip-clear\'></div></div>';
 
@@ -271,8 +273,11 @@ export default class D3map {
                     html += '<div class = \'d3tooltip-info\'><div class = \'d3tooltip-left\'>Common max: </div><div class = \'d3tooltip-right\'>' + commonMinMax.max + '</div><div class = \'d3tooltip-clear\'></div></div>';
                 }
 
-                this.tooltip.html(html);
+            } else {
+                html = '<div class = \'d3tooltip-title\'>' + this.tooltipCurrentNAME + '</div>';
+                html += '<div class = \'d3tooltip-undefined\'>No available data</div>';
             }
+            this.tooltip.html(html);
         }
     }
 
