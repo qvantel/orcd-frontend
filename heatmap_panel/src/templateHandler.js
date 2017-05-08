@@ -191,6 +191,10 @@ export default class TemplateHandler {
         return res;
     }
 
+    /** Get object(s) from an existing variable.
+    * @param {String} name - The name of the variable containing the wanted options.
+    * @returns {Array} - An array of options from the variable with the name name.
+    */
     getOptionsValuesByName (name) {
       if (this.variableExists(name)) {
         return this.variableSrv.variables[this.getVariableIndexByName(name)].options

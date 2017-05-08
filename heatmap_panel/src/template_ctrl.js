@@ -2,7 +2,6 @@ import {MetricsPanelCtrl} from 'app/plugins/sdk';
 import Circles from './Circles';
 import TrendCalculator from './TrendCalculator';
 import TemplateHandler from './templateHandler';
-import IndexCalculator from './IndexCalculator';
 import TargetParser from './TargetParser';
 import Timelapse from './Timelapse';
 import Tooltip from './Tooltip';
@@ -43,7 +42,6 @@ export class TemplateCtrl extends MetricsPanelCtrl {
     this.currentMax = [];
     this.selectedMap = [];
     this.testCounter = 0;
-    this.indexCalculator = new IndexCalculator();
 
     if (this.dashboard.snapshot) {
       this.selected = this.productSelector.variableExists('products') ? this.productSelector.getOptionsValuesByName('products').value : [];
