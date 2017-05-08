@@ -14,7 +14,7 @@ The graph plugin is used to show a timeline over how the popularity of selected 
 The dashboard also has support for [Grafana Snapshots](http://docs.grafana.org/plugins/developing/snapshot-mode/).
 
 ### How to use
-When initiating the heatmap plugin into your dashboard, if the data source is selected, you will see a representation of all available products. Each product is visualized by a filled white-circle surrounded by a gray outline, where the circle's size represents the current data and the outline represents the biggest value of the data in the timespan.
+When initiating the heatmap plugin into your dashboard, if the data source is selected, you will see a representation of all available products. Each product is visualized by a filled circle surrounded by a outline, where the circle's size represents the current data and the outline represents the biggest value of the data in the timespan.
 
 The maximum value is based on what each product is currently showing, meaning that each entity is independent and isolated from the other ones. This means that each product will be determined by using its own scale-range. The minimum value however, is always 0.
 
@@ -27,9 +27,9 @@ Each product has an arrow beside the product name. This is representing the curr
 
  The trend arrow has five different stages:<br>
  **Large up stream**: The trend is increasing by 50% or more.<br>
- **Small up stream**: The trend is increasing between 0,5% to 25%.<br>
+ **Small up stream**: The trend is increasing between 0,5% to 50%.<br>
  **Large down stream**: The trend is decreasing by 50% or more.<br>
- **Small down stream**: The trend is decreasing between 0,5% to 25%.<br>
+ **Small down stream**: The trend is decreasing between 0,5% to 50%.<br>
  **Neutral**: Trend is going pretty much straight, spanning between +0,5% to -0,5%.
 
 #### Time-lapse
@@ -38,7 +38,7 @@ Time-lapse is a tool built into the plugin. The tool provides functionality to w
 This tool provides different use case scenarios i.e. monitoring abnormal activities, see how products evolves and a fancy way to show off the system for potential customers.
 
 ### Templating
-We are using templates as it provides a good way of sharing data between plugins. A template is a variable accessible by all the panels in a dashboard. For this dashboard, we're going to use three of them, which are called timetype, category and products.
+We are using templates as it provides a good way of sharing data between plugins. A template is a variable accessible by all the panels in a dashboard. For this dashboard, we're going to use three of them, which are called timetype, category and products. More information on Grafana Templates can be found [here](http://docs.grafana.org/reference/templating/).
 
 * The product template saves the products that should be shown in the graph. This is hidden for the user, but visible in the edit templates for the admin.
 * The timetype template is used to change how much time a node should represent, right now we have it setup so it can be 10 seconds, 1 min, 1 hour or 1 day. This will change the timetype in both the heatmap and the graph.
