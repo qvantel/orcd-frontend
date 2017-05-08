@@ -12,6 +12,7 @@ module.exports = function (config) {
       'src/TargetParser.js',
       'src/templateHandler.js',
       'src/Circles.js',
+      'src/TrendCalculator.js',
       'test/*.js'
     ],
 
@@ -19,6 +20,7 @@ module.exports = function (config) {
       'src/TargetParser.js': ['browserify'],
       'src/templateHandler.js': ['browserify'],
       'src/Circles.js': ['browserify'],
+      'src/TrendCalculator.js': ['browserify'],
       'test/*.js': ['browserify']
     },
 
