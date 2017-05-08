@@ -32,7 +32,6 @@ export class TemplateCtrl extends MetricsPanelCtrl {
 
     this.lightTheme = contextSrv.user.lightTheme;
     this.productSelector = new TemplateHandler(this, templateSrv, variableSrv);
-    this.productSelector.buildSimple('products', []);
     this.timelapse = new Timelapse(this, $interval);
     this.tooltip = new Tooltip(this);
     this.circles = new Circles(this);
@@ -46,11 +45,18 @@ export class TemplateCtrl extends MetricsPanelCtrl {
     this.testCounter = 0;
     this.indexCalculator = new IndexCalculator();
 
+    if (this.dashboard.snapshot) {
+      this.selected = this.productSelector.variableExists('products') ? this.productSelector.getOptionsValuesByName('products').value : [];
+    } else {
+      this.selected = this.productSelector.variableExists('products') ? this.productSelector.getOptionsValuesByName('products').map(function (option) {
+        return option.value;
+      }) : [];
+    }
     this.events.on('render', this.onRender.bind(this));
     this.events.on('data-received', this.onDataReceived.bind(this));
     this.events.on('data-error', this.onDataError.bind(this));
     this.events.on('data-snapshot-load', this.onDataReceived.bind(this));
-    // this.events.on('init-edit-mode', this.onInitEditMode.bind(this));
+    // this.events.on('init-edit-mode', this.onInitEditMode.bind(this)); //For options. Currently no options are implemented.
   }
 
   onDataError () {
@@ -99,6 +105,10 @@ export class TemplateCtrl extends MetricsPanelCtrl {
     }
   }
 
+  onDataSnapshotLoad (snapshotData) {
+    this.onDataReceived(snapshotData);
+  }
+
   // Renders circles and copies timelapse data.
   onRender () {
     this.circles.drawCircles(this.currentDataList);
@@ -131,19 +141,21 @@ export class TemplateCtrl extends MetricsPanelCtrl {
 
   // Handles when a circle is clicked. Sets clicked circle as selected and changes it's color based on grafanas graph panel.
   handleCircleClick (data, index) {
-    var serviceName = this.targetParser.parseName(data.target);
+    if (!this.dashboard.snapshot) {
+      var serviceName = this.targetParser.parseName(data.target);
 
-    if (this.selected.includes(serviceName)) { // If service is in selected
-      this.selected = this.selected.filter(function (name) {
-        return name !== serviceName;
-      })
+      if (this.selected.includes(serviceName)) { // If service is in selected
+        this.selected = this.selected.filter(function (name) {
+          return name !== serviceName;
+        })
 
-      this.circles.setCircleColor(this.currentDataList, index, '.circle', this.lightTheme ? 'lightgrey' : 'white');
-    } else {
-      this.selected.push(serviceName);
+        this.circles.setCircleColor(this.currentDataList, index, '.circle', this.lightTheme ? 'lightgrey' : 'white');
+      } else {
+        this.selected.push(serviceName);
+      }
+
+      this.productSelector.buildSimple('products', this.selected); // Add product to grafana template variable.
     }
-
-    this.productSelector.buildSimple('products', this.selected); // Add product to grafana template variable.
   }
 
   handleMouseEnter (data, index, mEvent) { // Change this

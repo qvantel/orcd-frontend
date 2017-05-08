@@ -190,4 +190,10 @@ export default class TemplateHandler {
 
         return res;
     }
+
+    getOptionsValuesByName (name) {
+      if (this.variableExists(name)) {
+        return this.variableSrv.variables[this.getVariableIndexByName(name)].options
+      }
+    }
 }
