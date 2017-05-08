@@ -84,7 +84,7 @@
           "targets": [
             {
               "refId": "B",
-              "target": "aliasByMetric(summarize(qvantel.product.$category.$products, '$timetype', 'sum', false))",
+              "target": "aliasByMetric(summarize(qvantel.product.$category.$products, '$timetype', 'sum', true))",
               "textEditor": true
             }
           ],
@@ -162,7 +162,7 @@
           "targets": [
             {
               "refId": "A",
-              "target": "summarize(qvantel.product.$category.*, '$timetype', 'sum', false)",
+              "target": "summarize(qvantel.product.$category.*, '$timetype', 'sum', true)",
               "textEditor": true
             }
           ],
@@ -243,7 +243,7 @@
     ]
   },
   "time": {
-    "from": "now-12h",
+    "from": "now-24h",
     "to": "now"
   },
   "timepicker": {
@@ -273,5 +273,5 @@
   },
   "timezone": "browser",
   "title": "Heatmap",
-  "version": 0
+  "version": 17
 }
