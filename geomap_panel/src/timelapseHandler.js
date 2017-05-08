@@ -160,9 +160,9 @@ export default class TimelapseHandler {
         var timestamp = this.current * this.timestampLength + this.firstTimestamp;
         this.setTimestampUI(timestamp);
 
-        this.ctrl.map.updateData();
-
         this.current += 1;
+
+        this.ctrl.map.updateData();
 
         // Update loop
         var self = this;
@@ -194,6 +194,6 @@ export default class TimelapseHandler {
      * @return {number} - The index as an integer.
      */
     getCurrent () {
-        return this.current;
+        return this.current - 1;
     }
 }

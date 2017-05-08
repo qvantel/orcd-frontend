@@ -62,9 +62,6 @@ export default class D3map {
             .append('path')
             .attr('class', 'country')
             .attr('id', function (d) { return d.id; })
-            .attr('fill', function (d) {
-                return self.colorScale(self.getCountryPercentage(d.id));
-            })
             .attr('d', path)
             .on('click', (d) => {
                 countryClicked(d);
@@ -85,7 +82,9 @@ export default class D3map {
                 .duration(200)
                 .style('opacity', 0);
             })
+
             self.updateStrokeColor();
+            self.updateCountryColor();
         });
 
         var legendWidth = width * 0.4;
@@ -161,7 +160,6 @@ export default class D3map {
                 }
             });
         }
-        this.updateStrokeColor();
     }
 
     /**
@@ -199,6 +197,39 @@ export default class D3map {
         this.sortCountries();
     }
 
+    updateCountryColor () {
+        var commonMinMax;
+
+        if (!this.ctrl.panel.individualMaxValue) {
+            commonMinMax = this.findCommonMinMaxValue();
+        }
+
+        var self = this;
+        d3.select('svg').selectAll('.country')
+        .attr('fill', function (d) {
+            return self.colorScale(Math.floor(self.getCountryPercentage(d.id, commonMinMax)));
+        });
+    }
+
+    findCommonMinMaxValue () {
+        var max = Number.MIN_VALUE;
+        var min = Number.MAX_VALUE;
+
+        for (var key in this.ctrl.data) {
+            var d = this.ctrl.data[key];
+            var current = d.cur;
+
+            if (this.ctrl.timelapseHandler.isAnimating) {
+                current = d.all[this.ctrl.timelapseHandler.getCurrent()];
+            }
+
+            max = Math.max(max, current);
+            min = Math.min(min, current);
+        }
+
+        return {min: min, max: max};
+    }
+
     getColor () {
       var color = this.strokeColors[this.currentColorIndex];
       this.currentColorIndex++;
@@ -207,43 +238,55 @@ export default class D3map {
     }
 
     updateData () {
-        var self = this;
-        d3.select('svg').selectAll('.country')
-        .attr('fill', function (d) {
-            return self.colorScale(self.getCountryPercentage(d.id));
-        });
-
+        this.updateCountryColor();
         this.updateTooltip();
     }
 
     updateTooltip () {
-        if (typeof this.tooltip === 'undefined' || typeof this.tooltipCurrentID === 'undefined') return;
+        if (typeof this.tooltip !== 'undefined' && typeof this.tooltipCurrentID !== 'undefined') {
+            var data = this.ctrl.data[this.tooltipCurrentID.toLowerCase()];
 
-        var data = this.ctrl.data[this.tooltipCurrentID.toLowerCase()];
+            if (typeof data !== 'undefined') {
+                var curr = data.cur;
+                var commonMinMax;
 
-        if (typeof data === 'undefined') return;
+                if (this.ctrl.timelapseHandler.isAnimating) {
+                    curr = data.all[this.ctrl.timelapseHandler.getCurrent()];
+                }
 
-        var curr = data.cur;
+                if (!this.ctrl.panel.individualMaxValue) {
+                    commonMinMax = this.findCommonMinMaxValue();
+                }
 
-        if (this.ctrl.timelapseHandler.isAnimating) {
-            curr = data.all[this.ctrl.timelapseHandler.getCurrent()];
+                var html = '<div class = \'d3tooltip-title\'>' + this.ctrl.locations.countries[this.tooltipCurrentID.toUpperCase()].name + '</div>';
+                html += '<div class = \'d3tooltip-info\'><div class = \'d3tooltip-left\'>Percent: </div><div class = \'d3tooltip-right\'>' + Math.floor(this.getCountryPercentage(this.tooltipCurrentID, commonMinMax)) + '%</div><div class = \'d3tooltip-clear\'></div></div>';
+                html += '<div class = \'d3tooltip-info\'><div class = \'d3tooltip-left\'>Current: </div><div class = \'d3tooltip-right\'>' + curr + '</div><div class = \'d3tooltip-clear\'></div></div>';
+
+                if (this.ctrl.panel.individualMaxValue) {
+                    html += '<div class = \'d3tooltip-info\'><div class = \'d3tooltip-left\'>Min: </div><div class = \'d3tooltip-right\'>' + data.min + '</div><div class = \'d3tooltip-clear\'></div></div>';
+                    html += '<div class = \'d3tooltip-info\'><div class = \'d3tooltip-left\'>Max: </div><div class = \'d3tooltip-right\'>' + data.max + '</div><div class = \'d3tooltip-clear\'></div></div>';
+                    html += '<div class = \'d3tooltip-info\'><div class = \'d3tooltip-left\'>Trend: </div><div class = \'d3tooltip-right\'>' + data.trend + '%</div><div class = \'d3tooltip-clear\'></div></div>';
+                } else {
+                    html += '<div class = \'d3tooltip-info\'><div class = \'d3tooltip-left\'>Common min: </div><div class = \'d3tooltip-right\'>' + commonMinMax.min + '</div><div class = \'d3tooltip-clear\'></div></div>';
+                    html += '<div class = \'d3tooltip-info\'><div class = \'d3tooltip-left\'>Common max: </div><div class = \'d3tooltip-right\'>' + commonMinMax.max + '</div><div class = \'d3tooltip-clear\'></div></div>';
+                }
+
+                this.tooltip.html(html);
+            }
         }
-
-        var html = '<div class = \'d3tooltip-title\'>' + this.ctrl.locations.countries[this.tooltipCurrentID.toUpperCase()].name + '</div>';
-        html += '<div class = \'d3tooltip-info\'><div class = \'d3tooltip-left\'>Percent: </div><div class = \'d3tooltip-right\'>' + Math.floor(this.getCountryPercentage(this.tooltipCurrentID)) + '%</div><div class = \'d3tooltip-clear\'></div></div>';
-        html += '<div class = \'d3tooltip-info\'><div class = \'d3tooltip-left\'>Current: </div><div class = \'d3tooltip-right\'>' + curr + '</div><div class = \'d3tooltip-clear\'></div></div>';
-        html += '<div class = \'d3tooltip-info\'><div class = \'d3tooltip-left\'>Min: </div><div class = \'d3tooltip-right\'>' + data.min + '</div><div class = \'d3tooltip-clear\'></div></div>';
-        html += '<div class = \'d3tooltip-info\'><div class = \'d3tooltip-left\'>Max: </div><div class = \'d3tooltip-right\'>' + data.max + '</div><div class = \'d3tooltip-clear\'></div></div>';
-        html += '<div class = \'d3tooltip-info\'><div class = \'d3tooltip-left\'>Trend: </div><div class = \'d3tooltip-right\'>' + data.trend + '%</div><div class = \'d3tooltip-clear\'></div></div>';
-        this.tooltip.html(html);
     }
 
-    getCountryPercentage (countryCode) {
+    getCountryPercentage (countryCode, commonMinMax) {
         var minMaxCur = this.ctrl.data[countryCode.toLowerCase()];
 
         if (typeof minMaxCur !== 'undefined') {
             var percent = 0;
             var max = minMaxCur.max;
+
+            if (typeof commonMax !== 'undefined' && commonMinMax.max >= 0) {
+                max = commonMinMax.max;
+            }
+
             var curr = minMaxCur.cur;
 
             if (this.ctrl.timelapseHandler.isAnimating) {
