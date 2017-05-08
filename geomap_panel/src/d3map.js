@@ -158,10 +158,10 @@ export default class D3map {
         }
 
         /**
-        * When a country has been clicked, check if ctrl or shift is countryClicked
+        * When a country has been clicked, check if ctrl or shift is pressed
         * Then decide if to mark or zoom into that country
         *
-        * @param {Object} o the country object clicked
+        * @param {Object} d the country object clicked
         */
         function countryClicked (d, debug) {
             if (!self.ctrl.dashboard.snapshot && (self.ctrl.inputHandler.isCtrlDown() || self.ctrl.inputHandler.isShiftDown() || debug)) {
@@ -230,7 +230,7 @@ export default class D3map {
     }
 
     /**
-    * Update the color for each countries
+    * Update the color for each country
     */
     updateCountryColor () {
         var commonMinMax;

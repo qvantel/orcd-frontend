@@ -79,19 +79,26 @@ describe('TimelapseHandler', () => {
     describe('when setting the timestamp interval', () => {
         beforeEach(() => {
             timelapseHandler.setTimestampInterval(0, 1000);
+            timelapseHandler.current = 10;
+            timelapseHandler.setTimestampInterval(1000, 2000);
         });
 
         it('it should set the first timestamp to 0', () => {
-            expect(timelapseHandler.firstTimestamp).to.equal(0);
+            expect(timelapseHandler.firstTimestamp).to.equal(1000);
         });
 
         it('it should set the last timestamp to 1000', () => {
-            expect(timelapseHandler.lastTimestamp).to.equal(1000);
+            expect(timelapseHandler.lastTimestamp).to.equal(2000);
+        });
+
+        it('it should set current to current - 1', () => {
+            expect(timelapseHandler.current).to.equal(9);
         });
     });
 
     function setupHandler () {
         ctrl = {
+            timestampLength: 1000,
             formatTime: () => {
                 return 'test'
             },
