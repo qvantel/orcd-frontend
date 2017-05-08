@@ -71,7 +71,8 @@ export default class TemplateHandler {
             options: options,
             current: current,
             query: query,
-            multi: multi
+            multi: multi,
+            hide: 2
         });
         this.variableSrv.variables.push(newVar);
 
@@ -188,5 +189,15 @@ export default class TemplateHandler {
         }
 
         return res;
+    }
+
+    /** Get object(s) from an existing variable.
+    * @param {String} name - The name of the variable containing the wanted options.
+    * @returns {Array} - An array of options from the variable with the name name.
+    */
+    getOptionsByName (name) {
+      if (this.variableExists(name)) {
+        return this.variableSrv.variables[this.getVariableIndexByName(name)].options;
+      }
     }
 }

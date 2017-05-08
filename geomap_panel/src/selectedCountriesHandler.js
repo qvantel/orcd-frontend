@@ -26,7 +26,7 @@ export default class SelectedCountriesHandler {
         } else {
             this.selectedCountries.splice(regionIndex, 1);
         }
-
+        this.selectedCountries = this.selectedCountries.sort();
         this.updateTemplateVariable();
     }
 
@@ -58,9 +58,14 @@ export default class SelectedCountriesHandler {
                 countriesOptions,
                 th.buildCurrent(this.formatQuery(countriesQuery), this.selectedCountries),
                 countriesQuery,
-                true
+                true,
+                2
             );
         }
+    }
+
+    isCountrySelected (country) {
+        return this.selectedCountries.indexOf(country.toLowerCase());
     }
 
     /**
@@ -68,5 +73,25 @@ export default class SelectedCountriesHandler {
     */
     formatQuery (query) {
         return query.split(',').join(' + ');
+    }
+
+    checkCountriesTemplate () {
+        this.selectedCountries = this.ctrl.templateHandler.getVariableCurrentValue('countries');
+
+        if (typeof this.selectedCountries === 'undefined') {
+            this.selectedCountries = [];
+        }
+
+        if (typeof this.ctrl.map !== 'undefined') {
+            this.ctrl.map.updateStrokeColor();
+        }
+    }
+
+    selectedCountriesAmount () {
+        return this.selectedCountries.length;
+    }
+
+    clear () {
+        this.ctrl.templateHandler.deleteVariable(templateName);
     }
 }

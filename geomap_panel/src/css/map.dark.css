@@ -1,16 +1,18 @@
 /* Stylesheet which will be used for the dark Grafana theme */
 
-/* Styling for GeoChart legend */
-.map text {
-    stroke: #000;
+.background {
+    fill: #1f1d1d;
 }
 
-/* Styling for the breadcrumbs */
-.breadcrumbs {
-    color: #fff;
-    text-shadow:
-    -1px -1px 0 #000,
-    1px -1px 0 #000,
-    -1px 1px 0 #000,
-    1px 1px 0 #000;
+.d3tooltip {
+    background: #292929;
+}
+
+.timelapse-player {
+    background: #292929;
+}
+
+.timelapse-progress {
+    background: #222222;
+    border: 1px solid #444444;
 }

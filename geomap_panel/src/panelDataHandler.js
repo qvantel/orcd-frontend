@@ -4,7 +4,7 @@ const panelDefaults = {
     showBreadcrumbs: true,
     clickToZoomEnabled: true,
     animate: true,
-    animationDuration: 2,
+    animationDuration: 0.5,
     showTrends: false,
     colorAmount: 1,
     colors: ['#6699cc'],
@@ -12,7 +12,8 @@ const panelDefaults = {
     zoomContinent: 'World',
     zoomSubContinent: 'None',
     zoomCountry: 'None',
-    useFakeData: false
+    useFakeData: false,
+    individualMaxValue: true
 };
 
 // This class is responsible for callbacks to subcribers for the panel data

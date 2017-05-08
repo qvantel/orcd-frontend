@@ -2,23 +2,21 @@ import {MetricsPanelCtrl} from 'app/plugins/sdk';
 import Circles from './Circles';
 import TrendCalculator from './TrendCalculator';
 import TemplateHandler from './templateHandler';
-import IndexCalculator from './IndexCalculator';
 import TargetParser from './TargetParser';
 import Timelapse from './Timelapse';
 import Tooltip from './Tooltip';
-import './css/template-panel.css!';
+import './css/heatmap.css!';
+import './css/general.css!';
+import './css/arrows.css!';
 import angular from 'angular';
 
-export class TemplateCtrl extends MetricsPanelCtrl {
-  constructor ($scope, $injector, $rootScope, templateSrv, variableSrv, $interval) {
+export class HeatmapCtrl extends MetricsPanelCtrl {
+  constructor ($scope, $injector, $rootScope, contextSrv, templateSrv, variableSrv, $interval) {
     super($scope, $injector);
     this.$rootScope = $rootScope;
 
     // These can be changed using grafana's options. Not yet implemented.
     var panelDefaults = {
-      circleWidth: 100,
-      min: 0,
-      max: 1000,
       colors: ['#7EB26D', '#EAB839', '#6ED0E0', '#EF843C', '#E24D42', '#1F78C1', '#BA43A9', '#705DA0', '#508642', '#CCA300', '#447EBC', '#C15C17', '#890F02', '#0A437C', '#6D1F62']
     };
 
@@ -28,8 +26,8 @@ export class TemplateCtrl extends MetricsPanelCtrl {
       }
     }
 
+    this.lightTheme = contextSrv.user.lightTheme;
     this.productSelector = new TemplateHandler(this, templateSrv, variableSrv);
-    this.productSelector.buildSimple('products', []);
     this.timelapse = new Timelapse(this, $interval);
     this.tooltip = new Tooltip(this);
     this.circles = new Circles(this);
@@ -41,13 +39,19 @@ export class TemplateCtrl extends MetricsPanelCtrl {
     this.currentMax = [];
     this.selectedMap = [];
     this.testCounter = 0;
-    this.indexCalculator = new IndexCalculator();
 
+    if (this.dashboard.snapshot) {
+      this.selected = this.productSelector.variableExists('products') ? this.productSelector.getOptionsByName('products').value : [];
+    } else {
+      this.selected = this.productSelector.variableExists('products') ? this.productSelector.getOptionsByName('products').map(function (option) {
+        return option.value;
+      }) : [];
+    }
     this.events.on('render', this.onRender.bind(this));
     this.events.on('data-received', this.onDataReceived.bind(this));
     this.events.on('data-error', this.onDataError.bind(this));
     this.events.on('data-snapshot-load', this.onDataReceived.bind(this));
-    // this.events.on('init-edit-mode', this.onInitEditMode.bind(this));
+    // this.events.on('init-edit-mode', this.onInitEditMode.bind(this)); //For options. Currently no options are implemented.
   }
 
   onDataError () {
@@ -96,44 +100,57 @@ export class TemplateCtrl extends MetricsPanelCtrl {
     }
   }
 
+  onDataSnapshotLoad (snapshotData) {
+    this.onDataReceived(snapshotData);
+  }
+
   // Renders circles and copies timelapse data.
   onRender () {
     this.circles.drawCircles(this.currentDataList);
     this.timelapse.dataList = this.currentDataList.slice();
     this.timelapse.step = 100 / (this.timelapse.dataList[0].datapoints.length - 1);
+
+    let rearragned = [];
+    for (let i = 0; i < this.currentDataList.length; i++) {
+      let productName = this.targetParser.parseName(this.currentDataList[i].target)
+
+      if (this.selected.includes(productName)) {
+        rearragned.push(productName);
+      } else {
+        this.circles.setCircleColor(this.currentDataList, i, '.circle', this.lightTheme ? 'lightgrey' : 'white');
+      }
+    }
+
+    for (let i = 0; i < rearragned.length; i++) {
+      let k = 0;
+
+      while (rearragned[i] !== this.targetParser.parseName(this.currentDataList[k].target) && this.currentDataList[k + 1] !== undefined) {
+        k++;
+      }
+
+      if (rearragned[i] === this.targetParser.parseName(this.currentDataList[k].target)) {
+        this.circles.setCircleColor(this.currentDataList, k, '.circle', this.panel.colors[i]);
+      }
+    }
   }
 
   // Handles when a circle is clicked. Sets clicked circle as selected and changes it's color based on grafanas graph panel.
   handleCircleClick (data, index) {
-    var serviceName = this.targetParser.parseName(data.target);
+    if (!this.dashboard.snapshot) {
+      var serviceName = this.targetParser.parseName(data.target);
 
-    if (this.selected.includes(serviceName)) { // If service is in selected
-      this.selected = this.selected.filter(function (name) {
-        return name !== serviceName;
-      })
-      this.selectedMap = this.selectedMap.filter(function (k) {
-        return k !== index;
-      })
-      this.circles.setCircleColor(this.currentDataList, index, '.circle', 'white'); // set white
+      if (this.selected.includes(serviceName)) { // If service is in selected
+        this.selected = this.selected.filter(function (name) {
+          return name !== serviceName;
+        })
 
-      for (var i = 0; i < this.selected.length; i++) {
-        this.circles.setCircleColor(this.currentDataList, this.selectedMap[i], '.circle', this.panel.colors[i]);
-      }
-    } else {
-      var n = 0;
-      while (index > this.selectedMap[n]) {
-        n++;
+        this.circles.setCircleColor(this.currentDataList, index, '.circle', this.lightTheme ? 'lightgrey' : 'white');
+      } else {
+        this.selected.push(serviceName);
       }
 
-      this.selected = this.selected.slice(0, n).concat(serviceName).concat(this.selected.slice(n));
-      this.selectedMap = this.selectedMap.slice(0, n).concat(index).concat(this.selectedMap.slice(n));
-
-      for (var k = 0; k < this.selected.length; k++) {
-        this.circles.setCircleColor(this.currentDataList, this.selectedMap[k], '.circle', this.panel.colors[k]);
-      }
+      this.productSelector.buildSimple('products', this.selected); // Add product to grafana template variable.
     }
-
-    this.productSelector.buildSimple('products', this.selected); // Add product to grafana template variable.
   }
 
   handleMouseEnter (data, index, mEvent) { // Change this
@@ -169,4 +186,4 @@ export class TemplateCtrl extends MetricsPanelCtrl {
   }
 }
 
-TemplateCtrl.templateUrl = 'module.html';
+HeatmapCtrl.templateUrl = 'module.html';

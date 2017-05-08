@@ -1,12 +1,11 @@
 import TargetParser from './TargetParser';
-import IndexCalculator from './IndexCalculator';
 
 /** Class for handling tooltip logic */
 export default class Tooltip {
   constructor (ctrl) {
     this.ctrl = ctrl;
+    this.current = 0;
     this.targetParser = new TargetParser();
-    this.indexCalculator = new IndexCalculator();
     this.show = false;
     this.name = '';
     this.value = 0;
@@ -31,8 +30,16 @@ export default class Tooltip {
     var panelRows = document.getElementsByClassName('panels-wrapper');
     var navbar = document.getElementsByClassName('navbar')[0];
 
+    this.current = index;
     this.name = this.targetParser.splitName(this.targetParser.parseName(data.target));
-    this.value = Math.round(data.datapoints[this.indexCalculator.getLatestPointIndex(data.datapoints)][0]);
+    if (this.ctrl.timelapse.state === 'stop') {
+      this.value = Math.round(data.datapoints[data.datapoints.length - 1][0]);
+    } else {
+      this.value = Math.round(data.datapoints[this.ctrl.timelapse.index][0]);
+    }
+    if (this.value === null) {
+      this.value = 0;
+    }
     this.trend = this.ctrl.currentTrend[index].trend;
     this.max = Math.round(this.ctrl.currentMax[index]);
 

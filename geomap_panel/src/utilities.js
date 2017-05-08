@@ -23,4 +23,8 @@ export default class Utilities {
     clamp01 (val) {
         return this.clamp(val, 0, 1);
     }
+
+    rand (min, max) {
+        return Math.floor(Math.random() * (max - min + 1) + min);
+    }
 }

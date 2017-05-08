@@ -1,16 +1,12 @@
 import * as d3 from './node_modules/d3/build/d3.min';
-import IndexCalculator from './IndexCalculator';
 
 /** Class responsible for drawing circles to the screen */
 export default class Circles {
   constructor (ctrl) {
     this.ctrl = ctrl;
     this.circleWidth = 100; // This should be set to this.ctrl.panel if changes are implemented.
-    this.max = ctrl.panel.max;
-    this.min = ctrl.panel.min;
     this.colors = ctrl.panel.colors;
     this.currentColorIndex = 0;
-    this.indexCalculator = new IndexCalculator();
   }
 
   /**
@@ -28,6 +24,7 @@ export default class Circles {
   *
   * @param {Object} d - contains target and datapoints.
   * @param {Integer} i - index of d.
+  * @return {d3.scale} a d3 scale that maps values to other values depending on d and i.
   */
   getScale (d, i) {
     var max = d3.max(d.datapoints.map(function (datapoint) {
@@ -69,16 +66,16 @@ export default class Circles {
       .attr('height', this.circleWidth + 60)
       .append('circle') // Append colored circles.
       .classed('circle', true)
-      .attr('fill', 'white')
+      .attr('fill', this.ctrl.lightTheme ? 'lightgrey' : 'white')
       .attr('cy', (this.circleWidth / 2) + 20)
       .attr('cx', (this.circleWidth / 2) + 20)
       .attr('r', function (d, i) {
         var scale = classContext.getScale(d, i);
         var index = 0;
-        if (pointIndex) {
+        if (pointIndex !== undefined) {
           index = pointIndex;
         } else {
-          index = classContext.indexCalculator.getLatestPointIndex(d.datapoints);
+          index = d.datapoints.length - 1;
         }
 
         if (d.datapoints[index][0]) {
@@ -97,7 +94,7 @@ export default class Circles {
       .attr('r', this.circleWidth / 2)
       .attr('fill-opacity', 0)
       .attr('stroke-width', 2)
-      .attr('stroke', 'grey');
+      .attr('stroke', this.ctrl.lightTheme ? 'grey' : 'grey');
 
     // Update size (and color) of already existing circles.
     this.updateCircleSize(dataList, '.circle', pointIndex);
@@ -124,10 +121,10 @@ export default class Circles {
       .attr('r', function (d, i) {
         var scale = classContext.getScale(d, i);
         var index = 0;
-        if (pointIndex) {
+        if (pointIndex !== undefined) {
           index = pointIndex;
         } else {
-          index = classContext.indexCalculator.getLatestPointIndex(d.datapoints);
+          index = d.datapoints.length - 1;
         }
 
         if (d.datapoints[index][0]) {

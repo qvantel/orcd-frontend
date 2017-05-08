@@ -1,5 +1,5 @@
 import './css/map.css!';
-import Map from './map';
+import D3map from './d3map';
 
 /**
 * This function will be responsible for building and rendering the maps
@@ -10,14 +10,13 @@ export default function link (scope, elem, attrs, ctrl) {
     // Bind the render call
     ctrl.events.on('render', function () {
         render();
-        // ctrl.renderingCompleted();
     });
 
     /**
     * Instantiate the map object
     */
     function initializeMap () {
-        ctrl.map = new Map(ctrl, mapContainer);
+        ctrl.map = new D3map(ctrl, mapContainer);
     }
 
     /**
@@ -25,10 +24,10 @@ export default function link (scope, elem, attrs, ctrl) {
     * Call the maps draw method if it's ready to be drawn
     */
     function render () {
-        if (!ctrl.map) {
+        if (!ctrl.map && typeof ctrl.data !== 'undefined') {
             initializeMap();
-        } else if (ctrl.map.ready) {
-            ctrl.map.draw();
+        } else if (typeof ctrl.data !== 'undefined') {
+            ctrl.map.updateData();
         }
     }
 }
