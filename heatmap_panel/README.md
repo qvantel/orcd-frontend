@@ -11,6 +11,8 @@ The heatmap panel contains functionality to visualize the products and lapse thr
 
 The graph plugin is used to show a timeline over how the popularity of selected products has evolved over time.
 
+The dashboard also has support for [Grafana Snapshots](http://docs.grafana.org/plugins/developing/snapshot-mode/).
+
 ### How to use
 When initiating the heatmap plugin into your dashboard, if the data source is selected, you will see a representation of all available products. Each product is visualized by a filled white-circle surrounded by a gray outline, where the circle's size represents the current data and the outline represents the biggest value of the data in the timespan.
 
