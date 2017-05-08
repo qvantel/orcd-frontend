@@ -17,9 +17,6 @@ export class HeatmapCtrl extends MetricsPanelCtrl {
 
     // These can be changed using grafana's options. Not yet implemented.
     var panelDefaults = {
-      circleWidth: 100,
-      min: 0,
-      max: 1000,
       colors: ['#7EB26D', '#EAB839', '#6ED0E0', '#EF843C', '#E24D42', '#1F78C1', '#BA43A9', '#705DA0', '#508642', '#CCA300', '#447EBC', '#C15C17', '#890F02', '#0A437C', '#6D1F62']
     };
 

@@ -5,8 +5,6 @@ export default class Circles {
   constructor (ctrl) {
     this.ctrl = ctrl;
     this.circleWidth = 100; // This should be set to this.ctrl.panel if changes are implemented.
-    this.max = ctrl.panel.max;
-    this.min = ctrl.panel.min;
     this.colors = ctrl.panel.colors;
     this.currentColorIndex = 0;
   }

@@ -11,12 +11,14 @@ module.exports = function (config) {
       'https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js',
       'src/TargetParser.js',
       'src/templateHandler.js',
+      'src/Circles.js',
       'test/*.js'
     ],
 
     preprocessors: {
       'src/TargetParser.js': ['browserify'],
       'src/templateHandler.js': ['browserify'],
+      'src/Circles.js': ['browserify'],
       'test/*.js': ['browserify']
     },
 
