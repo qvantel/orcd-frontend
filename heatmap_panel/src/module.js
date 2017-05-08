@@ -1,4 +1,4 @@
-import {TemplateCtrl} from './template_ctrl';
+import {HeatmapCtrl} from './HeatmapCtrl';
 import {loadPluginCss} from 'app/plugins/sdk';
 
 /**
@@ -10,5 +10,5 @@ loadPluginCss({
 });
 
 export {
-  TemplateCtrl as PanelCtrl
+   HeatmapCtrl as PanelCtrl
 };

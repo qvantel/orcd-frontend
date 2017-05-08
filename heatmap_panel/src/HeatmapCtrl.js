@@ -10,7 +10,7 @@ import './css/general.css!';
 import './css/arrows.css!';
 import angular from 'angular';
 
-export class TemplateCtrl extends MetricsPanelCtrl {
+export class HeatmapCtrl extends MetricsPanelCtrl {
   constructor ($scope, $injector, $rootScope, contextSrv, templateSrv, variableSrv, $interval) {
     super($scope, $injector);
     this.$rootScope = $rootScope;
@@ -189,4 +189,4 @@ export class TemplateCtrl extends MetricsPanelCtrl {
   }
 }
 
-TemplateCtrl.templateUrl = 'module.html';
+HeatmapCtrl.templateUrl = 'module.html';

@@ -1,12 +1,12 @@
 'use strict';
 
-System.register(['./template_ctrl', 'app/plugins/sdk'], function (_export, _context) {
+System.register(['./HeatmapCtrl', 'app/plugins/sdk'], function (_export, _context) {
     "use strict";
 
-    var TemplateCtrl, loadPluginCss;
+    var HeatmapCtrl, loadPluginCss;
     return {
-        setters: [function (_template_ctrl) {
-            TemplateCtrl = _template_ctrl.TemplateCtrl;
+        setters: [function (_HeatmapCtrl) {
+            HeatmapCtrl = _HeatmapCtrl.HeatmapCtrl;
         }, function (_appPluginsSdk) {
             loadPluginCss = _appPluginsSdk.loadPluginCss;
         }],
@@ -20,7 +20,7 @@ System.register(['./template_ctrl', 'app/plugins/sdk'], function (_export, _cont
                 light: 'plugins/heatmap-panel/css/heatmap.light.css'
             });
 
-            _export('PanelCtrl', TemplateCtrl);
+            _export('PanelCtrl', HeatmapCtrl);
         }
     };
 });
