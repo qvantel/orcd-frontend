@@ -244,6 +244,10 @@ export default class GeoMapPanelCtrl extends MetricsPanelCtrl {
             this.timestampLength = -1;
         }
     }
+
+    formatTime (timestamp) {
+        moment.unix(timestamp).format('DD-MM-YYYY HH:mm:ss')
+    }
 }
 
 GeoMapPanelCtrl.templateUrl = 'module.html';

@@ -55,8 +55,8 @@ export default class TrendCalculator {
   * @param {Object} datapoints - datapoints for calculating trendline.
   */
   getSimpleTrend (datapoints) {
-    var latestIndexNotNull = this.getFirstDatapointWithData(datapoints);
-    var firstIndexNotNull = this.getLastDatapointWithData(datapoints);
+    var latestIndexNotNull = datapoints.length - 1;
+    var firstIndexNotNull = 0;
     var y1 = datapoints[firstIndexNotNull][0];
     var y2 = datapoints[latestIndexNotNull][0];
 
