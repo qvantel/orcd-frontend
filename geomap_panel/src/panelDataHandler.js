@@ -1,17 +1,8 @@
 /** Default panel settings */
 const panelDefaults = {
-    showLegend: true,
-    showBreadcrumbs: true,
     clickToZoomEnabled: true,
     animate: true,
     animationDuration: 0.5,
-    showTrends: false,
-    colorAmount: 1,
-    colors: ['#6699cc'],
-    breadcrumbs: ['World'],
-    zoomContinent: 'World',
-    zoomSubContinent: 'None',
-    zoomCountry: 'None',
     useFakeData: false,
     individualMaxValue: true
 };
