@@ -64,7 +64,7 @@ export default class D3map {
         // Iterate all countries generated in the countries.json file
         // For each country, draw the borders and bind mouse events
         var g = svg.append('g');
-        d3.json('public/plugins/qvantel-geomap-panel/data/countries.json', function (world) {
+        d3.json('public/plugins/geomap-panel/data/countries.json', function (world) {
             g.append('g')
             .attr('id', 'countries')
             .selectAll('path')
@@ -165,7 +165,7 @@ export default class D3map {
         *
         * @param {Object} d the country object clicked
         */
-        function countryClicked (d, debug) {
+        function countryClicked (d) {
             if (!self.ctrl.dashboard.snapshot && typeof d !== 'undefined' && (self.ctrl.inputHandler.isCtrlDown() || self.ctrl.inputHandler.isShiftDown())) {
                 if (typeof self.ctrl.data[d.properties.ISO2.toLowerCase()] !== 'undefined') {
                   self.ctrl.selectedCountriesHandler.onCountryClicked(d.properties.ISO2);
@@ -181,15 +181,6 @@ export default class D3map {
                     zoom(xyz);
                 }
             }
-        }
-
-        if (this.debug) {
-            d3.json('public/plugins/qvantel-geomap-panel/data/countries.json', function (world) {
-                for (var i = 0; i < 180; i++) {
-                    self.ctrl.log(world.objects.countries.geometries[i]);
-                    countryClicked(world.objects.countries.geometries[i], true)
-                }
-            });
         }
     }
 
@@ -325,7 +316,7 @@ export default class D3map {
                 html = '<div class = \'d3tooltip-title\'>' + this.tooltipCurrentNAME + '</div>';
                 html += '<div class = \'d3tooltip-undefined\'>No available data</div>';
             }
-          
+
             this.tooltip.html(html);
         }
     }
