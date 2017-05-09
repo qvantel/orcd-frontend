@@ -80,7 +80,7 @@ You should now see the plugin displayed inside the panel you dropped the plugin 
 
 If your data source is setup, you'll want to access the **Metrics** for the dashboard. Click the titel of the panel and menu will appear, click the **Edit** option and a new section below the dashboard will appear. You will now see a set of tabs. The amount may vary depending on your plugin, but the tab we're currently interested in is the **Metrics** tab. Here, you'll be able to setup the query for your data source. This query will be specific to the plugin you're using.
 
-To setup the Graphite query for the plugin, please see the documentation for the respective plugin: [GeoMap documentation](geomap_panel#metrics) and [Heatmap documentation](heatmap_panel#metrics)
+To setup the Graphite query for the plugin, please see the documentation for the respective plugin: [GeoMap documentation](geomap_panel#metrics), [Heatmap documentation](heatmap_panel#metrics) and [Cassandra health documentation](cassandra_health_panel#metrics)
 
 ## Grafana themes
 Grafana also supports different themes. The default is the dark theme. If you'd rather want a lighter theme you can change it.
