@@ -69,7 +69,7 @@ When a datasource is setup and the panels are installed you have to create dashb
 ### Automatic setup
 To import our dashboards navigate to the dashboards menu next to the main Grafana menu in the top left corner. Press **import** at the bottom of the menu and a new window will appear. Next, press the **Upload .json File** button. You will find our dashboards in our repository at **Qvantel/QvantelFrontend/config/dashboards**.
 
-The dashboards that we have are one for the GeoMap panel, one for the Heatmap panel and a Home panel for easely navigating to either of these. Note that the GeoMap panel and Heatmap panel must be imported and named according to our json-files to function properly.
+The dashboards that we have are one for the GeoMap panel, one for the Heatmap panel and a Home panel for easily navigating to either of these. Note that the GeoMap panel and Heatmap panel must be imported and named according to our json-files to function properly.
 
 ### Manual setup
 To display the plugin you have to setup a dashboard. To do this, you will need to open up Grafana in your web browser and login to an account with administration access. When you're logged in, you can see a Grafana icon in the top left corner, click the icon and a dropdown will appear. Here you can see several options, but the one we want is the **Dashboards** option. A submenu will appear and here you'll want to navigate to **New**.
@@ -78,7 +78,7 @@ You will now see a list of plugins in a horizontal list, locate the plugin you i
 
 You should now see the plugin displayed inside the panel you dropped the plugin into. You will now need to add a data source in order to retrieve data for the plugin.
 
-If your data source is setup, you'll want to access the **Metrics** for the dashboard. Click the titel of the panel and menu will appear, click the **Edit** option and a new section below the dashboard will appear. You will now see a set of tabs. The amount may vary depending on your plugin, but the tab we're currently interested in is the **Metrics** tab. Here, you'll be able to setup the query for your data source. This query will be specific to the plugin you're using.
+If your data source is setup, you'll want to access the **Metrics** for the dashboard. Click the title of the panel and menu will appear, click the **Edit** option and a new section below the dashboard will appear. You will now see a set of tabs. The amount may vary depending on your plugin, but the tab we're currently interested in is the **Metrics** tab. Here, you'll be able to setup the query for your data source. This query will be specific to the plugin you're using.
 
 To setup the Graphite query for the plugin, please see the documentation for the respective plugin: [GeoMap documentation](geomap_panel#metrics), [Heatmap documentation](heatmap_panel#metrics) and [Cassandra Health documentation](cassandra_health_panel#metrics)
 
