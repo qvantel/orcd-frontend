@@ -34,15 +34,15 @@ There is also an option, next to the services option, to select the wanted time 
 **The last two mentioned options will need to be manually setup using template variable, which will be explained below.**
 
 ### Templating
-In order to filter the metrics in a more userfriendly way, we're using templates. A template is a variable accessable by all the panels in a dashboard. For this plugin, we're going to use 3 of them, one for services, one for the time aggregation and one for the selected countries. You will only need to add the service template and time aggregation templates, the worldmap plugin will dynamically handle the template variable for the selected countries.
+In order to filter the metrics in a more user friendly way, we're using templates. A template is a variable accessable by all the panels in a dashboard. For this plugin, we're going to use 3 of them, one for services, one for the time aggregation and one for the selected countries. You will only need to add the service template and time aggregation templates, the worldmap plugin will dynamically handle the template variable for the selected countries.
 
 In order to setup the template variables you'll first need to find the **cogwheel** (manage dashboard) in the top menu of the dashboard, clicking this will reveal a menu which includes the option **Templating**, select this option. Find the green **New** button and press it, it will direct you to where you add a new template variable. 
 
 For the services template variable, we used the following information, keep in mind that some of the options will be relative to your data source:
 1. Name: services
 2. Label: Services
-3. Type: query
-4. Datasource: (select your data source)
+3. Type: Query
+4. Datasource: (select your data source) [How to setup a datasource](https://github.com/flygare/QvantelFrontend#data-source-setup)
 5. Refresh: On Time Range Changed
 6. Query: qvantel.call.* (make sure this matches your configuration)
 7. Multi-value: true
@@ -55,7 +55,7 @@ For the services template variable, we used the following information, keep in m
 For the time aggregation template variable, we used the following information:
 1. Name: timespan
 2. Label: Timespan
-3. Type: custom
+3. Type: Custom
 4. Values: 1h,6h,12h,1d,7d,14d,30d
 5. Multi-value: false
 6. Include All Option: false
