@@ -5,7 +5,8 @@
   "main": "module.js",
   "scripts": {
     "test": "karma start --single-run",
-    "grunt":"grunt"
+    "grunt":"grunt",
+    "report-coverage": "codecov"
   },
   "keywords": [
     "test"

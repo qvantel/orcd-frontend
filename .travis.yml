@@ -2,6 +2,15 @@ language: node_js
 node_js:
   - "node"
 
+install:
+  - npm install -g istanbul
+  - npm install -g codecov
+
 before_script:
   - "export DISPLAY=:99.0"
   - "sh -e /etc/init.d/xvfb start"
+
+script:
+  - istanbul cover ./geomap_panel/node_modules/mocha/bin/_mocha --reporter lcovonly -- -R spec
+  - istanbul cover ./heatmap_panel/node_modules/mocha/bin/_mocha --reporter lcovonly -- -R spec
+  - codecov
