@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.com/flygare/QvantelFrontend.svg?token=LSeHcrYCJtK5fMzkMp9s&branch=master)](https://travis-ci.com/flygare/QvantelFrontend)
+[![Build Status](https://travis-ci.org/flygare/orcd-frontend.svg?branch=master)](https://travis-ci.org/flygare/orcd-frontend)
 
 # Qvantel Frontend
 This repository contains Grafana plugins, the included plugins are the GeoMap panel plugin and the Heatmap plugin. Here, we'll also go through how to install the plugins into Grafana, and how to set them up so they properly work. Both plugin supports retrieving data from a Graphite data source. The plugin may work with other data sources, but we can't guarantee nor support it.
