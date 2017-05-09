@@ -1,5 +1,5 @@
-# Cassandra Health Metrics dashboard
-Cassandra Health Metrics dashboard provides you with an overview performance visualization of your server.
+# Cassandra Health plugin
+Cassandra Health plugin provides you with an overview performance visualization of your server.
 Predefined dashboard currently displays:
 - Memory usage
 - CPU performance usage
@@ -12,7 +12,7 @@ Predefined dashboard currently displays:
 
 
 ## Plugins
-Cassandra Health Metrics dashboard uses 2 existing plugins.
+Cassandra Health plugin uses 2 existing plugins.
 Usage over time are displayed in [Graph by Grafana Labs](https://grafana.com/plugins/graph) while current value of data displays in [D3 Gauge by Brian Gann](https://github.com/briangann/grafana-gauge-panel)
 
 ### Modifications
@@ -26,6 +26,11 @@ When only one metric is defined the gauge will automatically set the value 100 a
 
 ## Installation
 
+### Metrics
+To get the plugin working, a data source is required. This is done by setting up a data source. The data source is needed to fetch server status values and display in a representative way. The dashboard does only support a Graphite data source, other data sources may need to be configured.
+
+Example when using metric to deliver CPU usage: `cassandra.cpu.usage`
+
 ### Dashboard
 We have exported an default dashboard into cassandraHealthDashboard.json, the file provides you with an existing dashboard.
 
@@ -38,8 +43,8 @@ Follow these steps to import cassandraHealthDashboard.json into Grafana:
 3. Define you custom metrics for each panel.
 
 ### Resource script
-To reach and push data dynamically every second to Grafana we have created a script [resourceUsageCassandra.sh](https://github.com/flygare/QvantelFrontend/blob/cassandrahealth/grafana-gauge-panel/resourceUsageCassandra.sh). The script pushes data into Cassandra.
+To reach and push data dynamically every second to Grafana we have created a script [resourceUsageCassandra.sh](resourceUsageCassandra.sh). The script pushes data into Cassandra.
 
 Follow these steps to run resourceUsageCassandra.sh
-1. Clone [resourceUsageCassandra.sh](https://github.com/flygare/QvantelFrontend/blob/cassandrahealth/grafana-gauge-panel/resourceUsageCassandra.sh)
+1. Clone [resourceUsageCassandra.sh](resourceUsageCassandra.sh)
 2. Run script `bash resourceUsageCassandra.sh`
