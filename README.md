@@ -66,3 +66,4 @@ To achieve this, press the Grafan icon to the top left corner, hover your profil
 ## Annotations
 Annotations are used to display events on the timelines for the heat and worldmap.
 Documentation on how to use annotations can be found [here](annotations.md).
+
