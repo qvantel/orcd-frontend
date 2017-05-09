@@ -5,7 +5,7 @@
   "description": "Grafana D3 Gauge Panel",
   "main": "module.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "grunt": "grunt"
   },
   "repository": {
     "type": "git",

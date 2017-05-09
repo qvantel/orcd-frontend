@@ -1,16 +1,15 @@
 {
   "type": "panel",
   "name": "GeoMap-panel",
-  "id": "qvantel-geomap-panel",
-
+  "id": "geomap-panel",
   "info": {
     "description": "GeoMap panel plugin for Grafana",
     "author": {
-      "name": "Qvantel Team"
+      "name": "Me"
     },
     "keywords": ["geomap", "panel"],
     "version": "1.0.0",
-    "updated": "2017-01-30"
+    "updated": "2017-05-09"
   },
 
   "dependencies": {

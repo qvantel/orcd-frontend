@@ -1,15 +1,15 @@
 {
   "type": "panel",
-  "name": "heatmap_panel",
+  "name": "HeatMap-panel",
   "id": "heatmap-panel",
   "info": {
-    "description": "heatmap panel",
+    "description": "HeatMap panel plugin for Grafana",
     "author": {
       "name": "Me"
     },
     "keywords": ["heatmap", "panel"],
     "version": "1.0.0",
-    "updated": "2017-04-04"
+    "updated": "2017-05-09"
   },
 
   "dependencies": {
