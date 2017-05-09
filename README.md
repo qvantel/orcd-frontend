@@ -22,9 +22,9 @@ Predefined dashboard currently displays:
 - Disk space usage
 - Amount of CDR's generated
 
-Documentation for this plugin can be found [here](grafana-gauge-panel).
+Documentation for this plugin can be found [here](cassandra-health-panel).
 
-![image of import](grafana-gauge-panel/src/img/dashboard.png)
+![image of import](cassandra-health-panel/src/img/dashboard.png)
 
 
 ## Plugin installation
