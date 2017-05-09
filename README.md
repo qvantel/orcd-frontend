@@ -22,13 +22,13 @@ Predefined dashboard currently displays:
 - Disk space usage
 - Amount of CDR's generated
 
-Documentation for this plugin can be found [here](cassandra-health_panel).
+Documentation for this plugin can be found [here](cassandra_health_panel).
 
-![image of import](cassandra-health_panel/src/img/dashboard.png)
+![image of import](cassandra_health_panel/src/img/dashboard.png)
 
 
 ## Plugin installation
-To install a plugin you'll need to download the folder for the wanted plugin found in this repository. If you want to install the GeoMap panel plugin, you need to download the **geomap_panel** folder, if you want to install the Heatmap plugin, you need to download the **heatmap_panel** folder and if you want to install the Cassandra Health Metrics dashboard you need to download the **cassandra-health-panel** folder.
+To install a plugin you'll need to download the folder for the wanted plugin found in this repository. If you want to install the GeoMap panel plugin, you need to download the **geomap_panel** folder, if you want to install the Heatmap plugin, you need to download the **heatmap_panel** folder and if you want to install the Cassandra Health Metrics dashboard you need to download the **cassandra_health-panel** folder.
 
 The script **containers.sh** in our [main repository](https://github.com/flygare/Qvantel) will start all backend containers and Grafana container where both of the panels are installed.
 
