@@ -26,6 +26,7 @@
     "grunt-contrib-copy": "^1.0.0",
     "grunt-contrib-uglify": "^2.0.0",
     "grunt-contrib-watch": "^1.0.0",
+    "grunt-auto-install": "^0.3.1",
     "grunt-execute": "^0.2.2",
     "grunt-systemjs-builder": "^0.2.7",
     "isparta": "^4.0.0",

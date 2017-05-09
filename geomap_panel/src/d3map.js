@@ -1,5 +1,5 @@
-import * as d3 from './lib/d3.min';
-import * as topojson from './lib/topojson.v2.min.js';
+import * as d3 from './node_modules/d3/build/d3.min';
+import * as topojson from './node_modules/topojson/dist/topojson.min';
 
 export default class D3map {
     constructor (ctrl, onReadyCallback) {
@@ -13,6 +13,7 @@ export default class D3map {
         this.currentColorIndex = 0;
         this.tooltip;
         this.tooltipCurrentID;
+        this.tooltipCurrentNAME;
         this.createMap();
     }
 
@@ -71,7 +72,7 @@ export default class D3map {
             .enter()
             .append('path')
             .attr('class', 'country')
-            .attr('id', function (d) { return d.id; })
+            .attr('id', function (d) { return d.properties.ISO2; })
             .attr('d', path)
             .on('click', (d) => {
                 countryClicked(d);
@@ -80,7 +81,8 @@ export default class D3map {
                 self.tooltip.transition()
                 .duration(200)
                 .style('opacity', 1);
-                self.tooltipCurrentID = d.id;
+                self.tooltipCurrentID = d.properties.ISO2;
+                self.tooltipCurrentNAME = d.properties.NAME
                 self.updateTooltip();
             })
             .on('mousemove', function (d) {
@@ -164,8 +166,10 @@ export default class D3map {
         * @param {Object} d the country object clicked
         */
         function countryClicked (d, debug) {
-            if (!self.ctrl.dashboard.snapshot && (self.ctrl.inputHandler.isCtrlDown() || self.ctrl.inputHandler.isShiftDown() || debug)) {
-                self.ctrl.selectedCountriesHandler.onCountryClicked(d.id);
+            if (!self.ctrl.dashboard.snapshot && typeof d !== 'undefined' && (self.ctrl.inputHandler.isCtrlDown() || self.ctrl.inputHandler.isShiftDown())) {
+                if (typeof self.ctrl.data[d.properties.ISO2.toLowerCase()] !== 'undefined') {
+                  self.ctrl.selectedCountriesHandler.onCountryClicked(d.properties.ISO2);
+                }
             } else if (self.ctrl.panel.clickToZoomEnabled) {
                 if (typeof d !== 'undefined' && self.country !== d) {
                     let xyz = getXyz(d);
@@ -244,7 +248,7 @@ export default class D3map {
         var self = this;
         d3.select('svg').selectAll('.country')
         .attr('fill', function (d) {
-            return self.colorScale(Math.floor(self.getCountryPercentage(d.id, commonMinMax)));
+            return self.colorScale(Math.floor(self.getCountryPercentage(d.properties.ISO2, commonMinMax)));
         });
     }
 
@@ -287,6 +291,7 @@ export default class D3map {
         // Make sure that the tooltip has been initialized and that it has a valid country connected to it
         if (typeof this.tooltip !== 'undefined' && typeof this.tooltipCurrentID !== 'undefined') {
             var data = this.ctrl.data[this.tooltipCurrentID.toLowerCase()];
+            var html;
 
             // Make sure that the country has data
             if (typeof data !== 'undefined') {
@@ -303,7 +308,7 @@ export default class D3map {
                     commonMinMax = this.findCommonMinMaxValue();
                 }
 
-                var html = '<div class = \'d3tooltip-title\'>' + this.ctrl.locations.countries[this.tooltipCurrentID.toUpperCase()].name + '</div>';
+                html = '<div class = \'d3tooltip-title\'>' + this.tooltipCurrentNAME + '</div>';
                 html += '<div class = \'d3tooltip-info\'><div class = \'d3tooltip-left\'>Percent: </div><div class = \'d3tooltip-right\'>' + Math.floor(this.getCountryPercentage(this.tooltipCurrentID, commonMinMax)) + '%</div><div class = \'d3tooltip-clear\'></div></div>';
                 html += '<div class = \'d3tooltip-info\'><div class = \'d3tooltip-left\'>Current: </div><div class = \'d3tooltip-right\'>' + curr + '</div><div class = \'d3tooltip-clear\'></div></div>';
 
@@ -316,8 +321,12 @@ export default class D3map {
                     html += '<div class = \'d3tooltip-info\'><div class = \'d3tooltip-left\'>Common max: </div><div class = \'d3tooltip-right\'>' + commonMinMax.max + '</div><div class = \'d3tooltip-clear\'></div></div>';
                 }
 
-                this.tooltip.html(html);
+            } else {
+                html = '<div class = \'d3tooltip-title\'>' + this.tooltipCurrentNAME + '</div>';
+                html += '<div class = \'d3tooltip-undefined\'>No available data</div>';
             }
+          
+            this.tooltip.html(html);
         }
     }
 

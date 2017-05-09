@@ -1,10 +1,10 @@
 [![Build Status](https://travis-ci.com/flygare/QvantelFrontend.svg?token=LSeHcrYCJtK5fMzkMp9s&branch=master)](https://travis-ci.com/flygare/QvantelFrontend)
 
 # Qvantel Frontend
-This repository contains Grafana plugins, the included plugins are the GeoMap panel plugin and the Heatmap plugin. Here, we'll also go through how to install the plugins into Grafana, and how to set them up so they work properly. Both plugins support retrieving data from a Graphite data source. The plugin may work with other data sources, but we can't guarantee nor support it.
+This repository contains Grafana plugins, the included plugins are the GeoMap panel plugin and the Heatmap plugin. Here, we'll also go through how to install the plugins into Grafana, and how to set them up so they work properly. Both plugins support retrieving data from a Graphite data source. The plugin may work with other data sources, but we this has not been tested.
 
 ## GeoMap panel plugin
-The GeoMap panel plugin visualizes roaming calls for each country. This is achieved by using the map service from Google GeoCharts. Each country will receive a color based on their frequency of roaming calls and the color is determined by a color gradient. If a country has less frequency, its color will be picked on the left hand side of the gradient. Documentation for this plugin can be found [here](geomap_panel#geomap-panel-plugin-for-grafana).
+The GeoMap panel plugin visualizes roaming calls for each country. Each country will receive a color based on their frequency of roaming calls and the color is determined by a color gradient. If a country has less frequency, its color will be picked on the left hand side of the gradient. Documentation for this plugin can be found [here](geomap_panel#geomap-panel-plugin-for-grafana).
 
 ![GeoMap Preview](geomap_panel/images/GeoMap_Preview_Dark.gif)
 
@@ -30,7 +30,7 @@ Documentation for this plugin can be found [here](cassandra-health-panel).
 ## Plugin installation
 To install a plugin you'll need to download the folder for the wanted plugin found in this repository. If you want to install the GeoMap panel plugin, you need to download the **geomap_panel** folder, if you want to install the Heatmap plugin, you need to download the **heatmap_panel** folder and if you want to install the Cassandra Health Metrics dashboard you need to download the **cassandra-health-panel** folder.
 
-The script **containers.sh** in our [main repository](..) will start all backend containers and Grafana container where both of the panels are installed.
+The script **containers.sh** in our [main repository](https://github.com/flygare/Qvantel) will start all backend containers and Grafana container where both of the panels are installed.
 
 ### Manual setup
 When you have downloaded the folder you want, move the folder into the **plugins** folder found inside the Grafana directory. Just move the folder manually or execute a command line to do it for you:

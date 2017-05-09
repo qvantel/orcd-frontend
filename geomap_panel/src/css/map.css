@@ -47,6 +47,11 @@ li.key {
     padding-right: 4px;
 }
 
+.d3tooltip .d3tooltip-undefined {
+    color: #32D1DF;
+    font-style: italic;
+}
+
 .d3tooltip .d3tooltip-right {
     float: right;
 }
