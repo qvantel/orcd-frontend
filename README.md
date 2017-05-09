@@ -32,7 +32,6 @@ To install a plugin you'll need to download the folder for the wanted plugin fou
 
 The script **containers.sh** in the [main repository](https://github.com/flygare/Qvantel) will start all backend containers and Grafana container where both of the panels are installed.
 
-### Manual setup
 When you have downloaded the folder you want, move the folder into the **plugins** folder found inside your Grafana plugin directory. Just move the folder manually or execute a command line to do it for you:
 ```
 cp -fr CURRENT_PLUGIN_FOLDER_LOCATION YOUR_GRAFANA_PLUGIN_FOLDER_LOCATION
@@ -45,14 +44,6 @@ Now that we have all the dependencies needed, we will need to build the plugin, 
 ```
 grunt
 ```
-
-### Automatic setup
-This can also be done automatically by executing the **install.sh** script. This script will move the files to the Grafana plugin folder, install dependencies with npm and build the plugin with grunt. The script accepts a location parameter, this parameter will need to point to your Grafanas plugin folder. If the location parameter is not present, it will try to move the folder to **$HOME/grafana/plugins**.
-```
-./install.sh YOUR_GRAFANA_PLUGIN_FOLDER_LOCATION
-```
-
-Note: If you're running Grafana in a docker container, you'll need to restart the container in order for the plugin to show up.
 
 ## Data source setup
 In order for your plugin to retrieve data, you'll need to setup a data source. We're currently only supporting Graphite as a data source. Other data sources may work, but we can't guarantee it.
