@@ -11,5 +11,6 @@ before_script:
   - "sh -e /etc/init.d/xvfb start"
 
 script:
-  - istanbul cover ./node_modules/mocha/bin/_mocha --reporter lcovonly -- -R spec
+  - istanbul cover ./geomap_panel/node_modules/mocha/bin/_mocha --reporter lcovonly -- -R spec
+  - istanbul cover ./heatmap_panel/node_modules/mocha/bin/_mocha --reporter lcovonly -- -R spec
   - codecov
