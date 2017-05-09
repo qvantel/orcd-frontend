@@ -90,3 +90,6 @@ To achieve this, press the Grafan icon to the top left corner, hover your profil
 ## Annotations
 Annotations are used to display events on the timelines for the heat and worldmap.
 Documentation on how to use annotations can be found [here](annotations.md).
+
+## Wiki
+Since Grafana's documentation information we've needed, we have written a document around how we have used Grafana. This document can be found [here](https://github.com/flygare/orcd-frontend/wiki/Developing-Grafana-plugins).
