@@ -14,8 +14,8 @@ The heatmap panel contains functionality to visualize product usage and lapse th
 ![Heatmap Preview](heatmap_panel/images/heatmap-dashboard-dark.png)
 
 
-## Cassandra Health Metrics dashboard
-Cassandra Health Metrics dashboard provides you with an overview performance visualization of your server.
+## Cassandra Health plugin
+Cassandra Health plugin provides you with an overview performance visualization of your server.
 Predefined dashboard currently displays:
 - Memory usage
 - CPU performance usage
@@ -28,7 +28,7 @@ Documentation for this plugin can be found [here](cassandra_health_panel).
 
 
 ## Plugin installation
-To install a plugin you'll need to download the folder for the wanted plugin found in this repository. If you want to install the GeoMap panel plugin, you need to download the **geomap_panel** folder, if you want to install the Heatmap plugin, you need to download the **heatmap_panel** folder and if you want to install the Cassandra Health Metrics dashboard you need to download the **cassandra_health-panel** folder.
+To install a plugin you'll need to download the folder for the wanted plugin found in this repository. If you want to install the GeoMap panel plugin, you need to download the **geomap_panel** folder, if you want to install the Heatmap plugin, you need to download the **heatmap_panel** folder and if you want to install the Cassandra Health Metrics dashboard you need to download the **cassandra_health_panel** folder.
 
 The script **containers.sh** in our [main repository](https://github.com/flygare/Qvantel) will start all backend containers and Grafana container where both of the panels are installed.
 

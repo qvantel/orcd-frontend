@@ -1,5 +1,5 @@
-# Cassandra Health Metrics dashboard
-Cassandra Health Metrics dashboard provides you with an overview performance visualization of your server.
+# Cassandra Health plugin
+Cassandra Health plugin provides you with an overview performance visualization of your server.
 Predefined dashboard currently displays:
 - Memory usage
 - CPU performance usage
@@ -12,7 +12,7 @@ Predefined dashboard currently displays:
 
 
 ## Plugins
-Cassandra Health Metrics dashboard uses 2 existing plugins.
+Cassandra Health plugind uses 2 existing plugins.
 Usage over time are displayed in [Graph by Grafana Labs](https://grafana.com/plugins/graph) while current value of data displays in [D3 Gauge by Brian Gann](https://github.com/briangann/grafana-gauge-panel)
 
 ### Modifications
