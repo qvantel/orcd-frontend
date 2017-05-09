@@ -13,6 +13,20 @@ The heatmap panel contains functionality to visualize product usage and lapse th
 
 ![Heatmap Preview](heatmap_panel/images/heatmap-dashboard-dark.png)
 
+
+## Cassandra Health Metrics dashboard
+Cassandra Health Metrics dashboard provides you with an overview performance visualization of your server.
+Predefined dashboard currently displays:
+- Memory usage
+- CPU performance usage
+- Disk space usage
+- Amount of CDR's generated
+
+Documentation for this plugin can be found [here](grafana-gauge-panel).
+
+![image of import](grafana-gauge-panel/src/img/dashboard.png)
+
+
 ## Plugin installation
 To install a plugin you'll need to download the folder for the wanted plugin found in this repository. If you want to install the GeoMap panel plugin, you need to download the **geomap_panel** folder and if you want to install the Heatmap plugin, you need to download the **heatmap_panel** folder.
 
