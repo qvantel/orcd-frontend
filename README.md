@@ -1,7 +1,7 @@
 [![Build Status](https://travis-ci.com/flygare/QvantelFrontend.svg?token=LSeHcrYCJtK5fMzkMp9s&branch=master)](https://travis-ci.com/flygare/QvantelFrontend)
 
 # Qvantel Frontend
-This repository contains Grafana plugins, the included plugins are the GeoMap panel plugin and the Heatmap plugin. Here, we'll also go through how to install the plugins into Grafana, and how to set them up so they work properly. Both plugins support retrieving data from a Graphite data source. The plugin may work with other data sources, but we this has not been tested.
+This repository contains Grafana plugins, the included plugins are the GeoMap panel plugin, the Heatmap plugin and the Cassandra Health plugin. Here, we'll also go through how to install the plugins into Grafana, and how to set them up so they work properly. Both plugins support retrieving data from a Graphite data source. The plugin may work with other data sources, but we this has not been tested.
 
 ## GeoMap panel plugin
 The GeoMap panel plugin visualizes roaming calls for each country. Each country will receive a color based on their frequency of roaming calls and the color is determined by a color gradient. If a country has less frequency, its color will be picked on the left hand side of the gradient. Documentation for this plugin can be found [here](geomap_panel#geomap-panel-plugin-for-grafana).
@@ -80,7 +80,7 @@ You should now see the plugin displayed inside the panel you dropped the plugin 
 
 If your data source is setup, you'll want to access the **Metrics** for the dashboard. Click the titel of the panel and menu will appear, click the **Edit** option and a new section below the dashboard will appear. You will now see a set of tabs. The amount may vary depending on your plugin, but the tab we're currently interested in is the **Metrics** tab. Here, you'll be able to setup the query for your data source. This query will be specific to the plugin you're using.
 
-To setup the Graphite query for the plugin, please see the documentation for the respective plugin: [GeoMap documentation](geomap_panel#metrics), [Heatmap documentation](heatmap_panel#metrics) and [Cassandra health documentation](cassandra_health_panel#metrics)
+To setup the Graphite query for the plugin, please see the documentation for the respective plugin: [GeoMap documentation](geomap_panel#metrics), [Heatmap documentation](heatmap_panel#metrics) and [Cassandra Health documentation](cassandra_health_panel#metrics)
 
 ## Grafana themes
 Grafana also supports different themes. The default is the dark theme. If you'd rather want a lighter theme you can change it.
