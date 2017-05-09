@@ -22,9 +22,9 @@ Predefined dashboard currently displays:
 - Disk space usage
 - Amount of CDR's generated
 
-Documentation for this plugin can be found [here](cassandra-health-panel).
+Documentation for this plugin can be found [here](cassandra-health_panel).
 
-![image of import](cassandra-health-panel/src/img/dashboard.png)
+![image of import](cassandra-health_panel/src/img/dashboard.png)
 
 
 ## Plugin installation
