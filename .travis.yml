@@ -3,7 +3,7 @@ node_js:
   - "node"
 
 install:
-  - npm install instanbul
+  - npm install -g instanbul
   - npm install -g codecov
 
 before_script:
