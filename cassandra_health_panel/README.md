@@ -12,7 +12,7 @@ Predefined dashboard currently displays:
 
 
 ## Plugins
-Cassandra Health plugind uses 2 existing plugins.
+Cassandra Health plugin uses 2 existing plugins.
 Usage over time are displayed in [Graph by Grafana Labs](https://grafana.com/plugins/graph) while current value of data displays in [D3 Gauge by Brian Gann](https://github.com/briangann/grafana-gauge-panel)
 
 ### Modifications
