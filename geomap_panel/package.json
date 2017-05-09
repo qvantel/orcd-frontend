@@ -5,6 +5,7 @@
   "main": "module.js",
   "scripts": {
     "grunt": "grunt",
+    "report-coverage": "codecov",
     "test": "karma start --single-run",
     "test:watch": "karma start"
   },
