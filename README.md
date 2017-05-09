@@ -76,3 +76,35 @@ To achieve this, press the Grafan icon to the top left corner, hover your profil
 ## Annotations
 Annotations are used to display events on the timelines for the heat and worldmap.
 Documentation on how to use annotations can be found [here](annotations.md).
+
+## Cassandra Health Metrics dashboard
+Cassandra Health Metrics dashboard provides you with an overview performance visualization of your server.
+Predefined dashboard currently displays:
+- Memory usage
+- CPU performance usage
+- Disk space usage
+- Amount of CDR's generated
+
+### Screenshots
+
+![image of import](src/img/dashboard.png)
+
+### Installation
+
+#### Dashboard
+We have exported an default dashboard into cassandraHealthDashboard.json, the file provides you with an existing dashboard.
+
+Follow these steps to import cassandraHealthDashboard.json into Grafana:
+1. Clone [cassandraHealthDashboard.json](cassandraHealthDashboard.json)
+2. Import cassandraHealthDashboard.json
+
+   ![image of import](src/img/import.png)
+
+3. Define you custom metrics for each panel.
+
+#### Resource script
+To reach and push data dynamically every second to Grafana we have created a script [resourceUsageCassandra.sh](https://github.com/flygare/QvantelFrontend/blob/cassandrahealth/grafana-gauge-panel/resourceUsageCassandra.sh). The script pushes data into Cassandra.
+
+Follow these steps to run resourceUsageCassandra.sh
+1. Clone [resourceUsageCassandra.sh](https://github.com/flygare/QvantelFrontend/blob/cassandrahealth/grafana-gauge-panel/resourceUsageCassandra.sh)
+2. Run script `bash resourceUsageCassandra.sh`
