@@ -3,7 +3,7 @@ module.exports = function (grunt) {
 
   grunt.loadNpmTasks('grunt-execute');
   grunt.loadNpmTasks('grunt-contrib-clean');
-  grunt.loadNpmTasks('grunt-contrib-watch');
+  grunt.loadNpmTasks('grunt-auto-install');
 
   grunt.initConfig({
 
@@ -25,7 +25,7 @@ module.exports = function (grunt) {
 
     watch: {
       options: {
-        livereload: true
+         livereload: true
       },
       rebuild_all: {
         files: ['src/**/*', 'plugin.json'],
@@ -49,8 +49,22 @@ module.exports = function (grunt) {
           ext: '.js'
         }]
       }
-    }
+    },
 
+    auto_install: {
+      local: {},
+      src: {
+        options: {
+          cwd: 'src',
+          stdout: true,
+          stderr: true,
+          failOnError: true,
+          npm: '--production'
+        }
+      }
+    }
   });
-  grunt.registerTask('default', ['clean', 'copy:src_to_dist', 'copy:pluginDef', 'babel']);
+
+  grunt.registerTask('default', ['clean', 'auto_install', 'copy:src_to_dist', 'copy:pluginDef', 'babel']);
+  grunt.registerTask('dev', ['clean', 'copy:src_to_dist', 'copy:pluginDef', 'babel']);
 };
