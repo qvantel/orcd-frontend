@@ -18,7 +18,8 @@ if [[ $OSTYPE == *"darwin"* ]]; then
     -v $HOME/Qvantel/QvantelFrontend/config/lib/grafana.db:/var/lib/grafana/grafana.db \
     -v $HOME/Qvantel/QvantelFrontend/config/etc:/etc/grafana \
     -v $HOME/Qvantel/QvantelFrontend/geomap_panel/dist/:/var/lib/grafana/plugins/geomap_panel \
-    -v $HOME/Qvantel/QvantelFrontend/heatmap_panel/:/var/lib/grafana/plugins/heatmap_panel \
+    -v $HOME/Qvantel/QvantelFrontend/heatmap_panel/dist/:/var/lib/grafana/plugins/heatmap_panel \
+    -v $HOME/Qvantel/QvantelFrontend/cassandra-health-panel/dist/:/var/lib/grafana/plugins/cassandra-health-panel \
     grafana/grafana
 
 else
@@ -35,6 +36,6 @@ else
     -v $HOME/Qvantel/QvantelFrontend/heatmap_panel/:/var/lib/grafana/plugins/heatmap_panel \
     -v $HOME/Qvantel/QvantelFrontend/geomap_panel/dist/:/var/lib/grafana/plugins/geomap_panel \
     grafana/grafana
-    
+
     sudo chown student:student ../QvantelFrontend -R
 fi

@@ -61,7 +61,7 @@ export default class GeoMapPanelCtrl extends MetricsPanelCtrl {
     */
     loadLocations (callback) {
         var self = this;
-        $.getJSON('public/plugins/qvantel-geomap-panel/data/locations.json').then((res) => {
+        $.getJSON('public/plugins/geomap-panel/data/locations.json').then((res) => {
             self.locations = res;
             callback();
         });
@@ -71,7 +71,7 @@ export default class GeoMapPanelCtrl extends MetricsPanelCtrl {
     * Add a tab when the user enters edit mode within Grafana
     */
     onInitEditMode () {
-        this.addEditorTab('Options', 'public/plugins/qvantel-geomap-panel/editor.html', 2);
+        this.addEditorTab('Options', 'public/plugins/geomap-panel/editor.html', 2);
     }
 
     /**

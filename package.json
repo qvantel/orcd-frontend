@@ -1,8 +1,9 @@
 {
   "scripts": {
-    "build": "npm install && npm run grunt_geomap && npm run grunt_heatmap;",
+    "build": "npm install && npm run grunt_geomap && npm run grunt_heatmap && npm run grunt_cassandra_health_panel;",
     "grunt_geomap": "cd geomap_panel && npm install && npm run grunt && cd ..;",
     "grunt_heatmap": "cd heatmap_panel && npm install && npm run grunt && cd ..;",
+    "grunt_cassandra_health_panel": "cd cassandra_health_panel && npm install && npm run grunt && cd ..;",
     "testGeomap": "cd geomap_panel; npm install; npm test;",
     "testEslint": "eslint  templates/**/src/*.js geomap_panel/src/*.js",
     "testCsslint": "csslint templates/**/src/css/*.css geomap_panel/src/css/*.css",
