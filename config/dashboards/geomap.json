@@ -1,8 +1,8 @@
 {
   "__inputs": [
     {
-      "name": "DS_CN",
-      "label": "CN",
+      "name": "DS_GRAPHITE",
+      "label": "Graphite",
       "description": "",
       "type": "datasource",
       "pluginId": "graphite",
@@ -10,6 +10,12 @@
     }
   ],
   "__requires": [
+    {
+      "type": "panel",
+      "id": "geomap-panel",
+      "name": "GeoMap-panel",
+      "version": "1.0.0"
+    },
     {
       "type": "grafana",
       "id": "grafana",
@@ -27,18 +33,12 @@
       "id": "graphite",
       "name": "Graphite",
       "version": "1.0.0"
-    },
-    {
-      "type": "panel",
-      "id": "qvantel-geomap-panel",
-      "name": "GeoMap-panel",
-      "version": "1.0.0"
     }
   ],
   "annotations": {
     "list": [
       {
-        "datasource": "${DS_CN}",
+        "datasource": "${DS_GRAPHITE}",
         "enable": true,
         "iconColor": "rgba(255, 96, 96, 1)",
         "limit": 100,
@@ -71,8 +71,9 @@
           "colors": [
             "#6699cc"
           ],
-          "datasource": "${DS_CN}",
+          "datasource": "${DS_GRAPHITE}",
           "id": 1,
+          "individualMaxValue": true,
           "links": [],
           "mapRegion": "World",
           "maxDataPoints": "",
@@ -87,7 +88,7 @@
             }
           ],
           "title": "GeoMap",
-          "type": "qvantel-geomap-panel",
+          "type": "geomap-panel",
           "useFakeData": false,
           "zoomContinent": "World",
           "zoomCountry": "None",
@@ -108,7 +109,7 @@
         {
           "aliasColors": {},
           "bars": false,
-          "datasource": "${DS_CN}",
+          "datasource": "${DS_GRAPHITE}",
           "fill": 1,
           "id": 2,
           "legend": {
@@ -191,45 +192,23 @@
     "list": [
       {
         "allValue": null,
-        "current": {
-          "selected": true,
-          "text": "All",
-          "value": "$__all"
-        },
+        "current": {},
+        "datasource": "${DS_GRAPHITE}",
         "hide": 0,
         "includeAll": true,
         "label": "Services",
         "multi": true,
         "name": "services",
-        "options": [
-          {
-            "selected": true,
-            "text": "All",
-            "value": "$__all"
-          },
-          {
-            "selected": false,
-            "text": "data",
-            "value": "data"
-          },
-          {
-            "selected": false,
-            "text": "mms",
-            "value": "mms"
-          },
-          {
-            "selected": false,
-            "text": "sms",
-            "value": "sms"
-          },
-          {
-            "selected": false,
-            "text": "voice",
-            "value": "voice"
-          }
-        ],
-        "query": "data,mms,sms,voice",
-        "type": "custom"
+        "options": [],
+        "query": "qvantel.call.*",
+        "refresh": 1,
+        "regex": "",
+        "sort": 0,
+        "tagValuesQuery": "",
+        "tags": [],
+        "tagsQuery": "",
+        "type": "query",
+        "useTags": false
       },
       {
         "allValue": null,
@@ -286,7 +265,7 @@
     ]
   },
   "time": {
-    "from": "now-3h",
+    "from": "now-6h",
     "to": "now"
   },
   "timepicker": {
@@ -316,5 +295,5 @@
   },
   "timezone": "browser",
   "title": "Geomap",
-  "version": 15
+  "version": 8
 }
