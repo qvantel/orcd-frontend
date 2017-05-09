@@ -28,6 +28,7 @@ When only one metric is defined the gauge will automatically set the value 100 a
 
 ### Metrics
 To get the plugin working, a data source is required. This is done by setting up a data source. The data source is needed to fetch server status values and display in a representative way. The dashboard does only support a Graphite data source, other data sources may need to be configured.
+Example when using metric to deliver CPU usage: `cassandra.cpu.usage`
 
 ### Dashboard
 We have exported an default dashboard into cassandraHealthDashboard.json, the file provides you with an existing dashboard.
