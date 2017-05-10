@@ -147,6 +147,31 @@ export class HeatmapCtrl extends MetricsPanelCtrl {
         this.circles.setCircleColor(this.currentDataList, index, '.circle', this.lightTheme ? 'lightgrey' : 'white');
       } else {
         this.selected.push(serviceName);
+
+        if (this.timelapse.state !== 'stop') {
+          let rearragned = [];
+          for (let i = 0; i < this.currentDataList.length; i++) {
+            let productName = this.targetParser.parseName(this.currentDataList[i].target)
+
+            if (this.selected.includes(productName)) {
+              rearragned.push(productName);
+            } else {
+              this.circles.setCircleColor(this.currentDataList, i, '.circle', this.lightTheme ? 'lightgrey' : 'white');
+            }
+          }
+
+          for (let i = 0; i < rearragned.length; i++) {
+            let k = 0;
+
+            while (rearragned[i] !== this.targetParser.parseName(this.currentDataList[k].target) && this.currentDataList[k + 1] !== undefined) {
+              k++;
+            }
+
+            if (rearragned[i] === this.targetParser.parseName(this.currentDataList[k].target)) {
+              this.circles.setCircleColor(this.currentDataList, k, '.circle', this.panel.colors[i]);
+            }
+          }
+        }
       }
 
       this.productSelector.buildSimple('products', this.selected); // Add product to grafana template variable.
