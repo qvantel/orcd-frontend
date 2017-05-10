@@ -246,7 +246,7 @@ export default class GeoMapPanelCtrl extends MetricsPanelCtrl {
     }
 
     formatTime (timestamp) {
-        moment.unix(timestamp).format('DD-MM-YYYY HH:mm:ss')
+        return moment.unix(timestamp).format('DD-MM-YYYY HH:mm:ss')
     }
 }
 
