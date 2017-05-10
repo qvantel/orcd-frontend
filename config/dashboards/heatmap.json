@@ -31,7 +31,7 @@
     {
       "type": "panel",
       "id": "heatmap-panel",
-      "name": "heatmap_panel",
+      "name": "HeatMap-panel",
       "version": "1.0.0"
     }
   ],
@@ -48,7 +48,53 @@
   "rows": [
     {
       "collapse": false,
-      "height": 293,
+      "height": 281,
+      "panels": [
+        {
+          "circleWidth": 100,
+          "colors": [
+            "#7EB26D",
+            "#EAB839",
+            "#6ED0E0",
+            "#EF843C",
+            "#E24D42",
+            "#1F78C1",
+            "#BA43A9",
+            "#705DA0",
+            "#508642",
+            "#CCA300",
+            "#447EBC",
+            "#C15C17",
+            "#890F02",
+            "#0A437C",
+            "#6D1F62"
+          ],
+          "datasource": "${DS_GRAPHITE}",
+          "id": 3,
+          "max": 1000,
+          "min": 0,
+          "span": 12,
+          "targets": [
+            {
+              "refId": "A",
+              "target": "summarize(qvantel.product.$category.*, '$timetype', 'sum', true)",
+              "textEditor": true
+            }
+          ],
+          "title": "Panel Title",
+          "type": "heatmap-panel"
+        }
+      ],
+      "repeat": null,
+      "repeatIteration": null,
+      "repeatRowId": null,
+      "showTitle": false,
+      "title": "Dashboard Row",
+      "titleSize": "h6"
+    },
+    {
+      "collapse": false,
+      "height": 257,
       "panels": [
         {
           "aliasColors": {
@@ -122,52 +168,6 @@
               "show": true
             }
           ]
-        }
-      ],
-      "repeat": null,
-      "repeatIteration": null,
-      "repeatRowId": null,
-      "showTitle": false,
-      "title": "Dashboard Row",
-      "titleSize": "h6"
-    },
-    {
-      "collapse": false,
-      "height": 257,
-      "panels": [
-        {
-          "circleWidth": 100,
-          "colors": [
-            "#7EB26D",
-            "#EAB839",
-            "#6ED0E0",
-            "#EF843C",
-            "#E24D42",
-            "#1F78C1",
-            "#BA43A9",
-            "#705DA0",
-            "#508642",
-            "#CCA300",
-            "#447EBC",
-            "#C15C17",
-            "#890F02",
-            "#0A437C",
-            "#6D1F62"
-          ],
-          "datasource": "${DS_GRAPHITE}",
-          "id": 3,
-          "max": 1000,
-          "min": 0,
-          "span": 12,
-          "targets": [
-            {
-              "refId": "A",
-              "target": "summarize(qvantel.product.$category.*, '$timetype', 'sum', true)",
-              "textEditor": true
-            }
-          ],
-          "title": "Panel Title",
-          "type": "heatmap-panel"
         }
       ],
       "repeat": null,
@@ -273,5 +273,5 @@
   },
   "timezone": "browser",
   "title": "Heatmap",
-  "version": 17
+  "version": 8
 }
