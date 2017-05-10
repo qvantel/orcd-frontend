@@ -1,7 +1,7 @@
 [![Build Status](https://travis-ci.org/flygare/orcd-frontend.svg?branch=master)](https://travis-ci.org/flygare/orcd-frontend)
 
 # Frontend
-This repository contains Grafana plugins, the included plugins are the GeoMap panel plugin, the Heatmap plugin and the Cassandra Health plugin. Here, we'll also go through how to install the plugins into Grafana, and how to set them up so they work properly. Both plugins support retrieving data from a Graphite data source. The plugin may work with other data sources, but this has not been tested.
+This repository contains Grafana plugins, the included plugins are the GeoMap panel plugin, the Heatmap plugin and the Cassandra Health plugin. Here, we'll also go through how to install the plugins into Grafana, and how to set them up so they work properly. All plugins support retrieving data from a Graphite data source. The plugin may work with other data sources, but this has not been tested.
 
 ## GeoMap panel plugin
 The GeoMap plugin visualizes roaming service statistics (i.e data, mms, sms, voice) for each country in the world. This is achieved by calculating the heat for each country and represent the calculated heat by coloring each country in a world map. Documentation for this plugin can be found [here](geomap_panel#geomap-panel-plugin-for-grafana).
