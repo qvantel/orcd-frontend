@@ -6,7 +6,7 @@ This repository contains Grafana plugins, the included plugins are the GeoMap pa
 ## GeoMap panel plugin
 The GeoMap plugin visualizes roaming service statistics (i.e data, mms, sms, voice) for each country in the world. This is achieved by calculating the heat for each country and represent the calculated heat by coloring each country in a world map. Documentation for this plugin can be found [here](geomap_panel#geomap-panel-plugin-for-grafana).
 
-![GeoMap preview](images/geomap_worldmap_dark.png)
+![GeoMap preview](geomap_panel/images/geomap_worldmap_dark.png)
 
 ## Heatmap panel plugin
 The heatmap panel contains functionality to visualize product usage and lapse through time to see how the products usage have changed. Documentation for this plugin can be found [here](heatmap_panel).
