@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/flygare/orcd-frontend.svg?branch=master)](https://travis-ci.org/flygare/orcd-frontend)
+[![Build Status](https://travis-ci.org/qvantel/orcd-frontend.svg?branch=master)](https://travis-ci.org/qvantel/orcd-frontend)
 
 # Frontend
 This repository contains Grafana plugins, the included plugins are the GeoMap panel plugin, the Heatmap plugin and the Cassandra Health plugin. Here, we'll also go through how to install the plugins into Grafana, and how to set them up so they work properly. All plugins support retrieving data from a Graphite data source. The plugin may work with other data sources, but this has not been tested.
